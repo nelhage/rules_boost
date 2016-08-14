@@ -1,0 +1,445 @@
+load("@com_github_nelhage_boost//:boost/boost.bzl", "boost_library")
+
+boost_library(
+  name = "algorithm",
+  deps = [
+    ":function",
+    ":range",
+  ]
+)
+
+boost_library(
+  name = "align",
+)
+
+boost_library(
+  name = "archive",
+  deps = [
+    ":assert",
+    ":cstdint",
+    ":integer",
+    ":iterator",
+    ":io",
+    ":mpl",
+    ":noncopyable",
+    ":smart_ptr",
+    ":spirit",
+  ],
+)
+
+boost_library(
+  name = "array",
+  deps = [
+    ":swap",
+    ":functional",
+  ],
+)
+
+boost_library(
+  name = "assert",
+)
+
+boost_library(
+  name = "bind",
+)
+
+boost_library(
+  name = "call_traits",
+)
+
+boost_library(
+  name = "cerrno",
+)
+
+boost_library(
+  name = "checked_delete",
+)
+
+boost_library(
+  name = "concept_check",
+)
+
+boost_library(
+  name = "config",
+  deps = [
+    ":version",
+  ]
+)
+
+boost_library(
+  name = "container",
+  deps = [
+    ":core",
+    ":config",
+    ":move",
+    ":intrusive",
+  ],
+)
+
+boost_library(
+  name = "conversion",
+)
+
+boost_library(
+  name = "core",
+)
+
+boost_library(
+  name = "cstdint",
+)
+
+boost_library(
+  name = "current_function",
+)
+
+boost_library(
+  name = "detail",
+  deps = [
+    ":limits",
+  ],
+)
+
+boost_library(
+  name = "exception",
+  deps = [
+    ":config",
+  ],
+)
+
+boost_library(
+  name = "filesystem",
+  deps = [
+    ":config",
+    ":functional",
+    ":io",
+    ":iterator",
+    ":range",
+    ":smart_ptr",
+    ":system",
+    ":type_traits",
+  ],
+)
+
+boost_library(
+  name = "foreach",
+)
+
+boost_library(
+  name = "function",
+  deps = [
+    ":bind",
+  ],
+)
+
+boost_library(
+  name = "function_types",
+)
+
+boost_library(
+  name = "functional",
+  deps = [
+    ":detail",
+  ],
+)
+
+boost_library(
+  name = "heap",
+  deps = [
+    ":parameter",
+  ],
+)
+
+boost_library(
+  name = "integer",
+  deps = [
+    ":static_assert"
+  ],
+  hdrs = [
+    "boost/integer_fwd.hpp",
+    "boost/integer_traits.hpp",
+  ],
+)
+
+boost_library(
+  name = "iterator",
+  deps = [
+    ":detail",
+    ":static_assert",
+  ],
+)
+
+boost_library(
+  name = "intrusive",
+  deps = [
+    ":assert",
+    ":cstdint",
+    ":noncopyable",
+    ":static_assert"
+  ],
+)
+
+boost_library(
+  name = "io",
+  hdrs = [
+    "boost/io_fwd.hpp",
+  ],
+)
+
+boost_library(
+  name = "limits",
+)
+
+boost_library(
+  name = "math",
+)
+
+boost_library(
+  name = "move",
+  deps = [
+    ":assert",
+    ":detail",
+    ":static_assert",
+  ],
+)
+
+boost_library(
+  name = "mpl",
+  deps = [
+    ":preprocessor",
+    ":move",
+  ]
+)
+
+boost_library(
+  name = "multi_index",
+  deps = [
+    ":foreach",
+    ":serialization",
+    ":static_assert",
+    ":tuple",
+  ],
+)
+
+boost_library(
+  name = "noncopyable",
+)
+
+boost_library(
+  name = "none",
+  hdrs = [
+    "boost/none_t.hpp"
+  ],
+)
+
+boost_library(
+  name = "operators",
+)
+
+boost_library(
+  name = "optional",
+  deps = [
+    ":none",
+    ":type",
+  ],
+)
+
+boost_library(
+  name = "parameter",
+)
+
+boost_library(
+  name = "predef",
+)
+
+boost_library(
+  name = "preprocessor",
+)
+
+boost_library(
+  name = "range",
+  deps = [
+    ":concept_check",
+    ":optional",
+  ]
+)
+
+boost_library(
+  name = "ref",
+  deps = [
+    ":core",
+  ],
+)
+
+boost_library(
+  name = "regex",
+  defines = [
+    "BOOST_FALLTHROUGH"
+  ],
+  deps = [
+    ":assert",
+    ":config",
+    ":cstdint",
+    ":detail",
+    ":exception",
+    ":functional",
+    ":integer",
+    ":limits",
+    ":mpl",
+    ":predef",
+    ":ref",
+    ":smart_ptr",
+    ":throw_exception",
+    ":type_traits",
+  ],
+  hdrs = [
+    "boost/regex_fwd.hpp",
+    "boost/cregex.hpp",
+  ],
+)
+
+boost_library(
+  name = "scoped_array",
+  deps = [
+    ":checked_delete",
+  ],
+)
+
+boost_library(
+  name = "scoped_ptr",
+  deps = [
+    ":checked_delete",
+  ],
+)
+
+boost_library(
+  name = "shared_ptr",
+  deps = [
+    ":checked_delete",
+  ],
+)
+
+boost_library(
+  name = "shared_array",
+  deps = [
+    ":checked_delete",
+  ],
+)
+
+boost_library(
+  name = "serialization",
+  deps = [
+    ":archive",
+    ":array",
+    ":call_traits",
+    ":config",
+    ":detail",
+    ":operators",
+    ":type_traits",
+  ],
+)
+
+boost_library(
+  name = "smart_ptr",
+  deps = [
+    ":align",
+    ":core",
+    ":predef",
+    ":throw_exception",
+    ":utility",
+    ":scoped_ptr",
+    ":scoped_array",
+    ":shared_ptr",
+    ":shared_array",
+  ],
+)
+
+boost_library(
+  name = "spirit",
+  deps = [
+    ":ref",
+    ":optional",
+  ],
+)
+
+boost_library(
+  name = "static_assert",
+)
+
+boost_library(
+  name = "system",
+  deps = [
+    ":assert",
+    ":cerrno",
+    ":config",
+    ":core",
+    ":cstdint",
+    ":noncopyable",
+    ":predef",
+    ":utility",
+  ],
+)
+
+boost_library(
+  name = "swap",
+)
+
+boost_library(
+  name = "throw_exception",
+  deps = [
+    ":current_function",
+    ":exception",
+  ],
+)
+
+boost_library(
+  name = "type",
+  deps = [
+    ":core",
+  ]
+)
+
+boost_library(
+  name = "type_index",
+  deps = [
+    ":core",
+  ]
+)
+
+boost_library(
+  name = "type_traits",
+  deps = [
+    ":core",
+    ":mpl",
+    ":static_assert",
+  ]
+)
+
+boost_library(
+  name = "tuple",
+)
+
+boost_library(
+  name = "tr1",
+  defines = [
+    "BOOST_FALLTHROUGH"
+  ],
+  deps = [
+    ":config",
+  ]
+)
+
+boost_library(
+  name = "utility",
+)
+
+boost_library(
+  name = "variant",
+  deps = [
+    ":math",
+    ":type_index",
+  ]
+)
+
+boost_library(
+  name = "version",
+)
