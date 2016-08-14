@@ -179,6 +179,15 @@ boost_library(
 )
 
 boost_library(
+  name = "intrusive_ptr",
+  deps = [
+    ":assert",
+    ":detail",
+    ":smart_ptr",
+  ],
+)
+
+boost_library(
   name = "io",
   hdrs = [
     "boost/io_fwd.hpp",
