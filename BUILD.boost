@@ -41,6 +41,13 @@ boost_library(
 
 boost_library(
   name = "bind",
+  deps = [
+    ":get_pointer",
+    ":is_placeholder",
+    ":ref",
+    ":mem_fn",
+    ":visit_each",
+  ],
 )
 
 boost_library(
@@ -143,10 +150,18 @@ boost_library(
 )
 
 boost_library(
+  name = "get_pointer",
+)
+
+boost_library(
   name = "heap",
   deps = [
     ":parameter",
   ],
+)
+
+boost_library(
+  name = "is_placeholder",
 )
 
 boost_library(
@@ -200,6 +215,10 @@ boost_library(
 
 boost_library(
   name = "math",
+)
+
+boost_library(
+  name = "mem_fn",
 )
 
 boost_library(
@@ -451,4 +470,8 @@ boost_library(
 
 boost_library(
   name = "version",
+)
+
+boost_library(
+  name = "visit_each",
 )
