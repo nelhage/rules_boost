@@ -12,6 +12,10 @@ srcs_patterns = [
   "libs/%s/src/*.hpp",
 ]
 
+# Building boost results in many warnings for unused values. Downstream users
+# won't be interested, so just disable the warning.
+default_copts = ["-Wno-unused-value"]
+
 def srcs_list(library_name):
   return native.glob([p % (library_name,) for p in srcs_patterns])
 
@@ -48,7 +52,7 @@ def boost_library(name, defines=None, includes=None, hdrs=None, srcs=None, deps=
     hdrs = hdr_list(name) + hdrs,
     srcs = srcs_list(name) + srcs,
     deps = deps,
-    copts = copts,
+    copts = default_copts + copts,
     licenses = ["notice"],
   )
 
