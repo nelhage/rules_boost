@@ -107,6 +107,10 @@ boost_library(
 )
 
 boost_library(
+  name = "dynamic_bitset",
+)
+
+boost_library(
   name = "exception",
   deps = [
     ":config",
