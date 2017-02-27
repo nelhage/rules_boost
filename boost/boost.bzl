@@ -59,7 +59,7 @@ def boost_library(name, defines=None, includes=None, hdrs=None, srcs=None, deps=
 def boost_deps():
   native.new_http_archive(
     name = "boost",
-    url = "https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.bz2/download",
+    url = "https://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.tar.bz2?r=&ts=1488168966&use_mirror=cytranet",
     build_file = "@com_github_nelhage_boost//:BUILD.boost",
     type = "tar.bz2",
     strip_prefix = "boost_1_63_0/",
