@@ -5,7 +5,7 @@ boost_library(
   deps = [
     ":function",
     ":range",
-  ]
+  ],
 )
 
 boost_library(
@@ -32,6 +32,15 @@ boost_library(
   deps = [
     ":swap",
     ":functional",
+  ],
+)
+
+boost_library(
+  name = "asio",
+  deps = [
+    ":bind",
+    ":date_time",
+    ":regex",
   ],
 )
 
@@ -97,6 +106,17 @@ boost_library(
 
 boost_library(
   name = "current_function",
+)
+
+boost_library(
+  name = "date_time",
+  deps = [
+    ":mpl",
+    ":operators",
+    ":smart_ptr",
+    ":static_assert",
+    ":type_traits",
+  ],
 )
 
 boost_library(
