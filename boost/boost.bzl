@@ -1,7 +1,9 @@
 include_pattern = "boost/%s/"
 hdrs_patterns = [
   "boost/%s.h",
+  "boost/%s_fwd.h",
   "boost/%s.hpp",
+  "boost/%s_fwd.hpp",
   "boost/%s/**/*.hpp",
   "boost/%s/**/*.ipp",
   "boost/%s/**/*.h",
