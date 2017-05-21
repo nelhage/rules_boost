@@ -98,6 +98,9 @@ boost_library(
 
 boost_library(
   name = "core",
+  srcs = [
+    "boost/checked_delete.hpp",
+  ],
 )
 
 boost_library(
@@ -194,7 +197,6 @@ boost_library(
     ":static_assert"
   ],
   hdrs = [
-    "boost/integer_fwd.hpp",
     "boost/integer_traits.hpp",
   ],
 )
@@ -228,9 +230,6 @@ boost_library(
 
 boost_library(
   name = "io",
-  hdrs = [
-    "boost/io_fwd.hpp",
-  ],
 )
 
 boost_library(
@@ -239,6 +238,9 @@ boost_library(
 
 boost_library(
   name = "math",
+  hdrs = [
+      "boost/cstdint.hpp",
+  ],
 )
 
 boost_library(
@@ -344,7 +346,6 @@ boost_library(
     ":type_traits",
   ],
   hdrs = [
-    "boost/regex_fwd.hpp",
     "boost/cregex.hpp",
   ],
 )
@@ -454,11 +455,15 @@ boost_library(
   name = "type_index",
   deps = [
     ":core",
+    ":throw_exception",
   ]
 )
 
 boost_library(
   name = "type_traits",
+  hdrs = [
+      "boost/aligned_storage.hpp"
+  ],
   deps = [
     ":core",
     ":mpl",
@@ -485,10 +490,22 @@ boost_library(
 )
 
 boost_library(
+    name = "blank",
+)
+
+boost_library(
   name = "variant",
   deps = [
+    ":blank",
+    ":call_traits",
+    ":detail",
+    ":config",
+    ":functional",
     ":math",
+    ":static_assert",
     ":type_index",
+    ":type_traits",
+    ":utility",
   ]
 )
 
