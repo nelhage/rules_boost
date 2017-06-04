@@ -72,6 +72,20 @@ boost_library(
 )
 
 boost_library(
+    name = "chrono",
+    deps = [
+        ":config",
+        ":mpl",
+        ":operators",
+        ":predef",
+        ":ratio",
+        ":system",
+        ":type_traits",
+        ":throw_exception",
+    ],
+)
+
+boost_library(
     name = "concept_check",
 )
 
@@ -80,6 +94,10 @@ boost_library(
     deps = [
         ":version",
     ],
+)
+
+boost_library(
+    name = "concept",
 )
 
 boost_library(
@@ -163,6 +181,9 @@ boost_library(
     deps = [
         ":bind",
     ],
+    hdrs = [
+        "boost/function_equal.hpp",
+    ],
 )
 
 boost_library(
@@ -195,6 +216,7 @@ boost_library(
     name = "integer",
     hdrs = [
         "boost/integer_traits.hpp",
+        "boost/cstdint.hpp",
     ],
     deps = [
         ":static_assert",
@@ -318,6 +340,13 @@ boost_library(
 )
 
 boost_library(
+    name = "ratio",
+    deps = [
+        ":integer",
+    ],
+)
+
+boost_library(
     name = "ref",
     deps = [
         ":core",
@@ -393,6 +422,9 @@ boost_library(
 
 boost_library(
     name = "smart_ptr",
+    hdrs = [
+        "boost/make_shared.hpp",
+    ],
     deps = [
         ":align",
         ":core",
@@ -445,6 +477,18 @@ boost_library(
 )
 
 boost_library(
+    name = "thread",
+    deps = [
+        ":chrono",
+        ":config",
+        ":core",
+        ":detail",
+        ":system",
+        ":type_traits",
+    ],
+)
+
+boost_library(
     name = "type",
     deps = [
         ":core",
@@ -487,6 +531,9 @@ boost_library(
 
 boost_library(
     name = "utility",
+    hdrs = [
+        "boost/next_prior.hpp",
+    ],
 )
 
 boost_library(
