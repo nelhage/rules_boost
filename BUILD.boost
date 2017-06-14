@@ -563,3 +563,47 @@ boost_library(
 boost_library(
     name = "visit_each",
 )
+
+boost_library(
+    name = "cstdlib",
+)
+
+boost_library(
+    name = "timer",
+    deps = [
+        ":config",
+        ":system",
+        ":cstdint",
+        ":limits",
+    ]
+)
+
+boost_library(
+    name = "test",
+    deps = [
+        ":function",
+        ":smart_ptr",
+        ":type",
+        ":cstdlib",
+        ":current_function",
+        ":type_traits",
+        ":bind",
+        ":config",
+        ":preprocessor",
+        ":mpl",
+        ":optional",
+        ":utility",
+        ":version",
+        ":core",
+        ":exception",
+        ":timer",
+        ":io",
+        ":detail",
+        ":limits",
+        ":static_assert",
+        ":assert",
+        ":call_traits",
+        ":iterator",
+        ":algorithm",
+    ]
+)
