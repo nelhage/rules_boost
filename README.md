@@ -3,14 +3,10 @@
 To use these rules, add the following to your `WORKSPACE` file:
 
 ```bazel
-http_archive(
+git_repository(
     name = "com_github_nelhage_boost",
-    sha256 = "bc42251e12bc35b03eab2edb6179cc06ca4caf9bf884566a28420253d6e118c3",
-    strip_prefix = "rules_boost-dbfed66073378041cd0ee2a92d75ddd6def612ec",
-    type = "tar.gz",
-    urls = [
-        "https://github.com/nelhage/rules_boost/archive/dbfed66073378041cd0ee2a92d75ddd6def612ec.tar.gz"
-    ],
+    commit = d6446dc9de6e43b039af07482a9361bdc6da5237,
+    remote = "https://github.com/nelhage/rules_boost",
 )
 
 load("@com_github_nelhage_boost//:boost/boost.bzl", "boost_deps")
