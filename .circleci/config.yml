@@ -10,7 +10,7 @@ jobs:
           keys:
             - bazel-cache
 
-      - run: apt-get update && apt-get -y install pkg-config zip g++ zlib1g-dev unzip python
-      - run: cd /tmp/ && wget https://github.com/bazelbuild/bazel/releases/download/0.5.4/bazel-0.5.4-installer-linux-x86_64.sh
+      - run: apt-get update && apt-get -y install pkg-config zip g++ zlib1g-dev unzip python curl
+      - run: cd /tmp/ && curl -LO https://github.com/bazelbuild/bazel/releases/download/0.5.4/bazel-0.5.4-installer-linux-x86_64.sh
       - run: bash /tmp/bazel-0.5.4-installer-linux-x86_64.sh
       - run: cd test && bazel test //...
