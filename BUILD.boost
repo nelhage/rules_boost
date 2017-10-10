@@ -80,8 +80,8 @@ boost_library(
         ":predef",
         ":ratio",
         ":system",
-        ":type_traits",
         ":throw_exception",
+        ":type_traits",
     ],
 )
 
@@ -178,11 +178,11 @@ boost_library(
 
 boost_library(
     name = "function",
-    deps = [
-        ":bind",
-    ],
     hdrs = [
         "boost/function_equal.hpp",
+    ],
+    deps = [
+        ":bind",
     ],
 )
 
@@ -215,8 +215,8 @@ boost_library(
 boost_library(
     name = "integer",
     hdrs = [
-        "boost/integer_traits.hpp",
         "boost/cstdint.hpp",
+        "boost/integer_traits.hpp",
     ],
     deps = [
         ":static_assert",
@@ -572,38 +572,38 @@ boost_library(
     name = "timer",
     deps = [
         ":config",
-        ":system",
         ":cstdint",
         ":limits",
-    ]
+        ":system",
+    ],
 )
 
 boost_library(
     name = "test",
     deps = [
-        ":function",
-        ":smart_ptr",
-        ":type",
+        ":algorithm",
+        ":assert",
+        ":bind",
+        ":call_traits",
+        ":config",
+        ":core",
         ":cstdlib",
         ":current_function",
-        ":type_traits",
-        ":bind",
-        ":config",
-        ":preprocessor",
+        ":detail",
+        ":exception",
+        ":function",
+        ":io",
+        ":iterator",
+        ":limits",
         ":mpl",
         ":optional",
+        ":preprocessor",
+        ":smart_ptr",
+        ":static_assert",
+        ":timer",
+        ":type",
+        ":type_traits",
         ":utility",
         ":version",
-        ":core",
-        ":exception",
-        ":timer",
-        ":io",
-        ":detail",
-        ":limits",
-        ":static_assert",
-        ":assert",
-        ":call_traits",
-        ":iterator",
-        ":algorithm",
-    ]
+    ],
 )
