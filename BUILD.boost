@@ -183,6 +183,8 @@ boost_library(
     ],
     deps = [
         ":bind",
+        ":integer",
+        ":type_index",
     ],
 )
 
@@ -534,6 +536,9 @@ boost_library(
     hdrs = [
         "boost/next_prior.hpp",
     ],
+    deps = [
+        ":swap",
+    ],
 )
 
 boost_library(
@@ -571,11 +576,17 @@ boost_library(
 boost_library(
     name = "timer",
     deps = [
+        ":chrono",
         ":config",
         ":cstdint",
+        ":io",
         ":limits",
         ":system",
     ],
+)
+
+boost_library(
+    name = "numeric",
 )
 
 boost_library(
@@ -596,6 +607,7 @@ boost_library(
         ":iterator",
         ":limits",
         ":mpl",
+        ":numeric",
         ":optional",
         ":preprocessor",
         ":smart_ptr",
