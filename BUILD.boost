@@ -80,8 +80,8 @@ boost_library(
         ":predef",
         ":ratio",
         ":system",
-        ":type_traits",
         ":throw_exception",
+        ":type_traits",
     ],
 )
 
@@ -178,11 +178,13 @@ boost_library(
 
 boost_library(
     name = "function",
-    deps = [
-        ":bind",
-    ],
     hdrs = [
         "boost/function_equal.hpp",
+    ],
+    deps = [
+        ":bind",
+        ":integer",
+        ":type_index",
     ],
 )
 
@@ -215,8 +217,8 @@ boost_library(
 boost_library(
     name = "integer",
     hdrs = [
-        "boost/integer_traits.hpp",
         "boost/cstdint.hpp",
+        "boost/integer_traits.hpp",
     ],
     deps = [
         ":static_assert",
@@ -534,6 +536,9 @@ boost_library(
     hdrs = [
         "boost/next_prior.hpp",
     ],
+    deps = [
+        ":swap",
+    ],
 )
 
 boost_library(
@@ -571,39 +576,51 @@ boost_library(
 boost_library(
     name = "timer",
     deps = [
+        ":chrono",
         ":config",
-        ":system",
         ":cstdint",
+        ":io",
         ":limits",
-    ]
+        ":system",
+    ],
+)
+
+boost_library(
+    name = "numeric",
 )
 
 boost_library(
     name = "test",
+    exclude_src = [
+        "libs/test/src/unit_test_main.cpp",
+        "libs/test/src/test_main.cpp",
+        "libs/test/src/cpp_main.cpp",
+    ],
     deps = [
-        ":function",
-        ":smart_ptr",
-        ":type",
+        ":algorithm",
+        ":assert",
+        ":bind",
+        ":call_traits",
+        ":config",
+        ":core",
         ":cstdlib",
         ":current_function",
-        ":type_traits",
-        ":bind",
-        ":config",
-        ":preprocessor",
+        ":detail",
+        ":exception",
+        ":function",
+        ":io",
+        ":iterator",
+        ":limits",
         ":mpl",
+        ":numeric",
         ":optional",
+        ":preprocessor",
+        ":smart_ptr",
+        ":static_assert",
+        ":timer",
+        ":type",
+        ":type_traits",
         ":utility",
         ":version",
-        ":core",
-        ":exception",
-        ":timer",
-        ":io",
-        ":detail",
-        ":limits",
-        ":static_assert",
-        ":assert",
-        ":call_traits",
-        ":iterator",
-        ":algorithm",
-    ]
+    ],
 )

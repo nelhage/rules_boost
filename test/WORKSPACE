@@ -1,0 +1,14 @@
+local_repository(
+    name = "com_github_nelhage_boost",
+    path = "..",
+)
+
+load("@com_github_nelhage_boost//:boost/boost.bzl", "boost_deps")
+
+boost_deps()
+
+# new_local_repository(
+#     name = "boost",
+#     build_file = "@com_github_nelhage_boost//:BUILD.boost",
+#     path = "/home/nelhage/Downloads/boost_1_63_0/",
+# )

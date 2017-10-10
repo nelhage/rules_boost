@@ -1,17 +1,19 @@
 include_pattern = "boost/%s/"
+
 hdrs_patterns = [
-  "boost/%s.h",
-  "boost/%s_fwd.h",
-  "boost/%s.hpp",
-  "boost/%s_fwd.hpp",
-  "boost/%s/**/*.hpp",
-  "boost/%s/**/*.ipp",
-  "boost/%s/**/*.h",
-  "libs/%s/src/*.ipp",
+    "boost/%s.h",
+    "boost/%s_fwd.h",
+    "boost/%s.hpp",
+    "boost/%s_fwd.hpp",
+    "boost/%s/**/*.hpp",
+    "boost/%s/**/*.ipp",
+    "boost/%s/**/*.h",
+    "libs/%s/src/*.ipp",
 ]
+
 srcs_patterns = [
-  "libs/%s/src/*.cpp",
-  "libs/%s/src/*.hpp",
+    "libs/%s/src/*.cpp",
+    "libs/%s/src/*.hpp",
 ]
 
 # Building boost results in many warnings for unused values. Downstream users
@@ -27,7 +29,7 @@ def includes_list(library_name):
 def hdr_list(library_name):
   return native.glob([p % (library_name,) for p in hdrs_patterns])
 
-def boost_library(name, defines=None, includes=None, hdrs=None, srcs=None, deps=None, copts=None):
+def boost_library(name, defines=None, includes=None, hdrs=None, srcs=None, deps=None, copts=None, exclude_src=[]):
   if defines == None:
     defines = []
 
@@ -52,7 +54,7 @@ def boost_library(name, defines=None, includes=None, hdrs=None, srcs=None, deps=
     defines = defines,
     includes = includes_list(name) + includes,
     hdrs = hdr_list(name) + hdrs,
-    srcs = srcs_list(name) + srcs,
+    srcs = [s for s in srcs_list(name) if s not in exclude_src] + srcs,
     deps = deps,
     copts = default_copts + copts,
     licenses = ["notice"],
