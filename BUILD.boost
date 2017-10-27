@@ -13,6 +13,18 @@ boost_library(
 )
 
 boost_library(
+    name = "atomic",
+    hdrs = [
+        "boost/memory_order.hpp",
+    ],
+    deps = [
+        ":assert",
+        ":config",
+        ":type_traits",
+    ],
+)
+
+boost_library(
     name = "archive",
     deps = [
         ":assert",
@@ -120,6 +132,12 @@ boost_library(
 
 boost_library(
     name = "container",
+    hdrs = [
+        "libs/container/src/dlmalloc_2_8_6.c",
+    ],
+    srcs = [
+        "libs/container/src/dlmalloc_ext_2_8_6.c",
+    ],
     deps = [
         ":config",
         ":core",
@@ -272,6 +290,27 @@ boost_library(
 
 boost_library(
     name = "io",
+)
+
+boost_library(
+    name = "lexical_cast",
+    deps = [
+        ":array",
+        ":chrono",
+        ":config",
+        ":container",
+        ":detail",
+        ":integer",
+        ":limits",
+        ":math",
+        ":mpl",
+        ":noncopyable",
+        ":numeric",
+        ":range",
+        ":static_assert",
+        ":throw_exception",
+        ":type_traits",
+    ],
 )
 
 boost_library(
@@ -498,11 +537,26 @@ boost_library(
 
 boost_library(
     name = "thread",
+    srcs = [
+        "libs/thread/src/pthread/once.cpp",
+        "libs/thread/src/pthread/thread.cpp",
+    ],
+    hdrs = [
+        "libs/thread/src/pthread/once_atomic.cpp",
+    ],
+    linkopts = ["-lpthread"],
     deps = [
+        ":atomic",
+        ":bind",
         ":chrono",
         ":config",
         ":core",
+        ":date_time",
         ":detail",
+        ":exception",
+        ":function",
+        ":lexical_cast",
+        ":smart_ptr",
         ":system",
         ":type_traits",
     ],
