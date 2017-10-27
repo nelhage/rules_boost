@@ -86,6 +86,24 @@ boost_library(
 )
 
 boost_library(
+    name = "circular_buffer",
+    deps = [
+        ":call_traits",
+        ":concept_check",
+        ":config",
+        ":container",
+        ":detail",
+        ":iterator",
+        ":limits",
+        ":move",
+        ":static_assert",
+        ":throw_exception",
+        ":type_traits",
+        ":utility",
+    ],
+)
+
+boost_library(
     name = "concept_check",
 )
 
