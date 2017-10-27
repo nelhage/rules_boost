@@ -4,6 +4,7 @@ boost_library(
     name = "algorithm",
     deps = [
         ":function",
+        ":iterator",
         ":range",
     ],
 )
@@ -20,6 +21,7 @@ boost_library(
     deps = [
         ":assert",
         ":config",
+        ":cstdint",
         ":type_traits",
     ],
 )
@@ -117,6 +119,9 @@ boost_library(
 
 boost_library(
     name = "concept_check",
+    deps = [
+        ":concept",
+    ],
 )
 
 boost_library(
@@ -132,11 +137,11 @@ boost_library(
 
 boost_library(
     name = "container",
-    hdrs = [
-        "libs/container/src/dlmalloc_2_8_6.c",
-    ],
     srcs = [
         "libs/container/src/dlmalloc_ext_2_8_6.c",
+    ],
+    hdrs = [
+        "libs/container/src/dlmalloc_2_8_6.c",
     ],
     deps = [
         ":config",
@@ -188,7 +193,21 @@ boost_library(
 )
 
 boost_library(
+    name = "enable_shared_from_this",
+)
+
+boost_library(
     name = "exception",
+    hdrs = [
+        "boost/exception_ptr.hpp",
+    ],
+    deps = [
+        ":config",
+    ],
+)
+
+boost_library(
+    name = "exception_ptr",
     deps = [
         ":config",
     ],
@@ -546,6 +565,7 @@ boost_library(
     ],
     linkopts = ["-lpthread"],
     deps = [
+        ":algorithm",
         ":atomic",
         ":bind",
         ":chrono",
@@ -553,11 +573,14 @@ boost_library(
         ":core",
         ":date_time",
         ":detail",
+        ":enable_shared_from_this",
         ":exception",
         ":function",
+        ":io",
         ":lexical_cast",
         ":smart_ptr",
         ":system",
+        ":tuple",
         ":type_traits",
     ],
 )
