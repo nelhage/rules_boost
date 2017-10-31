@@ -410,7 +410,7 @@ boost_library(
         ":math",
         ":mpl",
         ":noncopyable",
-        ":numeric",
+        ":numeric_conversion",
         ":range",
         ":static_assert",
         ":throw_exception",
@@ -472,6 +472,23 @@ boost_library(
     name = "none",
     hdrs = [
         "boost/none_t.hpp",
+    ],
+)
+
+boost_library(
+    name = "numeric_conversion",
+    hdrs = glob([
+        "boost/numeric/conversion/**/*.hpp",
+    ]),
+    deps = [
+        ":config",
+        ":detail",
+        ":integer",
+        ":limits",
+        ":mpl",
+        ":throw_exception",
+        ":type",
+        ":type_traits",
     ],
 )
 
@@ -952,7 +969,7 @@ boost_library(
         ":iterator",
         ":limits",
         ":mpl",
-        ":numeric",
+        ":numeric_conversion",
         ":optional",
         ":preprocessor",
         ":smart_ptr",

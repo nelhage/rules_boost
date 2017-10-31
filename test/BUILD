@@ -40,6 +40,16 @@ cc_test(
 )
 
 cc_test(
+    name = "numeric_conversion_test",
+    size = "small",
+    srcs = ["numeric_conversion_test.cc"],
+    deps = [
+        "@boost//:numeric_conversion",
+        "@boost//:test",
+    ],
+)
+
+cc_test(
     name = "random_test",
     size = "small",
     srcs = ["random_test.cc"],
