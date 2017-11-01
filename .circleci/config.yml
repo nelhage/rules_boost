@@ -13,5 +13,5 @@ jobs:
       - run: apt-get update && apt-get -y install pkg-config zip g++ zlib1g-dev unzip python curl
       - run: cd /tmp/ && curl -LO https://github.com/bazelbuild/bazel/releases/download/0.7.0/bazel-0.7.0-installer-linux-x86_64.sh
       - run: bash /tmp/bazel-0.7.0-installer-linux-x86_64.sh
-      - run: cp .bazelrc.circle .bazelrc
+      - run: cd test && cp .bazelrc.circle .bazelrc
       - run: cd test && bazel test --test_output=errors //...
