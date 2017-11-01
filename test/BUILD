@@ -30,6 +30,16 @@ cc_test(
 )
 
 cc_test(
+    name = "iostreams_test",
+    size = "small",
+    srcs = ["iostreams_test.cc"],
+    deps = [
+        "@boost//:iostreams",
+        "@boost//:test",
+    ],
+)
+
+cc_test(
     name = "random_test",
     size = "small",
     srcs = ["random_test.cc"],

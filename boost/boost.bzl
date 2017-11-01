@@ -66,10 +66,29 @@ def boost_library(name, defines=None, includes=None, hdrs=None, srcs=None,
   )
 
 def boost_deps():
-  native.new_http_archive(
-    name = "boost",
-    url = "https://dl.bintray.com/boostorg/release/1.63.0/source/boost_1_63_0.tar.gz",
-    build_file = "@com_github_nelhage_boost//:BUILD.boost",
-    strip_prefix = "boost_1_63_0/",
-    sha256 = "fe34a4e119798e10b8cc9e565b3b0284e9fd3977ec8a1b19586ad1dec397088b",
-  )
+  if "net_zlib_zlib" not in native.existing_rules():
+    native.new_http_archive(
+        name = "net_zlib_zlib",
+        build_file = "@com_github_nelhage_boost//:BUILD.zlib",
+        sha256 = "c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1",
+        strip_prefix = "zlib-1.2.11",
+        url = "https://zlib.net/zlib-1.2.11.tar.gz",
+    )
+
+  if "org_bzip_bzip2" not in native.existing_rules():
+    native.new_http_archive(
+        name = "org_bzip_bzip2",
+        build_file = "@com_github_nelhage_boost//:BUILD.bzip2",
+        sha256 = "a2848f34fcd5d6cf47def00461fcb528a0484d8edef8208d6d2e2909dc61d9cd",
+        strip_prefix = "bzip2-1.0.6",
+        url = "http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz",
+    )
+
+  if "boost" not in native.existing_rules():
+    native.new_http_archive(
+      name = "boost",
+      url = "https://dl.bintray.com/boostorg/release/1.63.0/source/boost_1_63_0.tar.gz",
+      build_file = "@com_github_nelhage_boost//:BUILD.boost",
+      strip_prefix = "boost_1_63_0/",
+      sha256 = "fe34a4e119798e10b8cc9e565b3b0284e9fd3977ec8a1b19586ad1dec397088b",
+    )

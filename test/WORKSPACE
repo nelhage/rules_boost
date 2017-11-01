@@ -5,16 +5,15 @@ local_repository(
 
 load("@com_github_nelhage_boost//:boost/boost.bzl", "boost_deps")
 
-boost_deps()
-
 # boost_deps() will re-download the tarball every time BUILD.boost
 # changes, which is frustrating for doing development. Download it
-# yourself, uncomment the below, comment out the `boost_deps() call,
-# and change the path as appropriate for a faster iteration cycle on
-# changes.
+# yourself, uncomment the below and change the path as appropriate
+# for a faster iteration cycle on changes.
 #
 # new_local_repository(
 #     name = "boost",
 #     build_file = "@com_github_nelhage_boost//:BUILD.boost",
 #     path = "/home/nelhage/code/boost_1_63_0/",
 # )
+
+boost_deps()

@@ -369,6 +369,35 @@ boost_library(
 )
 
 boost_library(
+    name = "iostreams",
+    deps = [
+        ":assert",
+        ":bind",
+        ":call_traits",
+        ":checked_delete",
+        ":config",
+        ":detail",
+        ":function",
+        ":integer",
+        ":mpl",
+        ":noncopyable",
+        ":preprocessor",
+        ":random",
+        ":range",
+        ":ref",
+        ":regex",
+        ":shared_ptr",
+        ":static_assert",
+        ":throw_exception",
+        ":type",
+        ":type_traits",
+        ":utility",
+        "@net_zlib_zlib//:zlib",
+        "@org_bzip_bzip2//:bz2lib",
+    ],
+)
+
+boost_library(
     name = "lexical_cast",
     deps = [
         ":array",
