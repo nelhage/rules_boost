@@ -493,6 +493,30 @@ boost_library(
 )
 
 boost_library(
+    name = "numeric_ublas",
+    hdrs = glob([
+        "boost/numeric/ublas/**/*.hpp",
+    ]),
+    deps = [
+        ":concept_check",
+        ":config",
+        ":core",
+        ":iterator",
+        ":mpl",
+        ":noncopyable",
+        ":numeric",
+        ":range",
+        ":serialization",
+        ":shared_array",
+        ":static_assert",
+        ":timer",
+        ":typeof",
+        ":type_traits",
+        ":utility",
+    ],
+)
+
+boost_library(
     name = "operators",
 )
 
