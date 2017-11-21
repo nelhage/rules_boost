@@ -1,4 +1,13 @@
 cc_test(
+    name = "any_test",
+    size = "small",
+    srcs = ["any_test.cc"],
+    deps = [
+        "@boost//:any",
+    ],
+)
+
+cc_test(
     name = "bind_test",
     size = "small",
     srcs = ["bind_test.cc"],
