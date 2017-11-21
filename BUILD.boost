@@ -258,7 +258,7 @@ boost_library(
         ":detail",
         ":limits",
         ":optional",
-        ":shared_ptr",
+        ":smart_ptr",
         ":throw_exception",
         ":timer",
         ":utility",
@@ -285,6 +285,7 @@ boost_library(
     name = "functional",
     deps = [
         ":detail",
+        ":integer",
     ],
 )
 
@@ -345,6 +346,8 @@ boost_library(
     deps = [
         ":detail",
         ":static_assert",
+        ":type_traits",
+        ":utility",
     ],
 )
 
@@ -606,7 +609,10 @@ boost_library(
 boost_library(
     name = "ref",
     deps = [
+        ":config",
         ":core",
+        ":detail",
+        ":utility",
     ],
 )
 
@@ -873,6 +879,9 @@ boost_library(
 
 boost_library(
     name = "tuple",
+    deps = [
+        ":ref",
+    ],
 )
 
 boost_library(

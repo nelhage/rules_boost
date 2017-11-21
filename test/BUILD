@@ -4,7 +4,6 @@ cc_test(
     srcs = ["bind_test.cc"],
     deps = [
         "@boost//:bind",
-        "@boost//:test",
     ],
 )
 
@@ -14,7 +13,6 @@ cc_test(
     srcs = ["circular_buffer_test.cc"],
     deps = [
         "@boost//:circular_buffer",
-        "@boost//:test",
     ],
 )
 
@@ -25,7 +23,6 @@ cc_test(
     copts = ["-Wno-unused-value"],
     deps = [
         "@boost//:format",
-        "@boost//:test",
     ],
 )
 
@@ -35,7 +32,6 @@ cc_test(
     srcs = ["iostreams_test.cc"],
     deps = [
         "@boost//:iostreams",
-        "@boost//:test",
     ],
 )
 
@@ -45,7 +41,6 @@ cc_test(
     srcs = ["numeric_conversion_test.cc"],
     deps = [
         "@boost//:numeric_conversion",
-        "@boost//:test",
     ],
 )
 
@@ -55,7 +50,6 @@ cc_test(
     srcs = ["random_test.cc"],
     deps = [
         "@boost//:random",
-        "@boost//:test",
     ],
 )
 
@@ -65,7 +59,6 @@ cc_test(
     srcs = ["scope_exit_test.cc"],
     deps = [
         "@boost//:scope_exit",
-        "@boost//:test",
     ],
 )
 
@@ -75,7 +68,6 @@ cc_test(
     srcs = ["signals2_test.cc"],
     deps = [
         "@boost//:signals2",
-        "@boost//:test",
     ],
 )
 
@@ -92,7 +84,6 @@ cc_test(
     size = "small",
     srcs = ["thread_test.cc"],
     deps = [
-        "@boost//:test",
         "@boost//:thread",
     ],
 )
@@ -102,7 +93,6 @@ cc_test(
     size = "small",
     srcs = ["tokenizer_test.cc"],
     deps = [
-        "@boost//:test",
         "@boost//:tokenizer",
     ],
 )
@@ -112,7 +102,6 @@ cc_test(
     size = "small",
     srcs = ["unordered_test.cc"],
     deps = [
-        "@boost//:test",
         "@boost//:unordered",
     ],
 )

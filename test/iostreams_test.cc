@@ -1,10 +1,8 @@
-#define BOOST_TEST_MODULE iostreams_test
 #include <boost/iostreams/device/back_inserter.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
-#include <boost/test/included/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE( test_iostreams )
+int main()
 {
   std::string uncompressed ("hello");
   std::string compressed;
@@ -19,5 +17,9 @@ BOOST_AUTO_TEST_CASE( test_iostreams )
                           uncompressed.size());
   boost::iostreams::close(out);
 
-  BOOST_TEST(compressed == expected);
+  if (compressed != expected) {
+    return 1;
+  }
+
+  return 0;
 }
