@@ -1,6 +1,4 @@
-#define BOOST_TEST_MODULE signals2_test
 #include <boost/signals2.hpp>
-#include <boost/test/included/unit_test.hpp>
 
 class FlagSetter
 {
@@ -15,7 +13,7 @@ class FlagSetter
   bool *flag;
 };
 
-BOOST_AUTO_TEST_CASE( test_signals2 )
+int main()
 {
   bool called = false;
 
@@ -23,7 +21,11 @@ BOOST_AUTO_TEST_CASE( test_signals2 )
   FlagSetter fs (&called);
   sig.connect(fs);
 
-  BOOST_TEST(!called);
   sig();
-  BOOST_TEST(called);
+
+  if (!called) {
+    return 1;
+  }
+
+  return 0;
 }
