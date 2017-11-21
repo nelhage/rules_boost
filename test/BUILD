@@ -36,6 +36,15 @@ cc_test(
 )
 
 cc_test(
+    name = "fusion_test",
+    size = "small",
+    srcs = ["fusion_test.cc"],
+    deps = [
+        "@boost//:fusion",
+    ],
+)
+
+cc_test(
     name = "iostreams_test",
     size = "small",
     srcs = ["iostreams_test.cc"],
