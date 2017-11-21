@@ -54,6 +54,15 @@ cc_test(
 )
 
 cc_test(
+    name = "program_options_test",
+    size = "small",
+    srcs = ["program_options_test.cc"],
+    deps = [
+        "@boost//:program_options",
+    ],
+)
+
+cc_test(
     name = "random_test",
     size = "small",
     srcs = ["random_test.cc"],
