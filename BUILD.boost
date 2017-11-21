@@ -303,6 +303,27 @@ boost_library(
 )
 
 boost_library(
+    name = "fusion",
+    deps = [
+        ":call_traits",
+        ":config",
+        ":core",
+        ":detail",
+        ":functional",
+        ":function_types",
+        ":get_pointer",
+        ":mpl",
+        ":preprocessor",
+        ":ref",
+        ":static_assert",
+        ":tuple",
+        ":typeof",
+        ":type_traits",
+        ":utility",
+    ],
+)
+
+boost_library(
     name = "get_pointer",
 )
 
