@@ -560,6 +560,27 @@ boost_library(
 )
 
 boost_library(
+    name = "program_options",
+    deps = [
+        ":any",
+        ":bind",
+        ":config",
+        ":detail",
+        ":function",
+        ":iterator",
+        ":lexical_cast",
+        ":limits",
+        ":noncopyable",
+        ":shared_ptr",
+        ":static_assert",
+        ":throw_exception",
+        ":tokenizer",
+        ":type_traits",
+        ":version",
+    ],
+)
+
+boost_library(
     name = "random",
     deps = [
         ":assert",
