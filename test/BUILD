@@ -116,6 +116,15 @@ cc_test(
 )
 
 cc_test(
+    name = "tr1_test",
+    size = "small",
+    srcs = ["tr1_test.cc"],
+    deps = [
+        "@boost//:tr1",
+    ],
+)
+
+cc_test(
     name = "unordered_test",
     size = "small",
     srcs = ["unordered_test.cc"],
