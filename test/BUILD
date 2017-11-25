@@ -141,3 +141,12 @@ cc_test(
         "@boost//:unordered",
     ],
 )
+
+cc_test(
+    name = "property_tree_test",
+    size = "small",
+    srcs = ["property_tree_test.cc"],
+    deps = [
+        "@boost//:property_tree",
+    ],
+)

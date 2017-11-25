@@ -324,6 +324,21 @@ boost_library(
 )
 
 boost_library(
+    name = "property_tree",
+    deps = [
+        ":multi_index",
+        ":utility",
+        ":optional",
+        ":throw_exception",
+        ":ref",
+        ":bind",
+        ":any",
+        ":range",
+        ":format",
+    ]
+)
+
+boost_library(
     name = "get_pointer",
 )
 
