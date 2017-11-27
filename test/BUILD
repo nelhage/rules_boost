@@ -150,3 +150,39 @@ cc_test(
         "@boost//:property_tree",
     ],
 )
+
+cc_test(
+    name = "log_test",
+    size = "small",
+    srcs = ["log_test.cc"],
+    deps = [
+        "@boost//:log",
+    ],
+)
+
+cc_test(
+    name = "locale_test",
+    size = "small",
+    srcs = ["locale_test.cc"],
+    deps = [
+        "@boost//:locale",
+    ],
+)
+
+cc_test(
+    name = "proto_test",
+    size = "small",
+    srcs = ["proto_test.cc"],
+    deps = [
+        "@boost//:proto",
+    ],
+)
+
+cc_test(
+    name = "phoenix_test",
+    size = "small",
+    srcs = ["phoenix_test.cc"],
+    deps = [
+        "@boost//:phoenix",
+    ],
+)
