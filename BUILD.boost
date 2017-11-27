@@ -1088,3 +1088,13 @@ boost_library(
         ":version",
     ],
 )
+
+boost_library(
+    name = "log",
+    copts = ["-mavx2"],
+    linkopts = ["-lpthread", "-lboost_thread"],
+    deps = [
+        ":detail",
+        ":filesystem",
+    ],
+)

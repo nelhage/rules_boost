@@ -150,3 +150,12 @@ cc_test(
         "@boost//:property_tree",
     ],
 )
+
+cc_test(
+    name = "log_test",
+    size = "small",
+    srcs = ["log_test.cc"],
+    deps = [
+        "@boost//:log",
+    ],
+)
