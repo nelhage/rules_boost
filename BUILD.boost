@@ -827,6 +827,7 @@ boost_library(
         ":optional",
         ":ref",
         ":utility",
+        ":variant",
     ],
 )
 
@@ -1129,6 +1130,9 @@ boost_library(
         ":type_index",
         ":type_traits",
         ":utility",
+        ":random",
+        ":asio",
+        ":interprocess",
     ],
 )
 
