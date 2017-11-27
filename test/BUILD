@@ -186,12 +186,3 @@ cc_test(
         "@boost//:phoenix",
     ],
 )
-
-cc_test(
-    name = "xpressive_test",
-    size = "small",
-    srcs = ["xpressive_test.cc"],
-    deps = [
-        "@boost//:xpressive",
-    ],
-)
