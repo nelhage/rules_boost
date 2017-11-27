@@ -1133,6 +1133,7 @@ boost_library(
         ":random",
         ":asio",
         ":interprocess",
+        ":variant",
     ],
 )
 
