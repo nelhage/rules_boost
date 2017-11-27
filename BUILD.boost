@@ -1094,6 +1094,7 @@ boost_library(
     copts = ["-mavx2"],
     linkopts = ["-lpthread", "-lboost_thread"],
     deps = [
+        ":thread",
         ":detail",
         ":filesystem",
     ],
