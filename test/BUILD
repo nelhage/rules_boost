@@ -44,6 +44,15 @@ cc_test(
 )
 
 cc_test(
+    name = "dynamic_bitset_test",
+    size = "small",
+    srcs = ["dynamic_bitset_test.cc"],
+    deps = [
+        "@boost//:dynamic_bitset",
+    ],
+)
+
+cc_test(
     name = "format_test",
     size = "small",
     srcs = ["format_test.cc"],

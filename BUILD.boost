@@ -236,6 +236,15 @@ boost_library(
 
 boost_library(
     name = "dynamic_bitset",
+    deps = [
+        ":config",
+        ":core",
+        ":detail",
+        ":integer",
+        ":move",
+        ":throw_exception",
+        ":utility",
+    ],
 )
 
 boost_library(
@@ -377,6 +386,7 @@ boost_library(
         "boost/cstdint.hpp",
         "boost/integer_traits.hpp",
         "boost/pending/integer_log2.hpp",
+        "boost/pending/lowest_bit.hpp",
     ],
     deps = [
         ":static_assert",
