@@ -1047,6 +1047,22 @@ boost_library(
 )
 
 boost_library(
+    name = "uuid",
+    deps = [
+        ":assert",
+        ":config",
+        ":core",
+        ":detail",
+        ":io",
+        ":random",
+        ":serialization",
+        ":static_assert",
+        ":type_traits",
+        ":throw_exception",
+    ],
+)
+
+boost_library(
     name = "blank",
 )
 

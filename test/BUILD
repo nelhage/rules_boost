@@ -179,6 +179,15 @@ cc_test(
 )
 
 cc_test(
+    name = "uuid_test",
+    size = "small",
+    srcs = ["uuid_test.cc"],
+    deps = [
+        "@boost//:uuid",
+    ],
+)
+
+cc_test(
     name = "property_tree_test",
     size = "small",
     srcs = ["property_tree_test.cc"],
