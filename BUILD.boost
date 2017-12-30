@@ -71,8 +71,12 @@ boost_library(
 boost_library(
     name = "array",
     deps = [
+        ":assert",
+        ":config",
+        ":core",
         ":functional",
         ":swap",
+        ":throw_exception",
     ],
 )
 

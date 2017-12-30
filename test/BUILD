@@ -8,6 +8,15 @@ cc_test(
 )
 
 cc_test(
+    name = "array_test",
+    size = "small",
+    srcs = ["array_test.cc"],
+    deps = [
+        "@boost//:array",
+    ],
+)
+
+cc_test(
     name = "assign_test",
     size = "small",
     srcs = ["assign_test.cc"],
