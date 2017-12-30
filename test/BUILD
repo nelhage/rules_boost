@@ -72,6 +72,15 @@ cc_test(
 )
 
 cc_test(
+    name = "ptr_container_test",
+    size = "small",
+    srcs = ["ptr_container_test.cc"],
+    deps = [
+        "@boost//:ptr_container",
+    ],
+)
+
+cc_test(
     name = "random_test",
     size = "small",
     srcs = ["random_test.cc"],

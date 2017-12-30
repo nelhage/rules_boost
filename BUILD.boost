@@ -617,6 +617,24 @@ boost_library(
 )
 
 boost_library(
+    name = "ptr_container",
+    deps = [
+        ":assert",
+        ":checked_delete",
+        ":circular_buffer",
+        ":config",
+        ":iterator",
+        ":mpl",
+        ":range",
+        ":serialization",
+        ":static_assert",
+        ":type_traits",
+        ":unordered",
+        ":utility",
+    ],
+)
+
+boost_library(
     name = "random",
     deps = [
         ":assert",
