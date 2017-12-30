@@ -27,6 +27,20 @@ boost_library(
 )
 
 boost_library(
+    name = "assign",
+    deps = [
+        ":config",
+        ":detail",
+        ":mpl",
+        ":preprocessor",
+        ":ptr_container",
+        ":range",
+        ":static_assert",
+        ":type_traits",
+    ],
+)
+
+boost_library(
     name = "atomic",
     hdrs = [
         "boost/memory_order.hpp",
@@ -57,8 +71,12 @@ boost_library(
 boost_library(
     name = "array",
     deps = [
+        ":assert",
+        ":config",
+        ":core",
         ":functional",
         ":swap",
+        ":throw_exception",
     ],
 )
 
@@ -218,6 +236,15 @@ boost_library(
 
 boost_library(
     name = "dynamic_bitset",
+    deps = [
+        ":config",
+        ":core",
+        ":detail",
+        ":integer",
+        ":move",
+        ":throw_exception",
+        ":utility",
+    ],
 )
 
 boost_library(
@@ -359,6 +386,7 @@ boost_library(
         "boost/cstdint.hpp",
         "boost/integer_traits.hpp",
         "boost/pending/integer_log2.hpp",
+        "boost/pending/lowest_bit.hpp",
     ],
     deps = [
         ":static_assert",
@@ -578,8 +606,15 @@ boost_library(
 boost_library(
     name = "optional",
     deps = [
+        ":assert",
+        ":config",
+        ":detail",
         ":none",
+        ":static_assert",
+        ":throw_exception",
         ":type",
+        ":type_traits",
+        ":utility",
     ],
 )
 
@@ -613,6 +648,24 @@ boost_library(
         ":tokenizer",
         ":type_traits",
         ":version",
+    ],
+)
+
+boost_library(
+    name = "ptr_container",
+    deps = [
+        ":assert",
+        ":checked_delete",
+        ":circular_buffer",
+        ":config",
+        ":iterator",
+        ":mpl",
+        ":range",
+        ":serialization",
+        ":static_assert",
+        ":type_traits",
+        ":unordered",
+        ":utility",
     ],
 )
 
@@ -1000,6 +1053,22 @@ boost_library(
         ":config",
         ":detail",
         ":swap",
+    ],
+)
+
+boost_library(
+    name = "uuid",
+    deps = [
+        ":assert",
+        ":config",
+        ":core",
+        ":detail",
+        ":io",
+        ":random",
+        ":serialization",
+        ":static_assert",
+        ":type_traits",
+        ":throw_exception",
     ],
 )
 

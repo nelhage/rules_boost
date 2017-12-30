@@ -8,6 +8,24 @@ cc_test(
 )
 
 cc_test(
+    name = "array_test",
+    size = "small",
+    srcs = ["array_test.cc"],
+    deps = [
+        "@boost//:array",
+    ],
+)
+
+cc_test(
+    name = "assign_test",
+    size = "small",
+    srcs = ["assign_test.cc"],
+    deps = [
+        "@boost//:assign",
+    ],
+)
+
+cc_test(
     name = "bind_test",
     size = "small",
     srcs = ["bind_test.cc"],
@@ -22,6 +40,15 @@ cc_test(
     srcs = ["circular_buffer_test.cc"],
     deps = [
         "@boost//:circular_buffer",
+    ],
+)
+
+cc_test(
+    name = "dynamic_bitset_test",
+    size = "small",
+    srcs = ["dynamic_bitset_test.cc"],
+    deps = [
+        "@boost//:dynamic_bitset",
     ],
 )
 
@@ -63,11 +90,29 @@ cc_test(
 )
 
 cc_test(
+    name = "optional_test",
+    size = "small",
+    srcs = ["optional_test.cc"],
+    deps = [
+        "@boost//:optional",
+    ],
+)
+
+cc_test(
     name = "program_options_test",
     size = "small",
     srcs = ["program_options_test.cc"],
     deps = [
         "@boost//:program_options",
+    ],
+)
+
+cc_test(
+    name = "ptr_container_test",
+    size = "small",
+    srcs = ["ptr_container_test.cc"],
+    deps = [
+        "@boost//:ptr_container",
     ],
 )
 
@@ -139,6 +184,15 @@ cc_test(
     srcs = ["unordered_test.cc"],
     deps = [
         "@boost//:unordered",
+    ],
+)
+
+cc_test(
+    name = "uuid_test",
+    size = "small",
+    srcs = ["uuid_test.cc"],
+    deps = [
+        "@boost//:uuid",
     ],
 )
 
