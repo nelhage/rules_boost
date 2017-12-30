@@ -8,6 +8,15 @@ cc_test(
 )
 
 cc_test(
+    name = "assign_test",
+    size = "small",
+    srcs = ["assign_test.cc"],
+    deps = [
+        "@boost//:assign",
+    ],
+)
+
+cc_test(
     name = "bind_test",
     size = "small",
     srcs = ["bind_test.cc"],

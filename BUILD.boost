@@ -27,6 +27,20 @@ boost_library(
 )
 
 boost_library(
+    name = "assign",
+    deps = [
+        ":config",
+        ":detail",
+        ":mpl",
+        ":preprocessor",
+        ":ptr_container",
+        ":range",
+        ":static_assert",
+        ":type_traits",
+    ],
+)
+
+boost_library(
     name = "atomic",
     hdrs = [
         "boost/memory_order.hpp",
