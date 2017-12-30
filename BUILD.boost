@@ -596,8 +596,15 @@ boost_library(
 boost_library(
     name = "optional",
     deps = [
+        ":assert",
+        ":config",
+        ":detail",
         ":none",
+        ":static_assert",
+        ":throw_exception",
         ":type",
+        ":type_traits",
+        ":utility",
     ],
 )
 
