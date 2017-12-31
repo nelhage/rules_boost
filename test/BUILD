@@ -53,6 +53,15 @@ cc_test(
 )
 
 cc_test(
+    name = "foreach_test",
+    size = "small",
+    srcs = ["foreach_test.cc"],
+    deps = [
+        "@boost//:foreach",
+    ],
+)
+
+cc_test(
     name = "format_test",
     size = "small",
     srcs = ["format_test.cc"],

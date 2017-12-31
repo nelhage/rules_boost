@@ -288,6 +288,16 @@ boost_library(
 
 boost_library(
     name = "foreach",
+    deps = [
+        ":config",
+        ":detail",
+        ":iterator",
+        ":mpl",
+        ":noncopyable",
+        ":range",
+        ":type_traits",
+        ":utility",
+    ],
 )
 
 boost_library(
