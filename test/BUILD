@@ -25,6 +25,15 @@ cc_test(
     ],
 )
 
+cc_test (
+    name = "bimap_test",
+    size = "small",
+    srcs = ["bimap_test.cc"],
+    deps = [
+        "@boost//:bimap"
+    ]
+)
+
 cc_test(
     name = "bind_test",
     size = "small",

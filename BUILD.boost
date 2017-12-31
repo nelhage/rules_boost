@@ -94,6 +94,15 @@ boost_library(
 )
 
 boost_library(
+    name = "bimap",
+    deps = [
+        ":concept_check",
+        ":serialization",
+        ":multi_index",
+    ]
+)
+
+boost_library(
     name = "bind",
     deps = [
         ":get_pointer",
