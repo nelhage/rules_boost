@@ -17,12 +17,31 @@ cc_test(
 )
 
 cc_test(
+    name = "asio_test",
+    size = "small",
+    srcs = ["asio_test.cc"],
+    deps = [
+        "@boost//:asio",
+        "@boost//:date_time",
+    ]
+)
+
+cc_test(
     name = "assign_test",
     size = "small",
     srcs = ["assign_test.cc"],
     deps = [
         "@boost//:assign",
     ],
+)
+
+cc_test (
+    name = "beast_test",
+    size = "small",
+    srcs = ["beast_test.cc"],
+    deps = [
+        "@boost//:beast"
+    ]
 )
 
 cc_test (
@@ -40,6 +59,15 @@ cc_test(
     srcs = ["bind_test.cc"],
     deps = [
         "@boost//:bind",
+    ],
+)
+
+cc_test(
+    name = "callable_traits_test",
+    size = "small",
+    srcs = ["callable_traits_test.cc"],
+    deps = [
+        "@boost//:callable_traits",
     ],
 )
 
@@ -99,6 +127,15 @@ cc_test(
 )
 
 cc_test(
+    name = "mp11_test",
+    size = "small",
+    srcs = ["mp11_test.cc"],
+    deps = [
+        "@boost//:mp11"
+    ]
+)
+
+cc_test(
     name = "numeric_conversion_test",
     size = "small",
     srcs = ["numeric_conversion_test.cc"],
@@ -114,6 +151,15 @@ cc_test(
     deps = [
         "@boost//:optional",
     ],
+)
+
+cc_test(
+    name = "process_test",
+    size = "small",
+    srcs = ["process_test.cc"],
+    deps = [
+        "@boost//:process"
+    ]
 )
 
 cc_test(
@@ -184,15 +230,6 @@ cc_test(
     srcs = ["tokenizer_test.cc"],
     deps = [
         "@boost//:tokenizer",
-    ],
-)
-
-cc_test(
-    name = "tr1_test",
-    size = "small",
-    srcs = ["tr1_test.cc"],
-    deps = [
-        "@boost//:tr1",
     ],
 )
 
