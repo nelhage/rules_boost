@@ -84,15 +84,6 @@ def boost_deps():
         strip_prefix = "bzip2-1.0.6",
         url = "http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz",
     )
-  
-  if "org_lzma_lzma" not in native.existing_rules():
-    native.new_http_archive(
-        name = "org_lzma_lzma",
-        build_file = "@com_github_nelhage_boost//:BUILD.lzma",
-        sha256 = "71928b357d0a09a12a4b4c5fafca8c31c19b0e7d3b8ebb19622e96f26dbf28cb",
-        strip_prefix = "xz-5.2.3",
-        url = "https://phoenixnap.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz"
-    )
 
   if "boost" not in native.existing_rules():
     native.new_http_archive(
