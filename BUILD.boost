@@ -87,10 +87,26 @@ boost_library(
         ":date_time",
         ":regex",
     ],
+    linkopts = ["-lpthread"]
 )
 
 boost_library(
     name = "assert",
+)
+
+boost_library(
+    name = "beast",
+    deps = [
+        ":config",
+        ":core",
+        ":static_assert",
+        ":detail",
+        ":utility",
+        ":throw_exception",
+        ":system",
+        ":asio",
+        ":smart_ptr",
+    ],
 )
 
 boost_library(
@@ -112,6 +128,13 @@ boost_library(
         ":type",
         ":visit_each",
     ],
+)
+
+boost_library (
+    name = "callable_traits",
+    deps = [
+
+    ]
 )
 
 boost_library(
@@ -496,6 +519,7 @@ boost_library(
         ":utility",
         "@net_zlib_zlib//:zlib",
         "@org_bzip_bzip2//:bz2lib",
+        "@org_lzma_lzma//:lzma"
     ],
 )
 
@@ -541,6 +565,14 @@ boost_library(
         ":assert",
         ":detail",
         ":static_assert",
+    ],
+)
+
+boost_library(
+    name = "mp11",
+    deps = [
+        ":config",
+        ":detail",
     ],
 )
 
@@ -647,6 +679,19 @@ boost_library(
 
 boost_library(
     name = "preprocessor",
+)
+
+boost_library(
+    name = "process",
+    deps = [
+        ":config",
+        ":system",
+        ":filesystem",
+        ":algorithm",
+        ":asio",
+        ":fusion",
+        ":winapi",
+    ]
 )
 
 boost_library(
@@ -877,6 +922,7 @@ boost_library(
     hdrs = [
         "boost/enable_shared_from_this.hpp",
         "boost/make_shared.hpp",
+        "boost/make_unique.hpp",
         "boost/pointer_to_other.hpp",
         "boost/weak_ptr.hpp",
     ],
@@ -1027,17 +1073,6 @@ boost_library(
 )
 
 boost_library(
-    name = "tr1",
-    defines = [
-        "BOOST_FALLTHROUGH",
-    ],
-    deps = [
-        ":config",
-        ":unordered",
-    ],
-)
-
-boost_library(
     name = "unordered",
     hdrs = [
         "boost/unordered_map.hpp",
@@ -1175,4 +1210,9 @@ boost_library(
         ":utility",
         ":version",
     ],
+)
+
+boost_library (
+    name = "winapi",
+    visibility = ["//visibility:private"]
 )

@@ -30,7 +30,8 @@ def hdr_list(library_name):
   return native.glob([p % (library_name,) for p in hdrs_patterns])
 
 def boost_library(name, defines=None, includes=None, hdrs=None, srcs=None,
-                  deps=None, copts=None, exclude_src=[], linkopts=None):
+                  deps=None, copts=None, exclude_src=[], linkopts=None, 
+                  visibility=["//visibility:public"]):
   if defines == None:
     defines = []
 
@@ -54,7 +55,7 @@ def boost_library(name, defines=None, includes=None, hdrs=None, srcs=None,
 
   return native.cc_library(
     name = name,
-    visibility = ["//visibility:public"],
+    visibility = visibility,
     defines = defines,
     includes = includes_list(name) + includes,
     hdrs = hdr_list(name) + hdrs,
@@ -83,12 +84,33 @@ def boost_deps():
         strip_prefix = "bzip2-1.0.6",
         url = "http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz",
     )
+  
+  if "org_lzma_lzma" not in native.existing_rules():
+    native.new_http_archive(
+        name = "org_lzma_lzma",
+        build_file = "@com_github_nelhage_boost//:BUILD.lzma",
+        sha256 = "71928b357d0a09a12a4b4c5fafca8c31c19b0e7d3b8ebb19622e96f26dbf28cb",
+        strip_prefix = "xz-5.2.3",
+        urls = [
+          "https://phoenixnap.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://newcontinuum.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "http://cfhcable.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://superb-sea2.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://cytranet.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://iweb.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://gigenet.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://ayera.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://astuteinternet.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://pilotfiber.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://svwh.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+        ]
+    )
 
   if "boost" not in native.existing_rules():
     native.new_http_archive(
       name = "boost",
-      url = "https://dl.bintray.com/boostorg/release/1.63.0/source/boost_1_63_0.tar.gz",
+      url = "https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.gz",
       build_file = "@com_github_nelhage_boost//:BUILD.boost",
-      strip_prefix = "boost_1_63_0/",
-      sha256 = "fe34a4e119798e10b8cc9e565b3b0284e9fd3977ec8a1b19586ad1dec397088b",
+      strip_prefix = "boost_1_66_0/",
+      sha256 = "bd0df411efd9a585e5a2212275f8762079fed8842264954675a4fddc46cfcf60",
     )
