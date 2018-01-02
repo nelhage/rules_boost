@@ -91,7 +91,19 @@ def boost_deps():
         build_file = "@com_github_nelhage_boost//:BUILD.lzma",
         sha256 = "71928b357d0a09a12a4b4c5fafca8c31c19b0e7d3b8ebb19622e96f26dbf28cb",
         strip_prefix = "xz-5.2.3",
-        url = "https://tukaani.org/xz/xz-5.2.3.tar.gz"
+        urls = [
+          "https://phoenixnap.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://newcontinuum.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "http://cfhcable.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://superb-sea2.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://cytranet.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://iweb.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://gigenet.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://ayera.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://astuteinternet.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://pilotfiber.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://svwh.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+        ]
     )
 
   if "boost" not in native.existing_rules():
