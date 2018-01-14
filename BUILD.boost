@@ -753,7 +753,6 @@ boost_library(
         ":shared_ptr",
         ":static_assert",
         ":system",
-        ":test",
         ":throw_exception",
         ":timer",
         ":tuple",
