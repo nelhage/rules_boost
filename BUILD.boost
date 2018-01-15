@@ -753,7 +753,6 @@ boost_library(
         ":shared_ptr",
         ":static_assert",
         ":system",
-        ":test",
         ":throw_exception",
         ":timer",
         ":tuple",
@@ -1178,11 +1177,7 @@ boost_library(
 
 boost_library(
     name = "test",
-    exclude_src = [
-        "libs/test/src/unit_test_main.cpp",
-        "libs/test/src/test_main.cpp",
-        "libs/test/src/cpp_main.cpp",
-    ],
+    exclude_src = glob(["libs/test/src/*.cpp"]),
     deps = [
         ":algorithm",
         ":assert",
