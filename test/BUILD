@@ -23,7 +23,7 @@ cc_test(
     deps = [
         "@boost//:asio",
         "@boost//:date_time",
-    ]
+    ],
 )
 
 cc_test(
@@ -35,22 +35,22 @@ cc_test(
     ],
 )
 
-cc_test (
+cc_test(
     name = "beast_test",
     size = "small",
     srcs = ["beast_test.cc"],
     deps = [
-        "@boost//:beast"
-    ]
+        "@boost//:beast",
+    ],
 )
 
-cc_test (
+cc_test(
     name = "bimap_test",
     size = "small",
     srcs = ["bimap_test.cc"],
     deps = [
-        "@boost//:bimap"
-    ]
+        "@boost//:bimap",
+    ],
 )
 
 cc_test(
@@ -131,8 +131,8 @@ cc_test(
     size = "small",
     srcs = ["mp11_test.cc"],
     deps = [
-        "@boost//:mp11"
-    ]
+        "@boost//:mp11",
+    ],
 )
 
 cc_test(
@@ -158,8 +158,8 @@ cc_test(
     size = "small",
     srcs = ["process_test.cc"],
     deps = [
-        "@boost//:process"
-    ]
+        "@boost//:process",
+    ],
 )
 
 cc_test(
