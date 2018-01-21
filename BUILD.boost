@@ -261,6 +261,11 @@ boost_library(
 
 boost_library(
     name = "detail",
+    hdrs = [
+        "boost/blank.hpp",
+        "boost/blank_fwd.hpp",
+        "boost/cstdlib.hpp",
+    ],
     deps = [
         ":limits",
     ],
@@ -1126,13 +1131,8 @@ boost_library(
 )
 
 boost_library(
-    name = "blank",
-)
-
-boost_library(
     name = "variant",
     deps = [
-        ":blank",
         ":call_traits",
         ":config",
         ":detail",
@@ -1151,10 +1151,6 @@ boost_library(
 
 boost_library(
     name = "visit_each",
-)
-
-boost_library(
-    name = "cstdlib",
 )
 
 boost_library(
@@ -1185,7 +1181,6 @@ boost_library(
         ":call_traits",
         ":config",
         ":core",
-        ":cstdlib",
         ":current_function",
         ":detail",
         ":exception",
