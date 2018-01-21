@@ -261,6 +261,9 @@ boost_library(
 
 boost_library(
     name = "detail",
+    hdrs = [
+        "boost/blank.hpp",
+    ],
     deps = [
         ":limits",
     ],
@@ -1126,13 +1129,8 @@ boost_library(
 )
 
 boost_library(
-    name = "blank",
-)
-
-boost_library(
     name = "variant",
     deps = [
-        ":blank",
         ":call_traits",
         ":config",
         ":detail",
