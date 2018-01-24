@@ -1030,6 +1030,18 @@ boost_library(
 )
 
 boost_library(
+    name = "tribool",
+    hdrs = [
+        "boost/logic/tribool.hpp",
+        "boost/logic/tribool_fwd.hpp"
+    ],
+    deps = [
+        ":config",
+        ":detail",
+    ],
+)
+
+boost_library(
     name = "type",
     deps = [
         ":core",
