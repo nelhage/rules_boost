@@ -234,6 +234,15 @@ cc_test(
 )
 
 cc_test(
+    name = "tribool_test",
+    size = "small",
+    srcs = ["tribool_test.cc"],
+    deps = [
+        "@boost//:tribool",
+    ],
+)
+
+cc_test(
     name = "unordered_test",
     size = "small",
     srcs = ["unordered_test.cc"],
