@@ -90,6 +90,16 @@ cc_test(
 )
 
 cc_test(
+    name = "endian",
+    size = "small",
+    srcs = [ "endian.cc" ],
+    deps = [
+        "@boost//:endian",
+        "@boost//:static_assert",
+    ],
+)
+
+cc_test(
     name = "foreach_test",
     size = "small",
     srcs = ["foreach_test.cc"],
