@@ -288,6 +288,18 @@ boost_library(
 )
 
 boost_library(
+    name = "endian",
+    deps = [
+        ":core",
+        ":config",
+        ":cstdint",
+        ":detail",
+        ":predef",
+        ":type_traits",
+    ],
+)
+
+boost_library(
     name = "exception",
     hdrs = [
         "boost/exception_ptr.hpp",
