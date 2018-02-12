@@ -1052,6 +1052,7 @@ boost_library(
     name = "type_index",
     deps = [
         ":core",
+        ":functional",
         ":throw_exception",
     ],
 )
