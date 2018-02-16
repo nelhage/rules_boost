@@ -81,6 +81,15 @@ cc_test(
 )
 
 cc_test(
+    name = "compute_test",
+    size = "small",
+    srcs = ["compute_test.cc"],
+    deps = [
+        "@boost//:compute",
+    ]
+)
+
+cc_test(
     name = "dynamic_bitset_test",
     size = "small",
     srcs = ["dynamic_bitset_test.cc"],
