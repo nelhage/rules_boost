@@ -43,7 +43,11 @@ cc_library(
         "libs/context/src/execution_context.cpp"
     ],
     deps = [
-        ":config"
+        ":config",
+        ":detail",
+        ":assert",
+        ":cstdint",
+        ":intrusive_ptr"
     ],
     visibility=["//visibility:public"]
 )
@@ -88,7 +92,11 @@ cc_library(
         "//conditions:default": []
     }),
     deps = [
+        ":pool",
+        ":format",
         ":context",
+        ":algorithm",
+        ":intrusive",
         ":intrusive_ptr",
         ":filesystem"
     ],
@@ -99,6 +107,10 @@ cc_library(
         "//conditions:default": []    
     }),
     visibility=["//visibility:public"]
+)
+
+boost_library(
+    name = "pool"
 )
 
 boost_library(
