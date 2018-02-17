@@ -181,6 +181,16 @@ boost_library(
 )
 
 boost_library(
+    name = "compute",
+    deps = [
+        ":algorithm",
+        ":chrono",
+        ":config",
+        ":throw_exception",
+    ]
+)
+
+boost_library(
     name = "concept_archetype",
     deps = [
         ":config",
