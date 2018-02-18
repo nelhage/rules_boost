@@ -20,8 +20,9 @@ srcs_patterns = [
 # won't be interested, so just disable the warning.
 default_copts = ["-Wno-unused-value"]
 
-def srcs_list(library_name):
-  return native.glob([p % (library_name,) for p in srcs_patterns])
+def srcs_list(library_name, exclude):
+  return native.glob([p % (library_name,) for p in srcs_patterns],
+                     exclude=exclude)
 
 def includes_list(library_name):
   return [".", include_pattern % library_name]
@@ -30,7 +31,7 @@ def hdr_list(library_name):
   return native.glob([p % (library_name,) for p in hdrs_patterns])
 
 def boost_library(name, defines=None, includes=None, hdrs=None, srcs=None,
-                  deps=None, copts=None, exclude_src=[], linkopts=None, 
+                  deps=None, copts=None, exclude_src=[], linkopts=None,
                   visibility=["//visibility:public"]):
   if defines == None:
     defines = []
@@ -59,7 +60,7 @@ def boost_library(name, defines=None, includes=None, hdrs=None, srcs=None,
     defines = defines,
     includes = includes_list(name) + includes,
     hdrs = hdr_list(name) + hdrs,
-    srcs = [s for s in srcs_list(name) if s not in exclude_src] + srcs,
+    srcs = srcs_list(name, exclude_src) + srcs,
     deps = deps,
     copts = default_copts + copts,
     linkopts = linkopts,
@@ -84,7 +85,7 @@ def boost_deps():
         strip_prefix = "bzip2-1.0.6",
         url = "http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz",
     )
-  
+
   if "org_lzma_lzma" not in native.existing_rules():
     native.new_http_archive(
         name = "org_lzma_lzma",

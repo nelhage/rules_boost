@@ -1,4 +1,100 @@
-load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library")
+load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "includes_list", "hdr_list")
+
+config_setting(
+    name = "linux_x86_64",
+    constraint_values = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:x86_64",
+    ],
+)
+
+config_setting(
+    name = "windows_x86_64",
+    constraint_values = [
+        "@bazel_tools//platforms:windows",
+        "@bazel_tools//platforms:x86_64",
+    ],
+)
+
+BOOST_CTX_ASM_SOURCES = select({
+    ":linux_x86_64": [
+        "libs/context/src/asm/jump_x86_64_sysv_elf_gas.S",
+        "libs/context/src/asm/make_x86_64_sysv_elf_gas.S",
+        "libs/context/src/asm/ontop_x86_64_sysv_elf_gas.S",
+    ],
+    ":windows_x86_64": [
+        "libs/context/src/asm/make_x86_64_ms_pe_masm.asm",
+        "libs/context/src/asm/jump_x86_64_ms_pe_masm.asm",
+        "libs/context/src/asm/ontop_x86_64_ms_pe_masm.asm",
+    ],
+})
+
+boost_library(
+    name = "context",
+    srcs = BOOST_CTX_ASM_SOURCES + select({
+        ":linux_x86_64": [
+            "libs/context/src/posix/stack_traits.cpp",
+        ],
+        ":windows_x86_64": [
+            "libs/context/src/windows/stack_traits.cpp",
+        ],
+    }),
+    exclude_src = [
+        "libs/context/src/untested.cpp",
+        "libs/context/src/continuation.cpp",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":assert",
+        ":config",
+        ":cstdint",
+        ":detail",
+        ":intrusive_ptr",
+    ],
+)
+
+BOOST_FIBER_NUMA_SRCS = select({
+    ":linux_x86_64": [
+        "libs/fiber/src/numa/linux/pin_thread.cpp",
+        "libs/fiber/src/numa/linux/topology.cpp",
+    ],
+    ":windows_x86_64": [
+        "libs/fiber/src/numa/windows/pin_thread.cpp",
+        "libs/fiber/src/numa/windows/topology.cpp",
+    ],
+})
+
+boost_library(
+    name = "fiber",
+    srcs = BOOST_FIBER_NUMA_SRCS + glob(["libs/fiber/src/algo/**/*.cpp"]),
+    copts = select({
+        ":windows_x86_64": [
+            "/D_WIN32_WINNT=0x0601",
+        ],
+        "//conditions:default": [],
+    }),
+    exclude_src = ["libs/fiber/src/numa/**/*.cpp"],
+    linkopts = select({
+        ":linux_x86_64": [
+            "-lpthread",
+        ],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":algorithm",
+        ":context",
+        ":filesystem",
+        ":format",
+        ":intrusive",
+        ":intrusive_ptr",
+        ":pool",
+    ],
+)
+
+boost_library(
+    name = "pool",
+)
 
 boost_library(
     name = "algorithm",
@@ -290,8 +386,8 @@ boost_library(
 boost_library(
     name = "endian",
     deps = [
-        ":core",
         ":config",
+        ":core",
         ":cstdint",
         ":detail",
         ":predef",
@@ -1045,7 +1141,7 @@ boost_library(
     name = "tribool",
     hdrs = [
         "boost/logic/tribool.hpp",
-        "boost/logic/tribool_fwd.hpp"
+        "boost/logic/tribool_fwd.hpp",
     ],
     deps = [
         ":config",

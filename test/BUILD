@@ -81,6 +81,15 @@ cc_test(
 )
 
 cc_test(
+    name = "context_test",
+    size = "small",
+    srcs = ["context_test.cc"],
+    deps = [
+        "@boost//:context",
+    ],
+)
+
+cc_test(
     name = "dynamic_bitset_test",
     size = "small",
     srcs = ["dynamic_bitset_test.cc"],
@@ -96,6 +105,15 @@ cc_test(
     deps = [
         "@boost//:endian",
         "@boost//:static_assert",
+    ],
+)
+
+cc_test(
+    name = "fiber_test",
+    size = "small",
+    srcs = ["fiber_test.cc"],
+    deps = [
+        "@boost//:fiber",
     ],
 )
 
