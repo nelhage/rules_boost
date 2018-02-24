@@ -609,7 +609,12 @@ boost_library(
     name = "iterator",
     hdrs = [
         "boost/function_output_iterator.hpp",
+        "boost/generator_iterator.hpp",
+        "boost/indirect_reference.hpp",
+        "boost/iterator_adaptors.hpp",
+        "boost/next_prior.hpp",
         "boost/pointee.hpp",
+        "boost/shared_container_iterator.hpp",
     ],
     deps = [
         ":detail",
