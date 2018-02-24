@@ -99,6 +99,15 @@ cc_test(
 )
 
 cc_test(
+    name = "coroutine_test",
+    size = "small",
+    srcs = ["coroutine_test.cc"],
+    deps = [
+        "@boost//:coroutine",
+    ]
+)
+
+cc_test(
     name = "dynamic_bitset_test",
     size = "small",
     srcs = ["dynamic_bitset_test.cc"],

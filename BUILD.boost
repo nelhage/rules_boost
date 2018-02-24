@@ -344,6 +344,30 @@ boost_library(
     ],
 )
 
+BOOST_CORO_SRCS = select({
+    ":linux_x86_64": [
+        "libs/coroutine/src/posix/stack_traits.cpp",
+    ],
+    ":windows_x86_64": [
+        "libs/coroutine/src/windows/stack_traits.cpp",
+    ],
+})
+
+boost_library(
+    name = "coroutine",
+    srcs = BOOST_CORO_SRCS + [
+        "libs/coroutine/src/detail/coroutine_context.cpp",
+        ],
+    deps = [
+        ":config",
+        ":context",
+        ":move",
+        ":range",
+        ":system",
+        ":thread",
+    ],
+)
+
 boost_library(
     name = "cstdint",
 )
