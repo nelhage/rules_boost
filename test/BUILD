@@ -164,6 +164,15 @@ cc_test(
 )
 
 cc_test(
+    name = "icl_test",
+    size = "small",
+    srcs = ["icl_test.cc"],
+    deps = [
+        "@boost//:icl",
+    ],
+)
+
+cc_test(
     name = "iostreams_test",
     size = "small",
     srcs = ["iostreams_test.cc"],

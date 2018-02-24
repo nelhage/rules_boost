@@ -568,6 +568,13 @@ boost_library(
 )
 
 boost_library(
+    name = "icl",
+    deps = [
+        ":concept_check",
+    ],
+)
+
+boost_library(
     name = "is_placeholder",
 )
 
