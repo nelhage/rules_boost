@@ -748,6 +748,22 @@ boost_library(
 )
 
 boost_library(
+    name = "multiprecision",
+    deps = [
+        ":config",
+        ":cstdint",
+        ":lexical_cast",
+        ":math",
+        ":mpl",
+        ":predef",
+        ":rational",
+        ":throw_exception",
+        ":type_traits",
+        ":utility",
+    ],
+)
+
+boost_library(
     name = "noncopyable",
 )
 

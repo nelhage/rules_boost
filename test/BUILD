@@ -182,6 +182,15 @@ cc_test(
 )
 
 cc_test(
+    name = "multiprecision_test",
+    size = "small",
+    srcs = ["multiprecision_test.cc"],
+    deps = [
+        "@boost//:multiprecision",
+    ],
+)
+
+cc_test(
     name = "numeric_conversion_test",
     size = "small",
     srcs = ["numeric_conversion_test.cc"],
