@@ -236,6 +236,15 @@ cc_test(
 )
 
 cc_test(
+    name = "rational_test",
+    size = "small",
+    srcs = ["rational_test.cc"],
+    deps = [
+        "@boost//:rational",
+    ],
+)
+
+cc_test(
     name = "scope_exit_test",
     size = "small",
     srcs = ["scope_exit_test.cc"],

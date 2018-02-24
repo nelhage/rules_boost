@@ -942,6 +942,22 @@ boost_library(
 )
 
 boost_library(
+    name = "rational",
+    deps = [
+        ":assert",
+        ":call_traits",
+        ":config",
+        ":detail",
+        ":integer",
+        ":operators",
+        ":static_assert",
+        ":throw_exception",
+        ":type_traits",
+        ":utility",
+    ],
+)
+
+boost_library(
     name = "ref",
     deps = [
         ":config",
