@@ -99,6 +99,15 @@ cc_test(
 )
 
 cc_test(
+    name = "coroutine_test",
+    size = "small",
+    srcs = ["coroutine_test.cc"],
+    deps = [
+        "@boost//:coroutine",
+    ]
+)
+
+cc_test(
     name = "dynamic_bitset_test",
     size = "small",
     srcs = ["dynamic_bitset_test.cc"],
@@ -155,6 +164,15 @@ cc_test(
 )
 
 cc_test(
+    name = "icl_test",
+    size = "small",
+    srcs = ["icl_test.cc"],
+    deps = [
+        "@boost//:icl",
+    ],
+)
+
+cc_test(
     name = "iostreams_test",
     size = "small",
     srcs = ["iostreams_test.cc"],
@@ -169,6 +187,15 @@ cc_test(
     srcs = ["mp11_test.cc"],
     deps = [
         "@boost//:mp11",
+    ],
+)
+
+cc_test(
+    name = "multiprecision_test",
+    size = "small",
+    srcs = ["multiprecision_test.cc"],
+    deps = [
+        "@boost//:multiprecision",
     ],
 )
 
@@ -223,6 +250,15 @@ cc_test(
     srcs = ["random_test.cc"],
     deps = [
         "@boost//:random",
+    ],
+)
+
+cc_test(
+    name = "rational_test",
+    size = "small",
+    srcs = ["rational_test.cc"],
+    deps = [
+        "@boost//:rational",
     ],
 )
 
