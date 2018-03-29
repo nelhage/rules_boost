@@ -710,6 +710,10 @@ boost_library(
 )
 
 boost_library(
+    name = "locale",
+)
+
+boost_library(
     name = "math",
     hdrs = [
         "boost/cstdint.hpp",
