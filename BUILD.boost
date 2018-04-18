@@ -197,6 +197,7 @@ boost_library(
         ":config",
         ":core",
         ":detail",
+        ":endian",
         ":smart_ptr",
         ":static_assert",
         ":system",
@@ -357,7 +358,7 @@ boost_library(
     name = "coroutine",
     srcs = BOOST_CORO_SRCS + [
         "libs/coroutine/src/detail/coroutine_context.cpp",
-        ],
+    ],
     deps = [
         ":config",
         ":context",
