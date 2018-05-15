@@ -1257,6 +1257,7 @@ boost_library(
         "boost/aligned_storage.hpp",
     ],
     deps = [
+        ":config",
         ":core",
         ":mpl",
         ":static_assert",
