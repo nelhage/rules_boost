@@ -81,6 +81,15 @@ cc_test(
 )
 
 cc_test(
+    name = "container_hash_test",
+    size = "small",
+    srcs = ["container_hash_test.cc"],
+    deps = [
+        "@boost//:container_hash",
+    ],
+)
+
+cc_test(
     name = "context_test",
     size = "small",
     srcs = ["context_test.cc"],
@@ -330,6 +339,15 @@ cc_test(
     srcs = ["tribool_test.cc"],
     deps = [
         "@boost//:tribool",
+    ],
+)
+
+cc_test(
+    name = "tti_test",
+    size = "small",
+    srcs = ["tti_test.cc"],
+    deps = [
+        "@boost//:tti",
     ],
 )
 
