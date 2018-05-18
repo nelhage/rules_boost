@@ -543,6 +543,25 @@ boost_library(
 )
 
 boost_library(
+    name = "geometry",
+    deps = [
+        ":algorithm",
+        ":call_traits",
+        ":config",
+        ":function_types",
+        ":lexical_cast",
+        ":math",
+        ":mpl",
+        ":qvm",
+        ":rational",
+        ":numeric",
+        ":range",
+        ":tokenizer",
+        ":variant",
+    ],
+)
+
+boost_library(
     name = "property_tree",
     deps = [
         ":any",
@@ -911,6 +930,18 @@ boost_library(
         ":static_assert",
         ":type_traits",
         ":unordered",
+        ":utility",
+    ],
+)
+
+boost_library(
+    name = "qvm",
+    deps = [
+        ":assert",
+        ":core",
+        ":exception",
+        ":static_assert",
+        ":throw_exception",
         ":utility",
     ],
 )

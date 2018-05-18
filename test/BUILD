@@ -164,6 +164,15 @@ cc_test(
 )
 
 cc_test(
+    name = "geometry_test",
+    size = "small",
+    srcs = ["geometry_test.cc"],
+    deps = [
+        "@boost//:geometry",
+    ],
+)
+
+cc_test(
     name = "icl_test",
     size = "small",
     srcs = ["icl_test.cc"],
@@ -241,6 +250,15 @@ cc_test(
     srcs = ["ptr_container_test.cc"],
     deps = [
         "@boost//:ptr_container",
+    ],
+)
+
+cc_test(
+    name = "qvm_test",
+    size = "small",
+    srcs = ["qvm_test.cc"],
+    deps = [
+        "@boost//:qvm",
     ],
 )
 
