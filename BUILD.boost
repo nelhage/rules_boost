@@ -40,6 +40,7 @@ boost_library(
         ],
     }),
     exclude_src = [
+        "libs/context/src/fiber.cpp",
         "libs/context/src/untested.cpp",
         "libs/context/src/continuation.cpp",
     ],
@@ -335,6 +336,18 @@ boost_library(
 )
 
 boost_library(
+    name = "container_hash",
+    deps = [
+        ":assert",
+        ":config",
+        ":core",
+        ":integer",
+        ":limits",
+        ":type_traits",
+    ],
+)
+
+boost_library(
     name = "conversion",
 )
 
@@ -516,6 +529,7 @@ boost_library(
 boost_library(
     name = "functional",
     deps = [
+        ":container_hash",
         ":detail",
         ":integer",
     ],
@@ -1267,6 +1281,17 @@ boost_library(
 )
 
 boost_library(
+    name = "tti",
+    deps = [
+        ":config",
+        ":function_types",
+        ":preprocessor",
+        ":mpl",
+        ":type_traits",
+    ],
+)
+
+boost_library(
     name = "type",
     deps = [
         ":core",
@@ -1277,6 +1302,7 @@ boost_library(
     name = "type_index",
     deps = [
         ":core",
+        ":container_hash",
         ":functional",
         ":throw_exception",
     ],
@@ -1364,6 +1390,7 @@ boost_library(
         ":serialization",
         ":static_assert",
         ":throw_exception",
+        ":tti",
         ":type_traits",
     ],
 )
