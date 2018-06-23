@@ -1,10 +1,17 @@
-load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "includes_list", "hdr_list")
+load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "hdr_list", "includes_list")
 
 config_setting(
     name = "linux_x86_64",
     constraint_values = [
         "@bazel_tools//platforms:linux",
         "@bazel_tools//platforms:x86_64",
+    ],
+)
+
+config_setting(
+    name = "linux",
+    constraint_values = [
+        "@bazel_tools//platforms:linux",
     ],
 )
 
@@ -566,10 +573,10 @@ boost_library(
         ":lexical_cast",
         ":math",
         ":mpl",
-        ":qvm",
-        ":rational",
         ":numeric",
+        ":qvm",
         ":range",
+        ":rational",
         ":tokenizer",
         ":variant",
     ],
@@ -1285,8 +1292,8 @@ boost_library(
     deps = [
         ":config",
         ":function_types",
-        ":preprocessor",
         ":mpl",
+        ":preprocessor",
         ":type_traits",
     ],
 )
@@ -1301,8 +1308,8 @@ boost_library(
 boost_library(
     name = "type_index",
     deps = [
-        ":core",
         ":container_hash",
+        ":core",
         ":functional",
         ":throw_exception",
     ],
@@ -1474,7 +1481,6 @@ boost_library(
     ],
 )
 
-
 boost_library(
     name = "phoenix",
     deps = [
@@ -1484,24 +1490,7 @@ boost_library(
 
 boost_library(
     name = "log",
-    deps = [
-        ":filesystem",
-        ":system",
-        ":date_time",
-        ":thread",
-        ":spirit",
-        ":phoenix",
-        ":parameter",
-        ":locale",
-        ":random",
-        ":variant",
-        ":asio",
-        ":interprocess",
-    ],
-    exclude_src = [
-        "libs/log/src/dump_avx2.cpp",
-    ],
-    copts = ["-msse4.2",],
+    copts = ["-msse4.2"],
     defines = [
         "BOOST_LOG_WITHOUT_WCHAR_T",
         "BOOST_LOG_USE_STD_REGEX",
@@ -1510,6 +1499,23 @@ boost_library(
         "BOOST_LOG_WITHOUT_DEBUG_OUTPUT",
         "BOOST_LOG_WITHOUT_EVENT_LOG",
         "BOOST_LOG_WITHOUT_SYSLOG",
+    ],
+    exclude_src = [
+        "libs/log/src/dump_avx2.cpp",
+    ],
+    deps = [
+        ":asio",
+        ":date_time",
+        ":filesystem",
+        ":interprocess",
+        ":locale",
+        ":parameter",
+        ":phoenix",
+        ":random",
+        ":spirit",
+        ":system",
+        ":thread",
+        ":variant",
     ],
 )
 

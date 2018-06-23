@@ -18,7 +18,10 @@ srcs_patterns = [
 
 # Building boost results in many warnings for unused values. Downstream users
 # won't be interested, so just disable the warning.
-default_copts = ["-Wno-unused-value"]
+default_copts = select({
+    "@boost//:linux": ["-Wno-unused-value"],
+    "//conditions:default": [],
+})
 
 def srcs_list(library_name, exclude):
     return native.glob(
