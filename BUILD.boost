@@ -1531,6 +1531,10 @@ boost_library(
 )
 
 boost_library(
+    name = "statechart",
+)
+
+boost_library(
     name = "winapi",
     visibility = ["//visibility:private"],
 )
