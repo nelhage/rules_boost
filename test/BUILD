@@ -236,6 +236,15 @@ cc_test(
 )
 
 cc_test(
+    name = "numeric_odeint_test",
+    size = "small",
+    srcs = ["numeric_odeint_test.cc"],
+    deps = [
+        "@boost//:numeric_odeint",
+    ],
+)
+
+cc_test(
     name = "optional_test",
     size = "small",
     srcs = ["optional_test.cc"],
