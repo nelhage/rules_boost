@@ -87,7 +87,7 @@ def boost_deps():
             build_file = "@com_github_nelhage_rules_boost//:BUILD.zlib",
             sha256 = "c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1",
             strip_prefix = "zlib-1.2.11",
-            url = "https://zlib.net/zlib-1.2.11.tar.gz",
+            url = "http://zlib.net/zlib-1.2.11.tar.gz",
         )
 
     if "org_bzip_bzip2" not in native.existing_rules():
