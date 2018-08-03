@@ -374,6 +374,9 @@ boost_library(
     srcs = [
         "boost/checked_delete.hpp",
     ],
+    deps = [
+        ":config",
+    ],
 )
 
 BOOST_CORO_SRCS = select({
