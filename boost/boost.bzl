@@ -1,3 +1,5 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
 include_pattern = "boost/%s/"
 
 hdrs_patterns = [
@@ -121,7 +123,7 @@ def boost_deps():
         )
 
     if "boost" not in native.existing_rules():
-        native.new_http_archive(
+        http_archive(
             name = "boost",
             url = "https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz",
             build_file = "@com_github_nelhage_rules_boost//:BUILD.boost",
