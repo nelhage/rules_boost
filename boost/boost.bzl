@@ -123,7 +123,10 @@ def boost_deps():
     if "boost" not in native.existing_rules():
         native.new_http_archive(
             name = "boost",
-            url = "https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz",
+            urls = [
+                "https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz",
+                "http://files.phil-wise.com/boost_1_67_0.tar.gz",
+            ],
             build_file = "@com_github_nelhage_rules_boost//:BUILD.boost",
             strip_prefix = "boost_1_67_0",
             sha256 = "8aa4e330c870ef50a896634c931adf468b21f8a69b77007e45c444151229f665",
