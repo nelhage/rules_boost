@@ -86,6 +86,8 @@ def boost_deps():
         url = "http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz",
     )
 
+  SOURCEFORGE_MIRRORS = ["phoenixnap", "newcontinuum", "cfhcable", "superb-sea2", "cytranet", "iweb", "gigenet", "ayera", "astuteinternet", "pilotfiber", "svwh"]
+
   if "org_lzma_lzma" not in native.existing_rules():
     native.new_http_archive(
         name = "org_lzma_lzma",
@@ -93,24 +95,18 @@ def boost_deps():
         sha256 = "71928b357d0a09a12a4b4c5fafca8c31c19b0e7d3b8ebb19622e96f26dbf28cb",
         strip_prefix = "xz-5.2.3",
         urls = [
-          "https://phoenixnap.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
-          "https://newcontinuum.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
-          "http://cfhcable.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
-          "https://superb-sea2.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
-          "https://cytranet.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
-          "https://iweb.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
-          "https://gigenet.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
-          "https://ayera.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
-          "https://astuteinternet.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
-          "https://pilotfiber.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
-          "https://svwh.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz",
+          "https://%s.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz" % m
+          for m in SOURCEFORGE_MIRRORS
         ]
     )
 
   if "boost" not in native.existing_rules():
     native.new_http_archive(
       name = "boost",
-      url = "https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.gz",
+      urls = [
+          "https://%s.dl.sourceforge.net/project/boost/boost/1.66.0/boost_1_66_0.tar.gz" % m
+          for m in SOURCEFORGE_MIRRORS
+      ],
       build_file = "@com_github_nelhage_rules_boost//:BUILD.boost",
       strip_prefix = "boost_1_66_0/",
       sha256 = "bd0df411efd9a585e5a2212275f8762079fed8842264954675a4fddc46cfcf60",
