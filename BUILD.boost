@@ -9,6 +9,14 @@ config_setting(
 )
 
 config_setting(
+    name = "osx",
+    constraint_values = [
+        "@bazel_tools//platforms:osx",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
     name = "windows",
     constraint_values = [
         "@bazel_tools//platforms:windows",
@@ -20,6 +28,15 @@ config_setting(
     name = "linux_x86_64",
     constraint_values = [
         "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:x86_64",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "osx_x86_64",
+    constraint_values = [
+        "@bazel_tools//platforms:osx",
         "@bazel_tools//platforms:x86_64",
     ],
     visibility = ["//visibility:public"],
@@ -40,6 +57,11 @@ BOOST_CTX_ASM_SOURCES = select({
         "libs/context/src/asm/make_x86_64_sysv_elf_gas.S",
         "libs/context/src/asm/ontop_x86_64_sysv_elf_gas.S",
     ],
+    ":osx_x86_64": [
+        "libs/context/src/asm/jump_x86_64_sysv_macho_gas.S",
+        "libs/context/src/asm/make_x86_64_sysv_macho_gas.S",
+        "libs/context/src/asm/ontop_x86_64_sysv_macho_gas.S",
+    ],
     ":windows_x86_64": [
         "libs/context/src/asm/make_x86_64_ms_pe_masm.asm",
         "libs/context/src/asm/jump_x86_64_ms_pe_masm.asm",
@@ -51,6 +73,9 @@ boost_library(
     name = "context",
     srcs = BOOST_CTX_ASM_SOURCES + select({
         ":linux_x86_64": [
+            "libs/context/src/posix/stack_traits.cpp",
+        ],
+        ":osx_x86_64": [
             "libs/context/src/posix/stack_traits.cpp",
         ],
         ":windows_x86_64": [
@@ -81,6 +106,7 @@ BOOST_FIBER_NUMA_SRCS = select({
         "libs/fiber/src/numa/windows/pin_thread.cpp",
         "libs/fiber/src/numa/windows/topology.cpp",
     ],
+    "//conditions:default": [],
 })
 
 boost_library(
@@ -95,6 +121,9 @@ boost_library(
     exclude_src = ["libs/fiber/src/numa/**/*.cpp"],
     linkopts = select({
         ":linux_x86_64": [
+            "-lpthread",
+        ],
+        ":osx_x86_64": [
             "-lpthread",
         ],
         "//conditions:default": [],
@@ -298,9 +327,14 @@ boost_library(
 
 boost_library(
     name = "compute",
-    linkopts = [
-        "-lOpenCL",
-    ],
+    linkopts = select({
+        ":osx_x86_64": [
+            "-framework OpenCL",
+        ],
+        "//conditions:default": [
+            "-lOpenCL",
+        ],
+    }),
     deps = [
         ":algorithm",
         ":chrono",
@@ -381,6 +415,9 @@ boost_library(
 
 BOOST_CORO_SRCS = select({
     ":linux_x86_64": [
+        "libs/coroutine/src/posix/stack_traits.cpp",
+    ],
+    ":osx_x86_64": [
         "libs/coroutine/src/posix/stack_traits.cpp",
     ],
     ":windows_x86_64": [
@@ -766,6 +803,23 @@ boost_library(
 
 boost_library(
     name = "locale",
+)
+
+boost_library(
+    name = "lockfree",
+    deps = [
+        ":align",
+        ":array",
+        ":assert",
+        ":config",
+        ":detail",
+        ":noncopyable",
+        ":parameter",
+        ":predef",
+        ":static_assert",
+        ":type_traits",
+        ":utility",
+    ]
 )
 
 boost_library(
@@ -1232,6 +1286,46 @@ boost_library(
         ":optional",
         ":ref",
         ":utility",
+    ],
+)
+
+BOOST_STACKTRACE_SOURCES = select({
+    ":linux_x86_64": [
+        "libs/stacktrace/src/backtrace.cpp",
+    ],
+    ":osx_x86_64": [
+        "libs/stacktrace/src/addr2line.cpp",
+    ],
+    ":windows_x86_64": [
+        "libs/stacktrace/src/windbg.cpp",
+        "libs/stacktrace/src/windbg_cached.cpp",
+    ],
+})
+
+boost_library(
+    name = "stacktrace",
+    srcs = BOOST_STACKTRACE_SOURCES,
+    exclude_src = ["libs/stacktrace/src/*.cpp"],
+    defines = select({
+        ":osx_x86_64": [
+            "BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED",
+        ],
+        "//conditions:default": [],
+    }),
+    linkopts = select({
+        ":linux_x86_64": [
+            "-lbacktrace -ldl",
+        ],
+        "//conditions:default": [],
+    }),
+    deps = [
+        ":array",
+        ":config",
+        ":core",
+        ":detail",
+        ":lexical_cast",
+        ":static_assert",
+        ":type_traits",
     ],
 )
 

@@ -395,3 +395,21 @@ cc_test(
         "@boost//:property_tree",
     ],
 )
+
+cc_test(
+    name = "stacktrace_test",
+    size = "small",
+    srcs = ["stacktrace_test.cc"],
+    deps = [
+        "@boost//:stacktrace",
+    ],
+)
+
+cc_test(
+    name = "lockfree_test",
+    size = "small",
+    srcs = ["lockfree_test.cc"],
+    deps = [
+        "@boost//:lockfree",
+    ],
+)
