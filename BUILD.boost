@@ -803,6 +803,32 @@ boost_library(
 
 boost_library(
     name = "locale",
+    srcs =
+        glob(
+            [
+                "libs/locale/src/**/*.cpp",
+                "libs/locale/src/**/*.hpp",
+                "libs/locale/src/**/*.ipp",
+            ],
+            exclude = [
+                "libs/locale/src/win32/*.cpp",
+                "libs/locale/src/icu/*.cpp",
+            ],
+        ),
+    copts = [
+        "-DBOOST_LOCALE_WITH_ICONV",
+        "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
+        # boost::locale implementation uses deprecated auto_ptr
+        "-Wno-deprecated-declarations",
+    ],
+    deps = [
+        ":assert",
+        ":config",
+        ":cstdint",
+        ":smart_ptr",
+        ":thread",
+        ":unordered",
+    ],
 )
 
 boost_library(
@@ -819,7 +845,7 @@ boost_library(
         ":static_assert",
         ":type_traits",
         ":utility",
-    ]
+    ],
 )
 
 boost_library(
@@ -946,13 +972,13 @@ boost_library(
         "boost/numeric/odeint/**/*.hpp",
     ]),
     deps = [
+        ":fusion",
+        ":lexical_cast",
+        ":math",
+        ":multi_array",
         ":numeric",
         ":serialization",
         ":units",
-        ":fusion",
-        ":math",
-        ":lexical_cast",
-        ":multi_array",
     ],
 )
 
@@ -1305,13 +1331,13 @@ BOOST_STACKTRACE_SOURCES = select({
 boost_library(
     name = "stacktrace",
     srcs = BOOST_STACKTRACE_SOURCES,
-    exclude_src = ["libs/stacktrace/src/*.cpp"],
     defines = select({
         ":osx_x86_64": [
             "BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED",
         ],
         "//conditions:default": [],
     }),
+    exclude_src = ["libs/stacktrace/src/*.cpp"],
     linkopts = select({
         ":linux_x86_64": [
             "-lbacktrace -ldl",

@@ -104,7 +104,7 @@ cc_test(
     srcs = ["compute_test.cc"],
     deps = [
         "@boost//:compute",
-    ]
+    ],
 )
 
 cc_test(
@@ -113,7 +113,7 @@ cc_test(
     srcs = ["coroutine_test.cc"],
     deps = [
         "@boost//:coroutine",
-    ]
+    ],
 )
 
 cc_test(
@@ -128,7 +128,7 @@ cc_test(
 cc_test(
     name = "endian",
     size = "small",
-    srcs = [ "endian.cc" ],
+    srcs = ["endian.cc"],
     deps = [
         "@boost//:endian",
         "@boost//:static_assert",
@@ -411,5 +411,14 @@ cc_test(
     srcs = ["lockfree_test.cc"],
     deps = [
         "@boost//:lockfree",
+    ],
+)
+
+cc_test(
+    name = "locale_test",
+    size = "small",
+    srcs = ["locale_test.cc"],
+    deps = [
+        "@boost//:locale",
     ],
 )
