@@ -111,7 +111,13 @@ BOOST_FIBER_NUMA_SRCS = select({
 
 boost_library(
     name = "fiber",
-    srcs = BOOST_FIBER_NUMA_SRCS + glob(["libs/fiber/src/algo/**/*.cpp"]),
+    srcs = BOOST_FIBER_NUMA_SRCS + glob(["libs/fiber/src/algo/**/*.cpp"]) + [
+        "libs/fiber/examples/asio/detail/yield.hpp",
+    ],
+    hdrs = [
+        "libs/fiber/examples/asio/round_robin.hpp",
+        "libs/fiber/examples/asio/yield.hpp",
+    ],
     copts = select({
         ":windows_x86_64": [
             "/D_WIN32_WINNT=0x0601",
@@ -131,12 +137,16 @@ boost_library(
     visibility = ["//visibility:public"],
     deps = [
         ":algorithm",
+        ":assert",
+        ":atomic",
         ":context",
         ":filesystem",
         ":format",
         ":intrusive",
         ":intrusive_ptr",
         ":pool",
+        ":system",
+        ":throw_exception",
     ],
 )
 
