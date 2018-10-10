@@ -9,6 +9,11 @@ config_setting(
 )
 
 config_setting(
+    name = "android",
+    values = {"cpu":"armeabi-v7a"},
+)
+
+config_setting(
     name = "windows_x86_64",
     constraint_values = [
         "@bazel_tools//platforms:windows",
@@ -178,7 +183,10 @@ boost_library(
 
 boost_library(
     name = "asio",
-    linkopts = ["-lpthread"],
+    linkopts = select({
+        ":android":[],
+        "//conditions:default":["-lpthread"],
+    }),
     deps = [
         ":bind",
         ":date_time",
@@ -1185,7 +1193,10 @@ boost_library(
     hdrs = [
         "libs/thread/src/pthread/once_atomic.cpp",
     ],
-    linkopts = ["-lpthread"],
+    linkopts = select({
+        ":android":[],
+        "//conditions:default":["-lpthread"],
+    }),
     deps = [
         ":algorithm",
         ":atomic",
