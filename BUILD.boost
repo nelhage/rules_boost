@@ -895,6 +895,12 @@ boost_library(
 )
 
 boost_library(
+    name = "hana",
+    deps = [
+    ],
+)
+
+boost_library(
     name = "multi_index",
     hdrs = [
         "boost/multi_index_container.hpp",
