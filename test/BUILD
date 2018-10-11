@@ -422,3 +422,13 @@ cc_test(
         "@boost//:locale",
     ],
 )
+
+cc_test(
+    name = "hana_test",
+    size = "small",
+    srcs = ["hana_test.cc"],
+    deps = [
+        "@boost//:hana",
+    ],
+    copts=["-std=c++14",],
+)
