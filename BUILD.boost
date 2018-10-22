@@ -1628,7 +1628,6 @@ boost_library(
 
 boost_library(
     name = "test",
-    exclude_src = glob(["libs/test/src/*.cpp"]),
     deps = [
         ":algorithm",
         ":assert",
@@ -1655,6 +1654,7 @@ boost_library(
         ":utility",
         ":version",
     ],
+    defines=["BOOST_TEST_DYN_LINK=0"]
 )
 
 boost_library(
