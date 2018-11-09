@@ -941,6 +941,9 @@ boost_library(
 
 boost_library(
     name = "noncopyable",
+    deps = [
+        ":core",
+    ],
 )
 
 boost_library(
@@ -1400,6 +1403,9 @@ boost_library(
 
 boost_library(
     name = "swap",
+    deps = [
+        ":core",
+    ],
 )
 
 boost_library(
@@ -1564,6 +1570,7 @@ boost_library(
     deps = [
         ":config",
         ":detail",
+        ":preprocessor",
         ":swap",
     ],
 )
