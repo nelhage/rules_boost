@@ -686,6 +686,10 @@ boost_library(
 )
 
 boost_library(
+    name = "implicit_cast"
+)
+
+boost_library(
     name = "is_placeholder",
 )
 
