@@ -424,6 +424,15 @@ cc_test(
 )
 
 cc_test(
+    name = "msm_test",
+    size = "small",
+    srcs = ["msm_test.cc"],
+    deps = [
+        "@boost//:msm",
+    ],
+)
+
+cc_test(
     name = "hana_test",
     size = "small",
     srcs = ["hana_test.cc"],
