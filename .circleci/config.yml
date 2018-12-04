@@ -11,7 +11,7 @@ jobs:
             - bazel-cache
 
       - run: apt-get update && apt-get -y install pkg-config zip g++ zlib1g-dev unzip python curl ocl-icd-opencl-dev opencl-headers
-      - run: cd /tmp/ && curl -LO https://github.com/bazelbuild/bazel/releases/download/0.9.0/bazel-0.9.0-installer-linux-x86_64.sh
-      - run: bash /tmp/bazel-0.9.0-installer-linux-x86_64.sh
+      - run: cd /tmp/ && curl -LO https://github.com/bazelbuild/bazel/releases/download/0.19.2/bazel-0.19.2-installer-linux-x86_64.sh
+      - run: bash /tmp/bazel-0.19.2-installer-linux-x86_64.sh
       - run: cd test && cp .bazelrc.circle .bazelrc
       - run: cd test && bazel test --test_output=errors //...

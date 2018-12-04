@@ -451,6 +451,15 @@ boost_library(
 )
 
 boost_library(
+    name = "crc",
+    deps = [
+        ":config",
+        ":integer",
+        ":limits",
+    ],
+)
+
+boost_library(
     name = "cstdint",
 )
 
@@ -674,6 +683,10 @@ boost_library(
     deps = [
         ":concept_check",
     ],
+)
+
+boost_library(
+    name = "implicit_cast"
 )
 
 boost_library(
@@ -949,6 +962,9 @@ boost_library(
 
 boost_library(
     name = "noncopyable",
+    deps = [
+        ":core",
+    ],
 )
 
 boost_library(
@@ -1408,6 +1424,9 @@ boost_library(
 
 boost_library(
     name = "swap",
+    deps = [
+        ":core",
+    ],
 )
 
 boost_library(
@@ -1572,7 +1591,9 @@ boost_library(
     deps = [
         ":config",
         ":detail",
+        ":preprocessor",
         ":swap",
+        ":type_traits",
     ],
 )
 
