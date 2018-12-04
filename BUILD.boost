@@ -914,6 +914,23 @@ boost_library(
 )
 
 boost_library(
+    name = "msm",
+    deps = [
+        ":detail",
+        ":mpl",
+        ":serialization",
+        ":proto",
+        ":noncopyable",
+        ":parameter",
+        ":any",
+        ":function",
+        ":bind",
+        ":type_traits",
+        ":fusion",
+    ],
+)
+
+boost_library(
     name = "multi_index",
     hdrs = [
         "boost/multi_index_container.hpp",
