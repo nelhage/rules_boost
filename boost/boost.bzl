@@ -83,7 +83,7 @@ def boost_deps():
         build_file = "@com_github_nelhage_rules_boost//:BUILD.bzip2",
         sha256 = "a2848f34fcd5d6cf47def00461fcb528a0484d8edef8208d6d2e2909dc61d9cd",
         strip_prefix = "bzip2-1.0.6",
-        url = "http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz",
+        url = "https://mirror.bazel.build/www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz",
     )
 
   SOURCEFORGE_MIRRORS = ["phoenixnap", "newcontinuum", "cfhcable", "superb-sea2", "cytranet", "iweb", "gigenet", "ayera", "astuteinternet", "pilotfiber", "svwh"]
