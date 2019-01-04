@@ -10,7 +10,7 @@ config_setting(
 
 config_setting(
     name = "android",
-    values = {"cpu":"arm64-v8a"},
+    values = {"crosstool_top": "@androidndk//:default_crosstool"},
 )
 
 config_setting(
