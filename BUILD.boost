@@ -1739,3 +1739,33 @@ boost_library(
     name = "winapi",
     visibility = ["//visibility:private"],
 )
+
+boost_library(
+  name = "xpressive",
+  deps = [
+    ":type_traits",
+    ":core",
+    ":config",
+  ]
+)
+
+boost_library(
+  name = "property_map",
+  deps = [
+    ":type_traits",
+    ":core",
+    ":config",
+    ":lexical_cast",
+    ":function",
+  ]
+)
+
+boost_library(
+  name = "graph",
+  deps = [
+    ":property_map",
+    ":property_tree",
+    ":lexical_cast",
+    ":xpressive",
+  ]
+)
