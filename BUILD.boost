@@ -411,6 +411,19 @@ boost_library(
 
 boost_library(
     name = "conversion",
+    hdrs = [
+        "boost/cast.hpp",
+        "boost/polymorphic_cast.hpp",
+        "boost/polymorphic_pointer_cast.hpp",
+        "boost/implicit_cast.hpp",
+        "boost/lexical_cast.hpp",
+    ],
+    deps = [
+        ":assert",
+        ":config",
+        ":throw_exception",
+        ":fusion",
+    ],
 )
 
 boost_library(
