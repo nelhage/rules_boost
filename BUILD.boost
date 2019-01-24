@@ -155,6 +155,20 @@ boost_library(
 )
 
 boost_library(
+    name = "accumulators",
+    deps = [
+        ":concept_check",
+        ":config",
+        ":fusion",
+        ":mpl",
+        ":parameter",
+        ":type_traits",
+        ":utility",
+        ":version",
+    ],
+)
+
+boost_library(
     name = "algorithm",
     deps = [
         ":function",
