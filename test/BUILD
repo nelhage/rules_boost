@@ -1,4 +1,13 @@
 cc_test(
+    name = "accumulators_test",
+    size = "small",
+    srcs = ["accumulators_test.cc"],
+    deps = [
+        "@boost//:accumulators",
+    ],
+)
+
+cc_test(
     name = "any_test",
     size = "small",
     srcs = ["any_test.cc"],
