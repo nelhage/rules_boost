@@ -496,6 +496,8 @@ boost_library(
 
 boost_library(
     name = "date_time",
+    hdrs = glob(["libs/date_time/src/**/*.hpp"]),
+    srcs = glob(["libs/date_time/src/**/*.cpp"]),
     deps = [
         ":algorithm",
         ":io",
