@@ -1792,7 +1792,6 @@ boost_library(
 boost_library(
     name = "graph",
     hdrs = [
-        "boost/implicit_cast.hpp",
         "boost/pending/container_traits.hpp",
         "boost/pending/detail/property.hpp",
         "boost/pending/indirect_cmp.hpp",
@@ -1802,6 +1801,7 @@ boost_library(
     ],
     deps = [
         ":algorithm",
+        ":conversion",
         ":fusion",
         ":intrusive_ptr",
         ":lexical_cast",
