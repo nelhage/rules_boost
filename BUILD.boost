@@ -1791,10 +1791,27 @@ boost_library(
 
 boost_library(
   name = "graph",
+  hdrs = [
+      "boost/pending/property.hpp",
+      "boost/pending/detail/property.hpp",
+      "boost/pending/container_traits.hpp",
+      "boost/implicit_cast.hpp",
+      "boost/pending/queue.hpp",
+      "boost/pending/indirect_cmp.hpp",
+      "boost/pending/relaxed_heap.hpp"
+  ],
   deps = [
     ":property_map",
     ":property_tree",
     ":lexical_cast",
     ":xpressive",
+    ":intrusive_ptr",
+    ":unordered",
+    ":typeof",
+    ":algorithm",
+    ":parameter",
+    ":fusion",
+    ":tti",
+    ":proto"
   ]
 )
