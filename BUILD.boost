@@ -427,16 +427,16 @@ boost_library(
     name = "conversion",
     hdrs = [
         "boost/cast.hpp",
-        "boost/polymorphic_cast.hpp",
-        "boost/polymorphic_pointer_cast.hpp",
         "boost/implicit_cast.hpp",
         "boost/lexical_cast.hpp",
+        "boost/polymorphic_cast.hpp",
+        "boost/polymorphic_pointer_cast.hpp",
     ],
     deps = [
         ":assert",
         ":config",
-        ":throw_exception",
         ":fusion",
+        ":throw_exception",
     ],
 )
 
@@ -496,8 +496,8 @@ boost_library(
 
 boost_library(
     name = "date_time",
-    hdrs = glob(["libs/date_time/src/**/*.hpp"]),
     srcs = glob(["libs/date_time/src/**/*.cpp"]),
+    hdrs = glob(["libs/date_time/src/**/*.hpp"]),
     deps = [
         ":algorithm",
         ":io",
@@ -715,7 +715,7 @@ boost_library(
 )
 
 boost_library(
-    name = "implicit_cast"
+    name = "implicit_cast",
 )
 
 boost_library(
@@ -945,17 +945,17 @@ boost_library(
 boost_library(
     name = "msm",
     deps = [
+        ":any",
+        ":bind",
         ":detail",
+        ":function",
+        ":fusion",
         ":mpl",
-        ":serialization",
-        ":proto",
         ":noncopyable",
         ":parameter",
-        ":any",
-        ":function",
-        ":bind",
+        ":proto",
+        ":serialization",
         ":type_traits",
-        ":fusion",
     ],
 )
 
@@ -1770,48 +1770,48 @@ boost_library(
 )
 
 boost_library(
-  name = "xpressive",
-  deps = [
-    ":type_traits",
-    ":core",
-    ":config",
-  ]
+    name = "xpressive",
+    deps = [
+        ":config",
+        ":core",
+        ":type_traits",
+    ],
 )
 
 boost_library(
-  name = "property_map",
-  deps = [
-    ":type_traits",
-    ":core",
-    ":config",
-    ":lexical_cast",
-    ":function",
-  ]
+    name = "property_map",
+    deps = [
+        ":config",
+        ":core",
+        ":function",
+        ":lexical_cast",
+        ":type_traits",
+    ],
 )
 
 boost_library(
-  name = "graph",
-  hdrs = [
-      "boost/pending/property.hpp",
-      "boost/pending/detail/property.hpp",
-      "boost/pending/container_traits.hpp",
-      "boost/implicit_cast.hpp",
-      "boost/pending/queue.hpp",
-      "boost/pending/indirect_cmp.hpp",
-      "boost/pending/relaxed_heap.hpp"
-  ],
-  deps = [
-    ":property_map",
-    ":property_tree",
-    ":lexical_cast",
-    ":xpressive",
-    ":intrusive_ptr",
-    ":unordered",
-    ":typeof",
-    ":algorithm",
-    ":parameter",
-    ":fusion",
-    ":tti",
-    ":proto"
-  ]
+    name = "graph",
+    hdrs = [
+        "boost/implicit_cast.hpp",
+        "boost/pending/container_traits.hpp",
+        "boost/pending/detail/property.hpp",
+        "boost/pending/indirect_cmp.hpp",
+        "boost/pending/property.hpp",
+        "boost/pending/queue.hpp",
+        "boost/pending/relaxed_heap.hpp",
+    ],
+    deps = [
+        ":algorithm",
+        ":fusion",
+        ":intrusive_ptr",
+        ":lexical_cast",
+        ":parameter",
+        ":property_map",
+        ":property_tree",
+        ":proto",
+        ":tti",
+        ":typeof",
+        ":unordered",
+        ":xpressive",
+    ],
 )
