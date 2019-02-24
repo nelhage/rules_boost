@@ -701,6 +701,16 @@ boost_library(
 )
 
 boost_library(
+    name = "gil",
+    deps = [
+        ":algorithm",
+        ":filesystem",
+        ":lambda",
+        ":range",
+    ],
+)
+
+boost_library(
     name = "heap",
     deps = [
         ":parameter",
@@ -825,6 +835,15 @@ boost_library(
         "@net_zlib_zlib//:zlib",
         "@org_bzip_bzip2//:bz2lib",
         "@org_lzma_lzma//:lzma",
+    ],
+)
+
+boost_library(
+    name = "lambda",
+    deps = [
+        ":fusion",
+        ":preprocessor",
+        ":type_traits",
     ],
 )
 
