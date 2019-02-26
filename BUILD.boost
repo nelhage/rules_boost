@@ -1425,6 +1425,18 @@ boost_library(
 )
 
 boost_library(
+    name = "property_map",
+    deps = [
+        ":config",
+        ":core",
+        ":function",
+        ":lexical_cast",
+        ":type_traits",
+    ],
+)
+
+
+boost_library(
     name = "graph",
     hdrs = [
         "boost/pending/container_traits.hpp",
