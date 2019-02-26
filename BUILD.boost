@@ -1425,6 +1425,33 @@ boost_library(
 )
 
 boost_library(
+    name = "tti",
+    deps = [
+        ":config",
+        ":function_types",
+        ":mpl",
+        ":preprocessor",
+        ":type_traits",
+    ],
+)
+
+boost_library(
+    name = "proto",
+    deps = [
+        ":fusion",
+    ],
+)
+
+boost_library(
+    name = "xpressive",
+    deps = [
+        ":config",
+        ":core",
+        ":type_traits",
+    ],
+)
+
+boost_library(
     name = "property_map",
     deps = [
         ":config",
