@@ -5,7 +5,7 @@ To use these rules, add the following to your `WORKSPACE` file:
 ```bazel
 git_repository(
     name = "com_github_nelhage_rules_boost",
-    commit = "239ce40e42ab0e3fe7ce84c2e9303ff8a277c41a",
+    commit = "6d6fd834281cb8f8e758dd9ad76df86304bf1869",
     remote = "https://github.com/nelhage/rules_boost",
 )
 

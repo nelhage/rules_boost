@@ -1,3 +1,5 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
 include_pattern = "boost/%s/"
 
 hdrs_patterns = [
@@ -18,14 +20,19 @@ srcs_patterns = [
 
 # Building boost results in many warnings for unused values. Downstream users
 # won't be interested, so just disable the warning.
-default_copts = ["-Wno-unused-value"]
+default_copts = select({
+    "@boost//:linux": ["-Wno-unused-value"],
+    "//conditions:default": [],
+})
 
 def srcs_list(library_name, exclude):
-  return native.glob([p % (library_name,) for p in srcs_patterns],
-                     exclude=exclude)
+    return native.glob(
+        [p % (library_name,) for p in srcs_patterns],
+        exclude = exclude,
+    )
 
 def includes_list(library_name):
-  return [".", include_pattern % library_name]
+    return [".", include_pattern % library_name]
 
 def hdr_list(library_name):
   return native.glob([p % (library_name,) for p in hdrs_patterns])

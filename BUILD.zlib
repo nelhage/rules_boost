@@ -1,5 +1,4 @@
-# Description:
-#   zlib is a general purpose data compression library.
+package(default_visibility = ["//visibility:public"])
 
 licenses(["notice"])  # BSD/MIT-like license (for zlib)
 
@@ -8,7 +7,6 @@ cc_library(
     srcs = [
         "adler32.c",
         "compress.c",
-        "contrib/amd64/amd64-match.S",
         "crc32.c",
         "crc32.h",
         "deflate.c",
@@ -33,14 +31,13 @@ cc_library(
         "zutil.c",
         "zutil.h",
     ],
-    hdrs = [
-        "zlib.h",
-    ],
-    copts = [
-        "-DUNALIGNED_OK",
-        "-DEXPAND_INSERT_STRING",
-        "-Wno-implicit-function-declaration",
-    ],
+    hdrs = ["zlib.h"],
+    copts = select({
+        "@boost//:windows": [],
+        "//conditions:default": [
+            "-Wno-shift-negative-value",
+            "-DZ_HAVE_UNISTD_H",
+        ],
+    }),
     includes = ["."],
-    visibility = ["//visibility:public"],
 )

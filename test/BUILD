@@ -1,4 +1,13 @@
 cc_test(
+    name = "accumulators_test",
+    size = "small",
+    srcs = ["accumulators_test.cc"],
+    deps = [
+        "@boost//:accumulators",
+    ],
+)
+
+cc_test(
     name = "any_test",
     size = "small",
     srcs = ["any_test.cc"],
@@ -81,6 +90,15 @@ cc_test(
 )
 
 cc_test(
+    name = "container_hash_test",
+    size = "small",
+    srcs = ["container_hash_test.cc"],
+    deps = [
+        "@boost//:container_hash",
+    ],
+)
+
+cc_test(
     name = "context_test",
     size = "small",
     srcs = ["context_test.cc"],
@@ -95,7 +113,7 @@ cc_test(
     srcs = ["compute_test.cc"],
     deps = [
         "@boost//:compute",
-    ]
+    ],
 )
 
 cc_test(
@@ -104,7 +122,7 @@ cc_test(
     srcs = ["coroutine_test.cc"],
     deps = [
         "@boost//:coroutine",
-    ]
+    ],
 )
 
 cc_test(
@@ -119,7 +137,7 @@ cc_test(
 cc_test(
     name = "endian",
     size = "small",
-    srcs = [ "endian.cc" ],
+    srcs = ["endian.cc"],
     deps = [
         "@boost//:endian",
         "@boost//:static_assert",
@@ -164,6 +182,15 @@ cc_test(
 )
 
 cc_test(
+    name = "geometry_test",
+    size = "small",
+    srcs = ["geometry_test.cc"],
+    deps = [
+        "@boost//:geometry",
+    ],
+)
+
+cc_test(
     name = "icl_test",
     size = "small",
     srcs = ["icl_test.cc"],
@@ -178,6 +205,15 @@ cc_test(
     srcs = ["iostreams_test.cc"],
     deps = [
         "@boost//:iostreams",
+    ],
+)
+
+cc_test(
+    name = "log_test",
+    size = "small",
+    srcs = ["log_test.cc"],
+    deps = [
+        "@boost//:log",
     ],
 )
 
@@ -205,6 +241,15 @@ cc_test(
     srcs = ["numeric_conversion_test.cc"],
     deps = [
         "@boost//:numeric_conversion",
+    ],
+)
+
+cc_test(
+    name = "numeric_odeint_test",
+    size = "small",
+    srcs = ["numeric_odeint_test.cc"],
+    deps = [
+        "@boost//:numeric_odeint",
     ],
 )
 
@@ -241,6 +286,15 @@ cc_test(
     srcs = ["ptr_container_test.cc"],
     deps = [
         "@boost//:ptr_container",
+    ],
+)
+
+cc_test(
+    name = "qvm_test",
+    size = "small",
+    srcs = ["qvm_test.cc"],
+    deps = [
+        "@boost//:qvm",
     ],
 )
 
@@ -316,6 +370,15 @@ cc_test(
 )
 
 cc_test(
+    name = "tti_test",
+    size = "small",
+    srcs = ["tti_test.cc"],
+    deps = [
+        "@boost//:tti",
+    ],
+)
+
+cc_test(
     name = "unordered_test",
     size = "small",
     srcs = ["unordered_test.cc"],
@@ -340,4 +403,50 @@ cc_test(
     deps = [
         "@boost//:property_tree",
     ],
+)
+
+cc_test(
+    name = "stacktrace_test",
+    size = "small",
+    srcs = ["stacktrace_test.cc"],
+    deps = [
+        "@boost//:stacktrace",
+    ],
+)
+
+cc_test(
+    name = "lockfree_test",
+    size = "small",
+    srcs = ["lockfree_test.cc"],
+    deps = [
+        "@boost//:lockfree",
+    ],
+)
+
+cc_test(
+    name = "locale_test",
+    size = "small",
+    srcs = ["locale_test.cc"],
+    deps = [
+        "@boost//:locale",
+    ],
+)
+
+cc_test(
+    name = "msm_test",
+    size = "small",
+    srcs = ["msm_test.cc"],
+    deps = [
+        "@boost//:msm",
+    ],
+)
+
+cc_test(
+    name = "hana_test",
+    size = "small",
+    srcs = ["hana_test.cc"],
+    deps = [
+        "@boost//:hana",
+    ],
+    copts=["-std=c++14",],
 )

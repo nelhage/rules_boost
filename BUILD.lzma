@@ -8,7 +8,7 @@ genrule(
     outs = [
         "config.h",
     ],
-    cmd = "cd external/org_lzma_lzma && ./configure && cp config.h ../../$(location config.h)",
+    cmd = "cd external/org_lzma_lzma && ./configure > /dev/null && cp config.h ../../$(location config.h)",
     tools = [
         "configure",
         "src/liblzma/common/common.h",
