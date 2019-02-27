@@ -344,6 +344,19 @@ boost_library(
 
 boost_library(
     name = "conversion",
+    hdrs = [
+        "boost/cast.hpp",
+        "boost/implicit_cast.hpp",
+        "boost/lexical_cast.hpp",
+        "boost/polymorphic_cast.hpp",
+        "boost/polymorphic_pointer_cast.hpp",
+    ],
+    deps = [
+        ":assert",
+        ":config",
+        ":fusion",
+        ":throw_exception",
+    ],
 )
 
 boost_library(
@@ -1471,6 +1484,7 @@ boost_library(
         "boost/pending/indirect_cmp.hpp",
         "boost/pending/property.hpp",
         "boost/pending/queue.hpp",
+        "boost/pending/relaxed_heap.hpp",
         "boost/pending/relaxed_heap.hpp",
     ],
     deps = [
