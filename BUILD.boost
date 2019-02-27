@@ -1485,7 +1485,6 @@ boost_library(
         "boost/pending/property.hpp",
         "boost/pending/queue.hpp",
         "boost/pending/relaxed_heap.hpp",
-        "boost/pending/relaxed_heap.hpp",
     ],
     deps = [
         ":algorithm",
