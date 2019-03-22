@@ -1469,14 +1469,39 @@ boost_library(
 
 boost_library(
     name = "thread",
-    srcs = [
-        "libs/thread/src/pthread/once.cpp",
-        "libs/thread/src/pthread/thread.cpp",
-    ],
-    hdrs = [
-        "libs/thread/src/pthread/once_atomic.cpp",
-    ],
-    linkopts = ["-lpthread"],
+    srcs = select({
+        ":linux_x86_64": [
+            "libs/thread/src/pthread/once.cpp",
+            "libs/thread/src/pthread/thread.cpp",
+        ],
+        ":osx_x86_64": [
+            "libs/thread/src/pthread/once.cpp",
+            "libs/thread/src/pthread/thread.cpp",
+        ],
+        ":windows_x86_64": [
+            "libs/thread/src/win32/thread.cpp",
+            "libs/thread/src/win32/tss_dll.cpp",
+            "libs/thread/src/win32/tss_pe.cpp",
+        ]
+    }),
+    hdrs = select({
+        ":linux_x86_64": [
+            "libs/thread/src/pthread/once_atomic.cpp",
+        ],
+        ":osx_x86_64": [
+            "libs/thread/src/pthread/once_atomic.cpp",
+        ],
+        ":windows_x86_64": []
+    }),
+    linkopts = select({
+        ":linux_x86_64": [
+            "-lpthread",
+        ],
+        ":osx_x86_64": [
+            "-lpthread",
+        ],
+        ":windows_x86_64": []
+    }),
     deps = [
         ":algorithm",
         ":atomic",
@@ -1496,6 +1521,11 @@ boost_library(
         ":tuple",
         ":type_traits",
     ],
+    defines = select({
+        ":linux_x86_64": [],
+        ":osx_x86_64": [],
+        ":windows_x86_64": ["BOOST_ALL_NO_LIB","BOOST_THREAD_USE_LIB", "BOOST_WIN32_THREAD"],
+    })
 )
 
 boost_library(
