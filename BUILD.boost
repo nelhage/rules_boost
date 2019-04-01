@@ -250,6 +250,12 @@ boost_library(
 
 boost_library(
     name = "asio",
+    defines = select({
+        ":osx_x86_64": [
+            "BOOST_ASIO_DISABLE_STD_EXPERIMENTAL_STRING_VIEW",
+        ],
+        "//conditions:default": [],
+    }),
     linkopts = ["-lpthread"],
     deps = [
         ":bind",
