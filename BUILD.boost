@@ -578,9 +578,12 @@ boost_library(
 
 boost_library(
     name = "filesystem",
-    copts = [
-        "-Wno-deprecated-declarations",
-    ],
+    copts = select({
+        ":linux": [
+            "-Wno-deprecated-declarations",
+        ],
+        "//conditions:default": [],
+    }),
     deps = [
         ":config",
         ":functional",
@@ -873,12 +876,22 @@ boost_library(
                 "libs/locale/src/icu/*.cpp",
             ],
         ),
-    copts = [
+    copts = select({
+    ":linux": [
         "-DBOOST_LOCALE_WITH_ICONV",
         "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
         # boost::locale implementation uses deprecated auto_ptr
         "-Wno-deprecated-declarations",
     ],
+    ":osx": [
+        "-DBOOST_LOCALE_WITH_ICONV",
+        "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
+    ],
+    ":windows": [
+        "-DBOOST_LOCALE_WITH_ICONV",
+        "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
+    ],
+    }),
     deps = [
         ":assert",
         ":config",
