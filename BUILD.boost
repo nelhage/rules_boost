@@ -1,5 +1,12 @@
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "hdr_list", "includes_list")
 
+_w_no_deprecated = select({
+    ":linux": [
+        "-Wno-deprecated-declarations",
+    ],
+    "//conditions:default": [],
+})
+
 config_setting(
     name = "linux",
     constraint_values = [
@@ -578,12 +585,7 @@ boost_library(
 
 boost_library(
     name = "filesystem",
-    copts = select({
-        ":linux": [
-            "-Wno-deprecated-declarations",
-        ],
-        "//conditions:default": [],
-    }),
+    copts = _w_no_deprecated,
     deps = [
         ":config",
         ":functional",
@@ -876,22 +878,10 @@ boost_library(
                 "libs/locale/src/icu/*.cpp",
             ],
         ),
-    copts = select({
-    ":linux": [
+    copts = [
         "-DBOOST_LOCALE_WITH_ICONV",
         "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
-        # boost::locale implementation uses deprecated auto_ptr
-        "-Wno-deprecated-declarations",
-    ],
-    ":osx": [
-        "-DBOOST_LOCALE_WITH_ICONV",
-        "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
-    ],
-    ":windows": [
-        "-DBOOST_LOCALE_WITH_ICONV",
-        "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
-    ],
-    }),
+    ] + _w_no_deprecated,
     deps = [
         ":assert",
         ":config",
