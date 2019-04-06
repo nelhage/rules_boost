@@ -1491,7 +1491,7 @@ boost_library(
             "libs/thread/src/win32/thread.cpp",
             "libs/thread/src/win32/tss_dll.cpp",
             "libs/thread/src/win32/tss_pe.cpp",
-        ]
+        ],
     }),
     hdrs = select({
         ":linux_x86_64": [
@@ -1500,7 +1500,16 @@ boost_library(
         ":osx_x86_64": [
             "libs/thread/src/pthread/once_atomic.cpp",
         ],
-        ":windows_x86_64": []
+        ":windows_x86_64": [],
+    }),
+    defines = select({
+        ":linux_x86_64": [],
+        ":osx_x86_64": [],
+        ":windows_x86_64": [
+            "BOOST_ALL_NO_LIB",
+            "BOOST_THREAD_USE_LIB",
+            "BOOST_WIN32_THREAD",
+        ],
     }),
     linkopts = select({
         ":linux_x86_64": [
@@ -1509,7 +1518,7 @@ boost_library(
         ":osx_x86_64": [
             "-lpthread",
         ],
-        ":windows_x86_64": []
+        ":windows_x86_64": [],
     }),
     deps = [
         ":algorithm",
@@ -1530,11 +1539,6 @@ boost_library(
         ":tuple",
         ":type_traits",
     ],
-    defines = select({
-        ":linux_x86_64": [],
-        ":osx_x86_64": [],
-        ":windows_x86_64": ["BOOST_ALL_NO_LIB","BOOST_THREAD_USE_LIB", "BOOST_WIN32_THREAD"],
-    })
 )
 
 boost_library(
