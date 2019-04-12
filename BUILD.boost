@@ -32,6 +32,15 @@ config_setting(
 )
 
 config_setting(
+    name = "linux_arm",
+    constraint_values = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:arm",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
     name = "linux_x86_64",
     constraint_values = [
         "@bazel_tools//platforms:linux",
@@ -59,6 +68,11 @@ config_setting(
 )
 
 BOOST_CTX_ASM_SOURCES = select({
+    ":linux_arm": [
+        "libs/context/src/asm/jump_arm_aapcs_elf_gas.S",
+        "libs/context/src/asm/make_arm_aapcs_elf_gas.S",
+        "libs/context/src/asm/ontop_arm_aapcs_elf_gas.S",
+    ],
     ":linux_x86_64": [
         "libs/context/src/asm/jump_x86_64_sysv_elf_gas.S",
         "libs/context/src/asm/make_x86_64_sysv_elf_gas.S",
@@ -79,6 +93,9 @@ BOOST_CTX_ASM_SOURCES = select({
 boost_library(
     name = "context",
     srcs = BOOST_CTX_ASM_SOURCES + select({
+        ":linux_arm": [
+            "libs/context/src/posix/stack_traits.cpp",
+        ],
         ":linux_x86_64": [
             "libs/context/src/posix/stack_traits.cpp",
         ],
@@ -105,6 +122,8 @@ boost_library(
 )
 
 BOOST_FIBER_NUMA_SRCS = select({
+    ":linux_arm": [
+    ],
     ":linux_x86_64": [
         "libs/fiber/src/numa/linux/pin_thread.cpp",
         "libs/fiber/src/numa/linux/topology.cpp",
@@ -133,6 +152,9 @@ boost_library(
     }),
     exclude_src = ["libs/fiber/src/numa/**/*.cpp"],
     linkopts = select({
+        ":linux_arm": [
+            "-lpthread",
+        ],
         ":linux_x86_64": [
             "-lpthread",
         ],
@@ -467,6 +489,9 @@ boost_library(
 )
 
 BOOST_CORO_SRCS = select({
+    ":linux_arm": [
+        "libs/coroutine/src/posix/stack_traits.cpp",
+    ],
     ":linux_x86_64": [
         "libs/coroutine/src/posix/stack_traits.cpp",
     ],
@@ -1408,6 +1433,10 @@ boost_library(
 )
 
 BOOST_STACKTRACE_SOURCES = select({
+    ":linux_arm": [
+        "libs/stacktrace/src/basic.cpp",
+        "libs/stacktrace/src/noop.cpp",
+    ],
     ":linux_x86_64": [
         "libs/stacktrace/src/backtrace.cpp",
     ],
@@ -1484,6 +1513,10 @@ boost_library(
 boost_library(
     name = "thread",
     srcs = select({
+        ":linux_arm": [
+            "libs/thread/src/pthread/once.cpp",
+            "libs/thread/src/pthread/thread.cpp",
+        ],
         ":linux_x86_64": [
             "libs/thread/src/pthread/once.cpp",
             "libs/thread/src/pthread/thread.cpp",
@@ -1499,6 +1532,9 @@ boost_library(
         ],
     }),
     hdrs = select({
+        ":linux_arm": [
+            "libs/thread/src/pthread/once_atomic.cpp",
+        ],
         ":linux_x86_64": [
             "libs/thread/src/pthread/once_atomic.cpp",
         ],
@@ -1508,6 +1544,7 @@ boost_library(
         ":windows_x86_64": [],
     }),
     defines = select({
+        ":linux_arm": [],
         ":linux_x86_64": [],
         ":osx_x86_64": [],
         ":windows_x86_64": [
@@ -1517,6 +1554,9 @@ boost_library(
         ],
     }),
     linkopts = select({
+        ":linux_arm": [
+            "-lpthread",
+        ],
         ":linux_x86_64": [
             "-lpthread",
         ],
@@ -1777,35 +1817,81 @@ boost_library(
     ],
 )
 
+BOOST_LOG_CFLAGS = select({
+    ":linux_arm": [
+    ],
+    ":linux_x86_64": [
+        "-msse4.2",
+    ],
+    ":osx_x86_64": [
+        "-msse4.2",
+    ],
+    ":windows_x86_64": [
+        "-msse4.2",
+    ],
+})
+
+BOOST_LOG_DEFINES = [
+    "BOOST_LOG_WITHOUT_WCHAR_T",
+    "BOOST_LOG_USE_STD_REGEX",
+    "BOOST_LOG_WITHOUT_DEFAULT_FACTORIES",
+    "BOOST_LOG_WITHOUT_SETTINGS_PARSERS",
+    "BOOST_LOG_WITHOUT_DEBUG_OUTPUT",
+    "BOOST_LOG_WITHOUT_EVENT_LOG",
+    "BOOST_LOG_WITHOUT_SYSLOG",
+]
+
+BOOST_LOG_DEPS = [
+    ":asio",
+    ":date_time",
+    ":filesystem",
+    ":interprocess",
+    ":locale",
+    ":parameter",
+    ":phoenix",
+    ":random",
+    ":spirit",
+    ":system",
+    ":thread",
+    ":variant",
+]
+
+BOOST_LOG_SSSE3_DEP = select({
+    ":linux_arm": [
+    ],
+    ":linux_x86_64": [
+        ":log_dump_ssse3",
+    ],
+    ":osx_x86_64": [
+        ":log_dump_ssse3",
+    ],
+    ":windows_x86_64": [
+        ":log_dump_ssse3",
+    ],
+})
+
+cc_library(
+    name = "log_dump_ssse3",
+    visibility = ["//visibility:public"],
+    defines = BOOST_LOG_DEFINES,
+    includes = [],
+    hdrs = [],
+    srcs = ["libs/log/src/dump_ssse3.cpp"] + hdr_list("log"),
+    deps = BOOST_LOG_DEPS,
+    copts = ["-msse4.2"],
+    linkopts = [],
+    licenses = ["notice"],
+)
+
 boost_library(
     name = "log",
-    copts = ["-msse4.2"],
-    defines = [
-        "BOOST_LOG_WITHOUT_WCHAR_T",
-        "BOOST_LOG_USE_STD_REGEX",
-        "BOOST_LOG_WITHOUT_DEFAULT_FACTORIES",
-        "BOOST_LOG_WITHOUT_SETTINGS_PARSERS",
-        "BOOST_LOG_WITHOUT_DEBUG_OUTPUT",
-        "BOOST_LOG_WITHOUT_EVENT_LOG",
-        "BOOST_LOG_WITHOUT_SYSLOG",
-    ],
+    copts = BOOST_LOG_CFLAGS,
+    defines = BOOST_LOG_DEFINES,
     exclude_src = [
         "libs/log/src/dump_avx2.cpp",
+        "libs/log/src/dump_ssse3.cpp",
     ],
-    deps = [
-        ":asio",
-        ":date_time",
-        ":filesystem",
-        ":interprocess",
-        ":locale",
-        ":parameter",
-        ":phoenix",
-        ":random",
-        ":spirit",
-        ":system",
-        ":thread",
-        ":variant",
-    ],
+    deps = BOOST_LOG_DEPS + BOOST_LOG_SSSE3_DEP,
 )
 
 boost_library(
