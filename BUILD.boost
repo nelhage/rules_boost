@@ -159,6 +159,9 @@ boost_library(
 
 boost_library(
     name = "pool",
+    deps = [
+        ":integer",
+    ],
 )
 
 boost_library(
@@ -1397,6 +1400,7 @@ boost_library(
     name = "spirit",
     deps = [
         ":optional",
+        ":phoenix",
         ":range",
         ":ref",
         ":utility",
@@ -1858,4 +1862,8 @@ boost_library(
         ":unordered",
         ":xpressive",
     ],
+)
+
+boost_library(
+    name = "lambda",
 )
