@@ -67,6 +67,14 @@ config_setting(
     visibility = ["//visibility:public"],
 )
 
+config_setting(
+    name = "x86_64",
+    constraint_values = [
+        "@bazel_tools//platforms:x86_64",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 BOOST_CTX_ASM_SOURCES = select({
     ":linux_arm": [
         "libs/context/src/asm/jump_arm_aapcs_elf_gas.S",
@@ -93,10 +101,7 @@ BOOST_CTX_ASM_SOURCES = select({
 boost_library(
     name = "context",
     srcs = BOOST_CTX_ASM_SOURCES + select({
-        ":linux_arm": [
-            "libs/context/src/posix/stack_traits.cpp",
-        ],
-        ":linux_x86_64": [
+        ":linux": [
             "libs/context/src/posix/stack_traits.cpp",
         ],
         ":osx_x86_64": [
@@ -152,10 +157,7 @@ boost_library(
     }),
     exclude_src = ["libs/fiber/src/numa/**/*.cpp"],
     linkopts = select({
-        ":linux_arm": [
-            "-lpthread",
-        ],
-        ":linux_x86_64": [
+        ":linux": [
             "-lpthread",
         ],
         ":osx_x86_64": [
@@ -489,10 +491,7 @@ boost_library(
 )
 
 BOOST_CORO_SRCS = select({
-    ":linux_arm": [
-        "libs/coroutine/src/posix/stack_traits.cpp",
-    ],
-    ":linux_x86_64": [
+    ":linux": [
         "libs/coroutine/src/posix/stack_traits.cpp",
     ],
     ":osx_x86_64": [
@@ -1513,11 +1512,7 @@ boost_library(
 boost_library(
     name = "thread",
     srcs = select({
-        ":linux_arm": [
-            "libs/thread/src/pthread/once.cpp",
-            "libs/thread/src/pthread/thread.cpp",
-        ],
-        ":linux_x86_64": [
+        ":linux": [
             "libs/thread/src/pthread/once.cpp",
             "libs/thread/src/pthread/thread.cpp",
         ],
@@ -1532,10 +1527,7 @@ boost_library(
         ],
     }),
     hdrs = select({
-        ":linux_arm": [
-            "libs/thread/src/pthread/once_atomic.cpp",
-        ],
-        ":linux_x86_64": [
+        ":linux": [
             "libs/thread/src/pthread/once_atomic.cpp",
         ],
         ":osx_x86_64": [
@@ -1554,10 +1546,7 @@ boost_library(
         ],
     }),
     linkopts = select({
-        ":linux_arm": [
-            "-lpthread",
-        ],
-        ":linux_x86_64": [
+        ":linux": [
             "-lpthread",
         ],
         ":osx_x86_64": [
@@ -1820,13 +1809,7 @@ boost_library(
 BOOST_LOG_CFLAGS = select({
     ":linux_arm": [
     ],
-    ":linux_x86_64": [
-        "-msse4.2",
-    ],
-    ":osx_x86_64": [
-        "-msse4.2",
-    ],
-    ":windows_x86_64": [
+    ":x86_64": [
         "-msse4.2",
     ],
 })
@@ -1859,28 +1842,22 @@ BOOST_LOG_DEPS = [
 BOOST_LOG_SSSE3_DEP = select({
     ":linux_arm": [
     ],
-    ":linux_x86_64": [
-        ":log_dump_ssse3",
-    ],
-    ":osx_x86_64": [
-        ":log_dump_ssse3",
-    ],
-    ":windows_x86_64": [
+    ":x86_64": [
         ":log_dump_ssse3",
     ],
 })
 
 cc_library(
     name = "log_dump_ssse3",
-    visibility = ["//visibility:public"],
+    srcs = ["libs/log/src/dump_ssse3.cpp"] + hdr_list("log"),
+    hdrs = [],
+    copts = ["-msse4.2"],
     defines = BOOST_LOG_DEFINES,
     includes = [],
-    hdrs = [],
-    srcs = ["libs/log/src/dump_ssse3.cpp"] + hdr_list("log"),
-    deps = BOOST_LOG_DEPS,
-    copts = ["-msse4.2"],
-    linkopts = [],
     licenses = ["notice"],
+    linkopts = [],
+    visibility = ["//visibility:public"],
+    deps = BOOST_LOG_DEPS,
 )
 
 boost_library(
