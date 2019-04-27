@@ -1849,15 +1849,15 @@ BOOST_LOG_SSSE3_DEP = select({
 
 cc_library(
     name = "log_dump_ssse3",
-    visibility = ["//visibility:public"],
+    srcs = ["libs/log/src/dump_ssse3.cpp"] + hdr_list("log"),
+    hdrs = [],
+    copts = ["-msse4.2"],
     defines = BOOST_LOG_DEFINES,
     includes = [],
-    hdrs = [],
-    srcs = ["libs/log/src/dump_ssse3.cpp"] + hdr_list("log"),
-    deps = BOOST_LOG_DEPS,
-    copts = ["-msse4.2"],
-    linkopts = [],
     licenses = ["notice"],
+    linkopts = [],
+    visibility = ["//visibility:public"],
+    deps = BOOST_LOG_DEPS,
 )
 
 boost_library(
