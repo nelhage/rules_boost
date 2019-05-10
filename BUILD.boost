@@ -1492,7 +1492,10 @@ boost_library(
         ":predef",
         ":utility",
     ],
-    defines = ["BOOST_ALL_NO_LIB"],
+    defines = select({
+            ":windows_x86_64": ["BOOST_ALL_NO_LIB"],
+            ":default": [],
+    }),
 )
 
 boost_library(
