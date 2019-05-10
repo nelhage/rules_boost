@@ -1492,6 +1492,7 @@ boost_library(
         ":predef",
         ":utility",
     ],
+    defines = ["BOOST_ALL_NO_LIB"],
 )
 
 boost_library(
