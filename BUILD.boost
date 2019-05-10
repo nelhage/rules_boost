@@ -623,6 +623,7 @@ boost_library(
         ":system",
         ":type_traits",
     ],
+    defines = ["BOOST_ALL_NO_LIB"],
 )
 
 boost_library(
