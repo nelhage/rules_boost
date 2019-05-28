@@ -623,14 +623,6 @@ boost_library(
         ":system",
         ":type_traits",
     ],
-    defines = select({
-        ":linux_arm": [],
-        ":linux_x86_64": [],
-        ":osx_x86_64": [],
-        ":windows_x86_64": [
-            "BOOST_ALL_NO_LIB",
-        ],
-    }),
 )
 
 boost_library(
@@ -1499,14 +1491,6 @@ boost_library(
         ":predef",
         ":utility",
     ],
-    defines = select({
-        ":linux_arm": [],
-        ":linux_x86_64": [],
-        ":osx_x86_64": [],
-        ":windows_x86_64": [
-            "BOOST_ALL_NO_LIB",
-        ],
-    }),
 )
 
 boost_library(

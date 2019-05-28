@@ -51,6 +51,12 @@ def boost_library(
     if defines == None:
         defines = []
 
+	defines = select({
+			":windows_x86_64": defines + [
+				"BOOST_ALL_NO_LIB",
+			],
+		})
+
     if includes == None:
         includes = []
 
