@@ -25,6 +25,11 @@ default_copts = select({
     "//conditions:default": [],
 })
 
+default_defines = select({
+    ":windows_x86_64": ["BOOST_ALL_NO_LIB",	], # Turn auto_link off in MSVC compiler
+    "//conditions:default": [],	
+})
+
 def srcs_list(library_name, exclude):
     return native.glob(
         [p % (library_name,) for p in srcs_patterns],
@@ -72,7 +77,7 @@ def boost_library(
     return native.cc_library(
         name = name,
         visibility = visibility,
-        defines = defines,
+        defines = default_defines + defines,
         includes = includes_list(name) + includes,
         hdrs = hdr_list(name) + hdrs,
         srcs = srcs_list(name, exclude_src) + srcs,
