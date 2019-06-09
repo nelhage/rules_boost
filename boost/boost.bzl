@@ -26,8 +26,8 @@ default_copts = select({
 })
 
 default_defines = select({
-    ":windows_x86_64": ["BOOST_ALL_NO_LIB",	], # Turn auto_link off in MSVC compiler
-    "//conditions:default": [],	
+    ":windows_x86_64": ["BOOST_ALL_NO_LIB"],  # Turn auto_link off in MSVC compiler
+    "//conditions:default": [],
 })
 
 def srcs_list(library_name, exclude):
@@ -129,11 +129,11 @@ def boost_deps():
     if "boost" not in native.existing_rules():
         http_archive(
             name = "boost",
-            build_file = "@com_github_nelhage_rules_boost//:BUILD.boost",
-            sha256 = "da3411ea45622579d419bfda66f45cd0f8c32a181d84adfa936f5688388995cf",
-            strip_prefix = "boost_1_68_0",
             urls = [
-                "https://%s.dl.sourceforge.net/project/boost/boost/1.68.0/boost_1_68_0.tar.gz" % m
+                "https://%s.dl.sourceforge.net/project/boost/boost/1.69.0/boost_1_69_0.tar.gz" % m
                 for m in SOURCEFORGE_MIRRORS
             ],
+            build_file = "@com_github_nelhage_rules_boost//:BUILD.boost",
+            strip_prefix = "boost_1_69_0",
+            sha256 = "9a2c2819310839ea373f42d69e733c339b4e9a19deab6bfec448281554aa4dbb",
         )
