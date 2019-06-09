@@ -26,8 +26,8 @@ default_copts = select({
 })
 
 default_defines = select({
-    ":windows_x86_64": ["BOOST_ALL_NO_LIB",	], # Turn auto_link off in MSVC compiler
-    "//conditions:default": [],	
+    ":windows_x86_64": ["BOOST_ALL_NO_LIB"],  # Turn auto_link off in MSVC compiler
+    "//conditions:default": [],
 })
 
 def srcs_list(library_name, exclude):
