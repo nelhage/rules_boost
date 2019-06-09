@@ -762,12 +762,10 @@ boost_library(
 
 boost_library(
     name = "integer",
-    hdrs = [
+    hdrs = glob([
+        "boost/integer/**/*.hpp",
         "boost/cstdint.hpp",
-        "boost/integer_traits.hpp",
-        "boost/pending/integer_log2.hpp",
-        "boost/pending/lowest_bit.hpp",
-    ],
+    ]),
     deps = [
         ":static_assert",
     ],
