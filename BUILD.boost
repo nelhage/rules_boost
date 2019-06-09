@@ -1,5 +1,12 @@
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "hdr_list", "includes_list")
 
+_w_no_deprecated = select({
+    ":linux": [
+        "-Wno-deprecated-declarations",
+    ],
+    "//conditions:default": [],
+})
+
 config_setting(
     name = "linux",
     constraint_values = [
@@ -20,6 +27,15 @@ config_setting(
     name = "windows",
     constraint_values = [
         "@bazel_tools//platforms:windows",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "linux_arm",
+    constraint_values = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:arm",
     ],
     visibility = ["//visibility:public"],
 )
@@ -51,7 +67,20 @@ config_setting(
     visibility = ["//visibility:public"],
 )
 
+config_setting(
+    name = "x86_64",
+    constraint_values = [
+        "@bazel_tools//platforms:x86_64",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 BOOST_CTX_ASM_SOURCES = select({
+    ":linux_arm": [
+        "libs/context/src/asm/jump_arm_aapcs_elf_gas.S",
+        "libs/context/src/asm/make_arm_aapcs_elf_gas.S",
+        "libs/context/src/asm/ontop_arm_aapcs_elf_gas.S",
+    ],
     ":linux_x86_64": [
         "libs/context/src/asm/jump_x86_64_sysv_elf_gas.S",
         "libs/context/src/asm/make_x86_64_sysv_elf_gas.S",
@@ -72,7 +101,7 @@ BOOST_CTX_ASM_SOURCES = select({
 boost_library(
     name = "context",
     srcs = BOOST_CTX_ASM_SOURCES + select({
-        ":linux_x86_64": [
+        ":linux": [
             "libs/context/src/posix/stack_traits.cpp",
         ],
         ":osx_x86_64": [
@@ -98,6 +127,8 @@ boost_library(
 )
 
 BOOST_FIBER_NUMA_SRCS = select({
+    ":linux_arm": [
+    ],
     ":linux_x86_64": [
         "libs/fiber/src/numa/linux/pin_thread.cpp",
         "libs/fiber/src/numa/linux/topology.cpp",
@@ -126,7 +157,7 @@ boost_library(
     }),
     exclude_src = ["libs/fiber/src/numa/**/*.cpp"],
     linkopts = select({
-        ":linux_x86_64": [
+        ":linux": [
             "-lpthread",
         ],
         ":osx_x86_64": [
@@ -152,6 +183,9 @@ boost_library(
 
 boost_library(
     name = "pool",
+    deps = [
+        ":integer",
+    ],
 )
 
 boost_library(
@@ -250,6 +284,12 @@ boost_library(
 
 boost_library(
     name = "asio",
+    defines = select({
+        ":osx_x86_64": [
+            "BOOST_ASIO_DISABLE_STD_EXPERIMENTAL_STRING_VIEW",
+        ],
+        "//conditions:default": [],
+    }),
     linkopts = ["-lpthread"],
     deps = [
         ":bind",
@@ -427,16 +467,16 @@ boost_library(
     name = "conversion",
     hdrs = [
         "boost/cast.hpp",
-        "boost/polymorphic_cast.hpp",
-        "boost/polymorphic_pointer_cast.hpp",
         "boost/implicit_cast.hpp",
         "boost/lexical_cast.hpp",
+        "boost/polymorphic_cast.hpp",
+        "boost/polymorphic_pointer_cast.hpp",
     ],
     deps = [
         ":assert",
         ":config",
-        ":throw_exception",
         ":fusion",
+        ":throw_exception",
     ],
 )
 
@@ -451,7 +491,7 @@ boost_library(
 )
 
 BOOST_CORO_SRCS = select({
-    ":linux_x86_64": [
+    ":linux": [
         "libs/coroutine/src/posix/stack_traits.cpp",
     ],
     ":osx_x86_64": [
@@ -496,8 +536,8 @@ boost_library(
 
 boost_library(
     name = "date_time",
-    hdrs = glob(["libs/date_time/src/**/*.hpp"]),
     srcs = glob(["libs/date_time/src/**/*.cpp"]),
+    hdrs = glob(["libs/date_time/src/**/*.hpp"]),
     deps = [
         ":algorithm",
         ":io",
@@ -572,9 +612,7 @@ boost_library(
 
 boost_library(
     name = "filesystem",
-    copts = [
-        "-Wno-deprecated-declarations",
-    ],
+    copts = _w_no_deprecated,
     deps = [
         ":config",
         ":functional",
@@ -725,7 +763,7 @@ boost_library(
 )
 
 boost_library(
-    name = "implicit_cast"
+    name = "implicit_cast",
 )
 
 boost_library(
@@ -889,9 +927,7 @@ boost_library(
     copts = [
         "-DBOOST_LOCALE_WITH_ICONV",
         "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
-        # boost::locale implementation uses deprecated auto_ptr
-        "-Wno-deprecated-declarations",
-    ],
+    ] + _w_no_deprecated,
     deps = [
         ":assert",
         ":config",
@@ -964,17 +1000,17 @@ boost_library(
 boost_library(
     name = "msm",
     deps = [
+        ":any",
+        ":bind",
         ":detail",
+        ":function",
+        ":fusion",
         ":mpl",
-        ":serialization",
-        ":proto",
         ":noncopyable",
         ":parameter",
-        ":any",
-        ":function",
-        ":bind",
+        ":proto",
+        ":serialization",
         ":type_traits",
-        ":fusion",
     ],
 )
 
@@ -1407,12 +1443,18 @@ boost_library(
     name = "spirit",
     deps = [
         ":optional",
+        ":phoenix",
+        ":range",
         ":ref",
         ":utility",
     ],
 )
 
 BOOST_STACKTRACE_SOURCES = select({
+    ":linux_arm": [
+        "libs/stacktrace/src/basic.cpp",
+        "libs/stacktrace/src/noop.cpp",
+    ],
     ":linux_x86_64": [
         "libs/stacktrace/src/backtrace.cpp",
     ],
@@ -1488,14 +1530,49 @@ boost_library(
 
 boost_library(
     name = "thread",
-    srcs = [
-        "libs/thread/src/pthread/once.cpp",
-        "libs/thread/src/pthread/thread.cpp",
-    ],
-    hdrs = [
-        "libs/thread/src/pthread/once_atomic.cpp",
-    ],
-    linkopts = ["-lpthread"],
+    srcs = select({
+        ":linux": [
+            "libs/thread/src/pthread/once.cpp",
+            "libs/thread/src/pthread/thread.cpp",
+        ],
+        ":osx_x86_64": [
+            "libs/thread/src/pthread/once.cpp",
+            "libs/thread/src/pthread/thread.cpp",
+        ],
+        ":windows_x86_64": [
+            "libs/thread/src/win32/thread.cpp",
+            "libs/thread/src/win32/tss_dll.cpp",
+            "libs/thread/src/win32/tss_pe.cpp",
+        ],
+    }),
+    hdrs = select({
+        ":linux": [
+            "libs/thread/src/pthread/once_atomic.cpp",
+        ],
+        ":osx_x86_64": [
+            "libs/thread/src/pthread/once_atomic.cpp",
+        ],
+        ":windows_x86_64": [],
+    }),
+    defines = select({
+        ":linux_arm": [],
+        ":linux_x86_64": [],
+        ":osx_x86_64": [],
+        ":windows_x86_64": [
+            "BOOST_ALL_NO_LIB",
+            "BOOST_THREAD_USE_LIB",
+            "BOOST_WIN32_THREAD",
+        ],
+    }),
+    linkopts = select({
+        ":linux": [
+            "-lpthread",
+        ],
+        ":osx_x86_64": [
+            "-lpthread",
+        ],
+        ":windows_x86_64": [],
+    }),
     deps = [
         ":algorithm",
         ":atomic",
@@ -1748,35 +1825,69 @@ boost_library(
     ],
 )
 
+BOOST_LOG_CFLAGS = select({
+    ":linux_arm": [
+    ],
+    ":x86_64": [
+        "-msse4.2",
+    ],
+})
+
+BOOST_LOG_DEFINES = [
+    "BOOST_LOG_WITHOUT_WCHAR_T",
+    "BOOST_LOG_USE_STD_REGEX",
+    "BOOST_LOG_WITHOUT_DEFAULT_FACTORIES",
+    "BOOST_LOG_WITHOUT_SETTINGS_PARSERS",
+    "BOOST_LOG_WITHOUT_DEBUG_OUTPUT",
+    "BOOST_LOG_WITHOUT_EVENT_LOG",
+    "BOOST_LOG_WITHOUT_SYSLOG",
+]
+
+BOOST_LOG_DEPS = [
+    ":asio",
+    ":date_time",
+    ":filesystem",
+    ":interprocess",
+    ":locale",
+    ":parameter",
+    ":phoenix",
+    ":random",
+    ":spirit",
+    ":system",
+    ":thread",
+    ":variant",
+]
+
+BOOST_LOG_SSSE3_DEP = select({
+    ":linux_arm": [
+    ],
+    ":x86_64": [
+        ":log_dump_ssse3",
+    ],
+})
+
+cc_library(
+    name = "log_dump_ssse3",
+    srcs = ["libs/log/src/dump_ssse3.cpp"] + hdr_list("log"),
+    hdrs = [],
+    copts = ["-msse4.2"],
+    defines = BOOST_LOG_DEFINES,
+    includes = [],
+    licenses = ["notice"],
+    linkopts = [],
+    visibility = ["//visibility:public"],
+    deps = BOOST_LOG_DEPS,
+)
+
 boost_library(
     name = "log",
-    copts = ["-msse4.2"],
-    defines = [
-        "BOOST_LOG_WITHOUT_WCHAR_T",
-        "BOOST_LOG_USE_STD_REGEX",
-        "BOOST_LOG_WITHOUT_DEFAULT_FACTORIES",
-        "BOOST_LOG_WITHOUT_SETTINGS_PARSERS",
-        "BOOST_LOG_WITHOUT_DEBUG_OUTPUT",
-        "BOOST_LOG_WITHOUT_EVENT_LOG",
-        "BOOST_LOG_WITHOUT_SYSLOG",
-    ],
+    copts = BOOST_LOG_CFLAGS,
+    defines = BOOST_LOG_DEFINES,
     exclude_src = [
         "libs/log/src/dump_avx2.cpp",
+        "libs/log/src/dump_ssse3.cpp",
     ],
-    deps = [
-        ":asio",
-        ":date_time",
-        ":filesystem",
-        ":interprocess",
-        ":locale",
-        ":parameter",
-        ":phoenix",
-        ":random",
-        ":spirit",
-        ":system",
-        ":thread",
-        ":variant",
-    ],
+    deps = BOOST_LOG_DEPS + BOOST_LOG_SSSE3_DEP,
 )
 
 boost_library(
@@ -1789,31 +1900,52 @@ boost_library(
 )
 
 boost_library(
-  name = "xpressive",
-  deps = [
-    ":type_traits",
-    ":core",
-    ":config",
-  ]
+    name = "xpressive",
+    deps = [
+        ":config",
+        ":core",
+        ":type_traits",
+    ],
 )
 
 boost_library(
-  name = "property_map",
-  deps = [
-    ":type_traits",
-    ":core",
-    ":config",
-    ":lexical_cast",
-    ":function",
-  ]
+    name = "property_map",
+    deps = [
+        ":config",
+        ":core",
+        ":function",
+        ":lexical_cast",
+        ":type_traits",
+    ],
 )
 
 boost_library(
-  name = "graph",
-  deps = [
-    ":property_map",
-    ":property_tree",
-    ":lexical_cast",
-    ":xpressive",
-  ]
+    name = "graph",
+    hdrs = [
+        "boost/pending/container_traits.hpp",
+        "boost/pending/detail/property.hpp",
+        "boost/pending/indirect_cmp.hpp",
+        "boost/pending/property.hpp",
+        "boost/pending/queue.hpp",
+        "boost/pending/relaxed_heap.hpp",
+    ],
+    deps = [
+        ":algorithm",
+        ":conversion",
+        ":fusion",
+        ":intrusive_ptr",
+        ":lexical_cast",
+        ":parameter",
+        ":property_map",
+        ":property_tree",
+        ":proto",
+        ":tti",
+        ":typeof",
+        ":unordered",
+        ":xpressive",
+    ],
+)
+
+boost_library(
+    name = "lambda",
 )
