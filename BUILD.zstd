@@ -1,0 +1,27 @@
+package(default_visibility = ["//visibility:public"])
+
+licenses(["notice"])  # BSD/MIT-like license (for zlib)
+
+cc_library(
+    name = "zstd",
+    srcs = glob(
+        ["**/*.c"],
+        exclude = glob([
+            "zstd-1.4.0/contrib/**/*",
+            "zstd-1.4.0/tests/**/*",
+            "zstd-1.4.0/programs/**/*",
+            "zstd-1.4.0/examples/**/*",
+            "zstd-1.4.0/zlibWrapper/examples/**/*",
+            "zstd-1.4.0/doc/**/*",
+        ]),
+    ),
+    hdrs = glob(
+        ["**/*.h"],
+        exclude = glob(["zstd-1.4.0/contrib/**/*"]),
+    ),
+    includes = [
+        "zstd-1.4.0",
+        "zstd-1.4.0/lib/common",
+        #"zstd-1.4.0/contrib/linux-kernel/lib/zstd",
+    ],
+)

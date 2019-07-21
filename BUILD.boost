@@ -763,8 +763,10 @@ boost_library(
 boost_library(
     name = "integer",
     hdrs = glob([
-        "boost/integer/**/*.hpp",
         "boost/cstdint.hpp",
+        "boost/integer_traits.hpp",
+        "boost/pending/integer_log2.hpp",
+        "boost/pending/lowest_bit.hpp",
     ]),
     deps = [
         ":static_assert",
@@ -861,6 +863,7 @@ boost_library(
         "@net_zlib_zlib//:zlib",
         "@org_bzip_bzip2//:bz2lib",
         "@org_lzma_lzma//:lzma",
+        "@org_zstd_zstd//:zstd",
     ],
 )
 
@@ -1457,9 +1460,6 @@ boost_library(
     }),
     exclude_src = ["libs/stacktrace/src/*.cpp"],
     linkopts = select({
-        ":linux_x86_64": [
-            "-lbacktrace -ldl",
-        ],
         "//conditions:default": [],
     }),
     deps = [
@@ -1470,6 +1470,7 @@ boost_library(
         ":lexical_cast",
         ":static_assert",
         ":type_traits",
+        "@org_libbacktrace_libbacktrace//:libbacktrace",
     ],
 )
 

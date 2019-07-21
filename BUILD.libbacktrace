@@ -1,0 +1,24 @@
+load("@com_github_nelhage_rules_boost//:configure/configure.bzl", "cc_configurable_lib")
+
+cc_configurable_lib(
+    name = "libbacktrace",
+    srcs = glob(
+        [
+            "**/*.c",
+            "**/*.h",
+        ],
+        exclude = ["backtrace.h"],
+    ),
+    hdrs = ["backtrace.h"],
+    config_outputs = ["config.h"],
+    configurator = "configure",
+    data = glob(
+        ["**/*"],
+        exclude = glob([
+            "**/*.c",
+            "**/*.h",
+        ]),
+    ),
+    visibility = ["//visibility:public"],
+    deps = [],
+)

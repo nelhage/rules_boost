@@ -1,4 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "new_git_repository")
 
 include_pattern = "boost/%s/"
 
@@ -124,6 +125,24 @@ def boost_deps():
                 "https://%s.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz" % m
                 for m in SOURCEFORGE_MIRRORS
             ],
+        )
+
+    if "org_zstd_zstd" not in native.existing_rules():
+        http_archive(
+            name = "org_zstd_zstd",
+            build_file = "@com_github_nelhage_rules_boost//:BUILD.zstd",
+            sha256 = "7f323f0e0c18488748f3d9b2d4353f00e904ea2ccd0372ea04d7f77aa1156557",
+            urls = [
+                "https://github.com/facebook/zstd/releases/download/v1.4.0/zstd-1.4.0.tar.gz",
+            ],
+        )
+
+    if "org_libbacktrace_libbacktrace" not in native.existing_rules():
+        new_git_repository(
+            name = "org_libbacktrace_libbacktrace",
+            build_file = "@com_github_nelhage_rules_boost//:BUILD.libbacktrace",
+            remote = "https://github.com/ianlancetaylor/libbacktrace.git",
+            commit = "5a99ff7fed66b8ea8f09c9805c138524a7035ece",
         )
 
     if "boost" not in native.existing_rules():
