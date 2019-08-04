@@ -1932,3 +1932,5 @@ boost_library(
 boost_library(
     name = "lambda",
 )
+
+boost_library(name="sort",)
