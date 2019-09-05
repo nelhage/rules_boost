@@ -1,0 +1,26 @@
+---
+tasks:
+  ubuntu1604:
+    working_directory: test
+    build_targets:
+    - "..."
+    test_targets:
+    - "..."
+  ubuntu1804:
+    working_directory: test
+    build_targets:
+    - "..."
+    test_targets:
+    - "..."
+  macos:
+    working_directory: test
+    build_targets:
+    - "..."
+    test_targets:
+    - "..."
+  windows:
+    working_directory: test
+    build_targets:
+    - "..."
+    test_targets:
+    - "..."
