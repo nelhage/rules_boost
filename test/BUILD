@@ -117,6 +117,15 @@ cc_test(
 )
 
 cc_test(
+    name = "coroutine2_test",
+    size = "small",
+    srcs = ["coroutine2_test.cc"],
+    deps = [
+        "@boost//:coroutine2",
+    ],
+)
+
+cc_test(
     name = "coroutine_test",
     size = "small",
     srcs = ["coroutine_test.cc"],
