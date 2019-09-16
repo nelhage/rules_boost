@@ -166,7 +166,6 @@ cc_test(
     name = "format_test",
     size = "small",
     srcs = ["format_test.cc"],
-    copts = ["-Wno-unused-value"],
     deps = [
         "@boost//:format",
     ],

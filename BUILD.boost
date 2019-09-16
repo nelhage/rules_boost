@@ -7,6 +7,13 @@ _w_no_deprecated = select({
     "//conditions:default": [],
 })
 
+_w_no_unused_value = select({
+    ":linux": [
+        "-Wno-unused-value",
+    ],
+    "//conditions:default": [],
+})
+
 config_setting(
     name = "linux",
     constraint_values = [
@@ -656,6 +663,7 @@ boost_library(
 
 boost_library(
     name = "format",
+    copts = _w_no_unused_value,
     deps = [
         ":assert",
         ":config",
