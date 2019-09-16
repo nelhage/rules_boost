@@ -532,8 +532,8 @@ boost_library(
         "libs/coroutine2/include/**/*.ipp",
     ]),
     deps = [
-        ":config",
         ":assert",
+        ":config",
         ":context",
         ":detail",
     ],
@@ -1927,13 +1927,13 @@ boost_library(
     name = "graph",
     hdrs = [
         "boost/pending/container_traits.hpp",
+        "boost/pending/detail/disjoint_sets.hpp",
         "boost/pending/detail/property.hpp",
+        "boost/pending/disjoint_sets.hpp",
         "boost/pending/indirect_cmp.hpp",
         "boost/pending/property.hpp",
         "boost/pending/queue.hpp",
         "boost/pending/relaxed_heap.hpp",
-        "boost/pending/disjoint_sets.hpp",
-        "boost/pending/detail/disjoint_sets.hpp",
     ],
     deps = [
         ":algorithm",
@@ -1957,6 +1957,5 @@ boost_library(
 )
 
 boost_library(
-    name="sort",
+    name = "sort",
 )
-

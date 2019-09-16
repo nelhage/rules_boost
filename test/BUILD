@@ -444,8 +444,8 @@ cc_test(
     name = "hana_test",
     size = "small",
     srcs = ["hana_test.cc"],
+    copts = ["-std=c++14"],
     deps = [
         "@boost//:hana",
     ],
-    copts=["-std=c++14",],
 )
