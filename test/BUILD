@@ -108,15 +108,6 @@ cc_test(
 )
 
 cc_test(
-    name = "compute_test",
-    size = "small",
-    srcs = ["compute_test.cc"],
-    deps = [
-        "@boost//:compute",
-    ],
-)
-
-cc_test(
     name = "coroutine2_test",
     size = "small",
     srcs = ["coroutine2_test.cc"],
