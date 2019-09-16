@@ -123,6 +123,7 @@ boost_library(
         ":cstdint",
         ":detail",
         ":intrusive_ptr",
+        ":pool",
     ],
 )
 
