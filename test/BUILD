@@ -108,15 +108,6 @@ cc_test(
 )
 
 cc_test(
-    name = "compute_test",
-    size = "small",
-    srcs = ["compute_test.cc"],
-    deps = [
-        "@boost//:compute",
-    ],
-)
-
-cc_test(
     name = "coroutine2_test",
     size = "small",
     srcs = ["coroutine2_test.cc"],
@@ -175,7 +166,6 @@ cc_test(
     name = "format_test",
     size = "small",
     srcs = ["format_test.cc"],
-    copts = ["-Wno-unused-value"],
     deps = [
         "@boost//:format",
     ],
@@ -454,8 +444,8 @@ cc_test(
     name = "hana_test",
     size = "small",
     srcs = ["hana_test.cc"],
+    copts = ["-std=c++14"],
     deps = [
         "@boost//:hana",
     ],
-    copts=["-std=c++14",],
 )

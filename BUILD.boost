@@ -7,6 +7,13 @@ _w_no_deprecated = select({
     "//conditions:default": [],
 })
 
+_w_no_unused_value = select({
+    ":linux": [
+        "-Wno-unused-value",
+    ],
+    "//conditions:default": [],
+})
+
 config_setting(
     name = "linux",
     constraint_values = [
@@ -525,8 +532,8 @@ boost_library(
         "libs/coroutine2/include/**/*.ipp",
     ]),
     deps = [
-        ":config",
         ":assert",
+        ":config",
         ":context",
         ":detail",
     ],
@@ -656,6 +663,7 @@ boost_library(
 
 boost_library(
     name = "format",
+    copts = _w_no_unused_value,
     deps = [
         ":assert",
         ":config",
@@ -1919,13 +1927,13 @@ boost_library(
     name = "graph",
     hdrs = [
         "boost/pending/container_traits.hpp",
+        "boost/pending/detail/disjoint_sets.hpp",
         "boost/pending/detail/property.hpp",
+        "boost/pending/disjoint_sets.hpp",
         "boost/pending/indirect_cmp.hpp",
         "boost/pending/property.hpp",
         "boost/pending/queue.hpp",
         "boost/pending/relaxed_heap.hpp",
-        "boost/pending/disjoint_sets.hpp",
-        "boost/pending/detail/disjoint_sets.hpp",
     ],
     deps = [
         ":algorithm",
@@ -1949,6 +1957,5 @@ boost_library(
 )
 
 boost_library(
-    name="sort",
+    name = "sort",
 )
-
