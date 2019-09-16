@@ -123,6 +123,7 @@ boost_library(
         ":cstdint",
         ":detail",
         ":intrusive_ptr",
+        ":pool",
     ],
 )
 
@@ -514,6 +515,20 @@ boost_library(
         ":range",
         ":system",
         ":thread",
+    ],
+)
+
+boost_library(
+    name = "coroutine2",
+    hdrs = glob([
+        "libs/coroutine2/include/**/*.hpp",
+        "libs/coroutine2/include/**/*.ipp",
+    ]),
+    deps = [
+        ":config",
+        ":assert",
+        ":context",
+        ":detail",
     ],
 )
 
