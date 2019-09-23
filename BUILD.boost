@@ -914,24 +914,53 @@ boost_library(
     name = "limits",
 )
 
-boost_library(
-    name = "locale",
-    srcs =
-        glob(
-            [
-                "libs/locale/src/**/*.cpp",
-                "libs/locale/src/**/*.hpp",
-                "libs/locale/src/**/*.ipp",
-            ],
-            exclude = [
-                "libs/locale/src/win32/*.cpp",
-                "libs/locale/src/icu/*.cpp",
-            ],
-        ),
-    copts = [
+BOOST_LOCALE_COMMON_SOURCES = glob([
+    "libs/locale/src/encoding/*.cpp",
+    "libs/locale/src/encoding/*.hpp",
+    "libs/locale/src/encoding/*.ipp",
+    "libs/locale/src/shared/*.cpp",
+    "libs/locale/src/shared/*.hpp",
+    "libs/locale/src/std/*.cpp",
+    "libs/locale/src/std/*.hpp",
+    "libs/locale/src/util/*.cpp",
+    "libs/locale/src/util/*.hpp",
+], exclude=[
+    "libs/locale/src/util/iconv.hpp",
+])
+
+BOOST_LOCALE_POSIX_SOURCES = BOOST_LOCALE_COMMON_SOURCES + [
+    "libs/locale/src/util/iconv.hpp",
+] + glob([
+    "libs/locale/src/posix/*.cpp",
+    "libs/locale/src/posix/*.hpp",
+])
+
+BOOST_LOCALE_WIN32_SOURCES = BOOST_LOCALE_COMMON_SOURCES + glob([
+    "libs/locale/src/win32/*.cpp",
+    "libs/locale/src/win32/*.hpp",
+])
+
+BOOST_LOCALE_POSIX_COPTS = [
         "-DBOOST_LOCALE_WITH_ICONV",
         "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
-    ] + _w_no_deprecated,
+    ]
+
+BOOST_LOCALE_WIN32_COPTS = []
+
+boost_library(
+    name = "locale",
+    srcs = select({
+            ":linux_arm": BOOST_LOCALE_POSIX_SOURCES,
+            ":linux_x86_64": BOOST_LOCALE_POSIX_SOURCES,
+            ":osx_x86_64": BOOST_LOCALE_POSIX_SOURCES,
+            ":windows_x86_64": BOOST_LOCALE_WIN32_SOURCES,
+            }),
+    copts = select({
+            ":linux_arm": BOOST_LOCALE_POSIX_COPTS,
+            ":linux_x86_64": BOOST_LOCALE_POSIX_COPTS,
+            ":osx_x86_64": BOOST_LOCALE_POSIX_COPTS,
+            ":windows_x86_64": BOOST_LOCALE_WIN32_COPTS,
+            }) + _w_no_deprecated,
     deps = [
         ":assert",
         ":config",
