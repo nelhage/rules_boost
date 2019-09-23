@@ -82,6 +82,19 @@ config_setting(
     visibility = ["//visibility:public"],
 )
 
+# TODO(https://github.com/bazelbuild/bazel-skylib/issues/191): use
+# expand_template instead of `sed`.
+[genrule(
+    name = "clean_%s_asm" % name,
+    outs = [
+        "libs/context/src/asm/%s_x86_64_ms_pe_masm_clean.asm" % name,
+    ],
+    cmd = "sed 's/BOOST_CONTEXT_EXPORT//' $< > $@",
+    srcs = [
+        "libs/context/src/asm/%s_x86_64_ms_pe_masm.asm" % name,
+    ],
+) for name in ["make", "jump", "ontop"]]
+
 BOOST_CTX_ASM_SOURCES = select({
     ":linux_arm": [
         "libs/context/src/asm/jump_arm_aapcs_elf_gas.S",
@@ -99,9 +112,9 @@ BOOST_CTX_ASM_SOURCES = select({
         "libs/context/src/asm/ontop_x86_64_sysv_macho_gas.S",
     ],
     ":windows_x86_64": [
-        "libs/context/src/asm/make_x86_64_ms_pe_masm.asm",
-        "libs/context/src/asm/jump_x86_64_ms_pe_masm.asm",
-        "libs/context/src/asm/ontop_x86_64_ms_pe_masm.asm",
+        "libs/context/src/asm/make_x86_64_ms_pe_masm_clean.asm",
+        "libs/context/src/asm/jump_x86_64_ms_pe_masm_clean.asm",
+        "libs/context/src/asm/ontop_x86_64_ms_pe_masm_clean.asm",
     ],
 })
 
