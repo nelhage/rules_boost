@@ -2,20 +2,31 @@
 #    lzma is a general purpose data compression library https://tukaani.org/xz/
 #    Public Domain
 
-# Generate config.h
-genrule(
-    name = "configure_lzma",
-    outs = [
-        "config.h",
-    ],
-    cmd = "cd external/org_lzma_lzma && ./configure > /dev/null && cp config.h ../../$(location config.h)",
-    tools = [
-        "configure",
-        "src/liblzma/common/common.h",
-    ] + glob([
-        "build-aux/*",
-        "**/*.in",
-    ]),
+load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+
+config_setting(
+    name = "linux",
+    constraint_values = ["@bazel_tools//platforms:linux"],
+)
+
+config_setting(
+    name = "osx",
+    constraint_values = ["@bazel_tools//platforms:osx"],
+)
+
+config_setting(
+    name = "windows",
+    constraint_values = ["@bazel_tools//platforms:windows"],
+)
+
+copy_file(
+    name = "copy_config",
+    src = select({
+        ":linux": "@com_github_nelhage_rules_boost//:config.lzma-linux.h",
+        ":osx": "@com_github_nelhage_rules_boost//:config.lzma-osx.h",
+        ":windows": "@com_github_nelhage_rules_boost//:config.lzma-windows.h",
+    }),
+    out = "config.h",
 )
 
 cc_library(
