@@ -1564,6 +1564,7 @@ boost_library(
         ":osx_x86_64": [],
         ":windows_x86_64": [
             "BOOST_ALL_NO_LIB",
+            "BOOST_THREAD_BUILD_LIB",
             "BOOST_THREAD_USE_LIB",
             "BOOST_WIN32_THREAD",
         ],
