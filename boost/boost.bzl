@@ -88,6 +88,16 @@ def boost_library(
     )
 
 def boost_deps():
+    if "bazel_skylib" not in native.existing_rules():
+        http_archive(
+            name = "bazel_skylib",
+            sha256 = "1dde365491125a3db70731e25658dfdd3bc5dbdfd11b840b3e987ecf043c7ca0",
+            urls = [
+                "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/0.9.0/bazel_skylib-0.9.0.tar.gz",
+                "https://github.com/bazelbuild/bazel-skylib/releases/download/0.9.0/bazel_skylib-0.9.0.tar.gz",
+            ],
+        )
+
     if "net_zlib_zlib" not in native.existing_rules():
         http_archive(
             name = "net_zlib_zlib",
