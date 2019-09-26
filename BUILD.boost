@@ -1,3 +1,4 @@
+load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "hdr_list", "includes_list")
 
 _w_no_deprecated = select({
@@ -82,17 +83,11 @@ config_setting(
     visibility = ["//visibility:public"],
 )
 
-# TODO(https://github.com/bazelbuild/bazel-skylib/issues/191): use
-# expand_template instead of `sed`.
-[genrule(
-    name = "clean_%s_asm" % name,
-    outs = [
-        "libs/context/src/asm/%s_x86_64_ms_pe_masm_clean.asm" % name,
-    ],
-    cmd = "sed 's/BOOST_CONTEXT_EXPORT//' $< > $@",
-    srcs = [
-        "libs/context/src/asm/%s_x86_64_ms_pe_masm.asm" % name,
-    ],
+# Rename .asm to .S so that it will be handled with the C preprocessor.
+[copy_file(
+    name = "rename_%s" % name,
+    src = "libs/context/src/asm/%s_x86_64_ms_pe_masm.asm" % name,
+    out = "libs/context/src/asm/%s_x86_64_ms_pe_masm.S" % name,
 ) for name in ["make", "jump", "ontop"]]
 
 BOOST_CTX_ASM_SOURCES = select({
@@ -112,9 +107,9 @@ BOOST_CTX_ASM_SOURCES = select({
         "libs/context/src/asm/ontop_x86_64_sysv_macho_gas.S",
     ],
     ":windows_x86_64": [
-        "libs/context/src/asm/make_x86_64_ms_pe_masm_clean.asm",
-        "libs/context/src/asm/jump_x86_64_ms_pe_masm_clean.asm",
-        "libs/context/src/asm/ontop_x86_64_ms_pe_masm_clean.asm",
+        "libs/context/src/asm/make_x86_64_ms_pe_masm.S",
+        "libs/context/src/asm/jump_x86_64_ms_pe_masm.S",
+        "libs/context/src/asm/ontop_x86_64_ms_pe_masm.S",
     ],
 })
 
@@ -136,6 +131,10 @@ boost_library(
         "libs/context/src/untested.cpp",
         "libs/context/src/continuation.cpp",
     ],
+    copts = select({
+        ":windows_x86_64": ["/DBOOST_CONTEXT_EXPORT="],
+        "//conditions:default": [],
+    }),
     visibility = ["//visibility:public"],
     deps = [
         ":assert",
