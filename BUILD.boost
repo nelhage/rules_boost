@@ -1192,6 +1192,10 @@ boost_library(
 )
 
 boost_library(
+    name = "polygon",
+)
+
+boost_library(
     name = "predef",
 )
 
