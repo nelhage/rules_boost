@@ -2008,3 +2008,30 @@ boost_library(
 boost_library(
     name = "sort",
 )
+
+boost_library(
+    name = "contract",
+    hdrs = [
+        "boost/contract_macro.hpp",
+    ],
+    deps = [
+        ":any",
+        ":assert",
+        ":config",
+        ":detail",
+        ":exception",
+        ":function",
+        ":function_types",
+        ":mpl",
+        ":noncopyable",
+        ":optional",
+        ":preprocessor",
+        ":shared_ptr",
+        ":smart_ptr",
+        ":static_assert",
+        ":thread",
+        ":typeof",
+        ":type_traits",
+        ":utility",
+    ],
+)
