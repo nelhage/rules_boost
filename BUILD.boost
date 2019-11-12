@@ -1194,7 +1194,10 @@ boost_library(
 boost_library(
     name = "polygon",
     deps = [
+        ":config",
         ":integer",
+        ":mpl",
+        ":utility",
     ],
 )
 
