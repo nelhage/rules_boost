@@ -301,6 +301,7 @@ py_test(
     name = "python_test",
     srcs = ["python_test.py"],
     main = "python_test.py",
+    python_version = "PY2",
     data = [
         ":python_mod.so",
     ]
