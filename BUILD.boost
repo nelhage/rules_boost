@@ -1276,6 +1276,47 @@ boost_library(
 )
 
 boost_library(
+    name = "python",
+    srcs = glob([
+        "libs/python/src/converter/*.cpp",
+        "libs/python/src/numpy/*.cpp",
+        "libs/python/src/object/*.cpp",
+    ]),
+    deps = [
+        ":bind",
+        ":call_traits",
+        ":config",
+        ":conversion",
+        ":detail",
+        ":foreach",
+        ":function",
+        ":graph",
+        ":get_pointer",
+        ":implicit_cast",
+        ":iterator",
+        ":lexical_cast",
+        ":limits",
+        ":mpl",
+        ":numeric_interval",
+        ":operators",
+        ":preprocessor",
+        ":ref",
+        ":scoped_ptr",
+        ":shared_ptr",
+        ":static_assert",
+        ":tuple",
+        ":type",
+        ":type_traits",
+        ":utility",
+        "@local_config_python//:python_headers",
+        "@local_config_python//:numpy_headers",
+    ] + select({
+        ":windows": ["@local_config_python//:python_lib"],
+        "//conditions:default": [],
+    }),
+)
+
+boost_library(
     name = "qvm",
     deps = [
         ":assert",

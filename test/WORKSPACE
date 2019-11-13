@@ -4,6 +4,9 @@ local_repository(
 )
 
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_deps")
+load("@com_github_nelhage_rules_boost//:py/python_configure.bzl", "python_configure")
+
+python_configure(name = "local_config_python")
 
 # boost_deps() will re-download the tarball every time BUILD.boost
 # changes, which is frustrating for doing development. Download it

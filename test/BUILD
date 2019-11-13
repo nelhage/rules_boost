@@ -288,6 +288,24 @@ cc_test(
     ],
 )
 
+cc_binary(
+    name = "python_mod.so",
+    srcs = ["python_mod.cc"],
+    linkshared = True,
+    deps = [
+        "@boost//:python",
+    ],
+)
+
+py_test(
+    name = "python_test",
+    srcs = ["python_test.py"],
+    main = "python_test.py",
+    data = [
+        ":python_mod.so",
+    ]
+)
+
 cc_test(
     name = "qvm_test",
     size = "small",
