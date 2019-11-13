@@ -330,10 +330,12 @@ boost_library(
         ":core",
         ":detail",
         ":endian",
+        ":mp11",
         ":smart_ptr",
         ":static_assert",
         ":system",
         ":throw_exception",
+        ":tribool",
         ":utility",
     ],
 )
@@ -603,6 +605,7 @@ boost_library(
         ":config",
         ":core",
         ":detail",
+        ":functional",
         ":integer",
         ":move",
         ":throw_exception",
@@ -745,7 +748,7 @@ boost_library(
         ":lexical_cast",
         ":math",
         ":mpl",
-        ":numeric",
+        ":numeric_conversion",
         ":qvm",
         ":range",
         ":rational",
@@ -800,8 +803,6 @@ boost_library(
     hdrs = [
         "boost/cstdint.hpp",
         "boost/integer_traits.hpp",
-        "boost/pending/integer_log2.hpp",
-        "boost/pending/lowest_bit.hpp",
     ],
     deps = [
         ":static_assert",
@@ -898,6 +899,7 @@ boost_library(
         "@net_zlib_zlib//:zlib",
         "@org_bzip_bzip2//:bz2lib",
         "@org_lzma_lzma//:lzma",
+        "@com_github_facebook_zstd//:zstd",
     ],
 )
 
@@ -1132,7 +1134,7 @@ boost_library(
         ":iterator",
         ":mpl",
         ":noncopyable",
-        ":numeric",
+        ":numeric_interval",
         ":range",
         ":serialization",
         ":shared_array",
@@ -1148,13 +1150,22 @@ boost_library(
     name = "numeric_odeint",
     hdrs = glob([
         "boost/numeric/odeint/**/*.hpp",
-    ]),
+    ]) + [
+        "boost/numeric/odeint.hpp",
+    ],
     deps = [
         ":fusion",
         ":lexical_cast",
         ":math",
+        # There is currently a circular dependency between math and
+        # multiprecision. We know that :numeric_odeint triggers it,
+        # despite only depending directly on :math, so we include
+        # :multiprecision here. Some users of :math will need to do
+        # so as well.
+        # See: https://github.com/boostorg/math/issues/201
+        ":multiprecision",
         ":multi_array",
-        ":numeric",
+        ":numeric_ublas",
         ":serialization",
         ":units",
     ],
@@ -1189,6 +1200,9 @@ boost_library(
 
 boost_library(
     name = "parameter",
+    deps = [
+        ":mp11",
+    ],
 )
 
 boost_library(
@@ -1811,6 +1825,13 @@ boost_library(
 )
 
 boost_library(
+    name = "variant2",
+    deps = [
+        ":mp11",
+    ],
+)
+
+boost_library(
     name = "version",
 )
 
@@ -1833,7 +1854,14 @@ boost_library(
 )
 
 boost_library(
-    name = "numeric",
+    name = "numeric_interval",
+    hdrs = glob([
+        "boost/numeric/interval/**/*.hpp",
+    ]) + [
+        "boost/numeric/interval.hpp",
+    ],
+    deps = [
+    ],
 )
 
 boost_library(

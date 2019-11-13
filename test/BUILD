@@ -449,3 +449,13 @@ cc_test(
         "@boost//:hana",
     ],
 )
+
+cc_test(
+    name = "variant2_test",
+    size = "small",
+    srcs = ["variant2_test.cc"],
+    copts = ["-std=c++14"],
+    deps = [
+        "@boost//:variant2",
+    ],
+)
