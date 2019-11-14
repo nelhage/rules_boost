@@ -1,3 +1,11 @@
+config_setting(
+    name = "windows",
+    constraint_values = [
+        "@bazel_tools//platforms:windows",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 cc_test(
     name = "accumulators_test",
     size = "small",
@@ -297,14 +305,22 @@ cc_binary(
     ],
 )
 
+genrule(
+    name = "gen_python_mod.pyd",
+    srcs = [":python_mod.so"],
+    outs = ["python_mod.pyd"],
+    cmd = "cp $< $@",
+)
+
 py_test(
     name = "python_test",
     srcs = ["python_test.py"],
     main = "python_test.py",
     python_version = "PY2",
-    data = [
-        ":python_mod.so",
-    ]
+    data = select({
+        ":windows": [":python_mod.pyd"],
+        "//conditions:default": [":python_mod.so"],
+    }),
 )
 
 cc_test(
