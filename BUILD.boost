@@ -1314,6 +1314,9 @@ boost_library(
         ":windows": ["@local_config_python//:python_lib"],
         "//conditions:default": [],
     }),
+    local_defines = [
+        "BOOST_PYTHON_SOURCE",
+    ],
 )
 
 boost_library(

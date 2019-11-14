@@ -45,6 +45,7 @@ def hdr_list(library_name):
 def boost_library(
         name,
         defines = None,
+        local_defines = None,
         includes = None,
         hdrs = None,
         srcs = None,
@@ -55,6 +56,9 @@ def boost_library(
         visibility = ["//visibility:public"]):
     if defines == None:
         defines = []
+
+    if local_defines == None:
+        local_defines = []
 
     if includes == None:
         includes = []
@@ -78,6 +82,7 @@ def boost_library(
         name = name,
         visibility = visibility,
         defines = default_defines + defines,
+        local_defines = local_defines,
         includes = includes_list(name) + includes,
         hdrs = hdr_list(name) + hdrs,
         srcs = srcs_list(name, exclude_src) + srcs,
