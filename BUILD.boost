@@ -1,5 +1,5 @@
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
-load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "hdr_list", "includes_list")
+load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "boost_so_binary", "hdr_list")
 
 _w_no_deprecated = select({
     ":linux": [
@@ -1904,6 +1904,7 @@ _BOOST_TEST_DEPS = [
     ":version",
 ]
 
+# An uncompiled Boost.Test library, to be used through boost/test/included/*.
 boost_library(
     name = "test",
     exclude_src = glob([
@@ -1912,6 +1913,8 @@ boost_library(
     deps = _BOOST_TEST_DEPS,
 )
 
+# A statically linked Boost.Test library, used through boost/test/* and without
+# defining BOOST_TEST_DYN_LINK.
 boost_library(
     name = "test.a",
     boost_name = "test",
@@ -1926,6 +1929,46 @@ boost_library(
     deps = _BOOST_TEST_DEPS,
 )
 
+# This gets a little messy. Boost.Test compiled with BOOST_TEST_DYN_LINK is not
+# a cc_library because it cannot be linked statically. Instead, we build an
+# explicit .so with cc_binary's linkshared=True. Then we need to reimport it as
+# a C++ library and make it ergonomic to use from cc_test targets.
+boost_so_binary(
+    name = "libtest.so",
+    boost_name = "test",
+    exclude_src = glob([
+        "libs/test/src/test_main.cpp",
+        "libs/test/src/cpp_main.cpp",
+    ]),
+    defines = ["BOOST_TEST_DYN_LINK"],
+    deps = _BOOST_TEST_DEPS,
+    visibility = ["//visibility:private"],
+)
+
+boost_so_binary(
+    name = "libtest.dll",
+    boost_name = "test",
+    exclude_src = glob([
+        "libs/test/src/test_main.cpp",
+        "libs/test/src/cpp_main.cpp",
+    ]),
+    defines = ["BOOST_TEST_DYN_LINK"],
+    deps = _BOOST_TEST_DEPS,
+    visibility = ["//visibility:private"],
+)
+
+cc_import(
+    name = "_imported_libtest.so",
+    shared_library = "libtest.so",
+)
+
+cc_import(
+    name = "_imported_libtest.dll",
+    shared_library = "libtest.dll",
+)
+
+# A dynamically linked Boost.Test library, used through boost/test/*.  Bazel
+# will add -DBOOST_TEST_DYN_LINK for you if you depend on this library.
 boost_library(
     name = "test.so",
     boost_name = "test",
@@ -1933,11 +1976,13 @@ boost_library(
         "boost/test/included/*.hpp",
     ]),
     exclude_src = glob([
-        "libs/test/src/test_main.cpp",
-        "libs/test/src/cpp_main.cpp",
+        "libs/test/**",
     ]),
     defines = ["BOOST_TEST_DYN_LINK"],
-    deps = _BOOST_TEST_DEPS,
+    deps = _BOOST_TEST_DEPS + select({
+        ":windows": [":_imported_libtest.dll"],
+        "//conditions:default": [":_imported_libtest.so"],
+    }),
 )
 
 boost_library(

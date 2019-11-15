@@ -85,12 +85,44 @@ def boost_library(
         visibility = visibility,
         defines = default_defines + defines,
         includes = includes_list(boost_name) + includes,
-        hdrs = hdr_list(boost_name) + hdrs,
+        hdrs = hdr_list(boost_name, exclude_hdr) + hdrs,
         srcs = srcs_list(boost_name, exclude_src) + srcs,
         deps = deps,
         copts = default_copts + copts,
         linkopts = linkopts,
         linkstatic = linkstatic,
+        licenses = ["notice"],
+    )
+
+def boost_so_binary(
+        name,
+        boost_name = None,
+        defines = [],
+        srcs = None,
+        deps = None,
+        copts = None,
+        exclude_src = [],
+        visibility = ["//visibility:public"]):
+    if boost_name == None:
+        boost_name = name
+
+    if srcs == None:
+        srcs = []
+
+    if deps == None:
+        deps = []
+
+    if copts == None:
+        copts = []
+
+    return native.cc_binary(
+        name = name,
+        visibility = visibility,
+        srcs = hdr_list(boost_name) + srcs_list(boost_name, exclude_src) + srcs,
+        deps = deps,
+        copts = default_copts + copts,
+        defines = default_defines + defines,
+        linkshared = True,
         licenses = ["notice"],
     )
 
