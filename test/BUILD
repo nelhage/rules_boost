@@ -181,6 +181,15 @@ cc_test(
 )
 
 cc_test(
+    name = "gil_test",
+    size = "small",
+    srcs = ["gil_test.cc"],
+    deps = [
+        "@boost//:gil",
+    ],
+)
+
+cc_test(
     name = "geometry_test",
     size = "small",
     srcs = ["geometry_test.cc"],
