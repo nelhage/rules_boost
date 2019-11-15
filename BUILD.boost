@@ -1877,35 +1877,67 @@ boost_library(
     ],
 )
 
+_BOOST_TEST_DEPS = [
+    ":algorithm",
+    ":assert",
+    ":bind",
+    ":call_traits",
+    ":config",
+    ":core",
+    ":current_function",
+    ":detail",
+    ":exception",
+    ":function",
+    ":io",
+    ":iterator",
+    ":limits",
+    ":mpl",
+    ":numeric_conversion",
+    ":optional",
+    ":preprocessor",
+    ":smart_ptr",
+    ":static_assert",
+    ":timer",
+    ":type",
+    ":type_traits",
+    ":utility",
+    ":version",
+]
+
 boost_library(
     name = "test",
-    exclude_src = glob(["libs/test/src/*.cpp"]),
-    deps = [
-        ":algorithm",
-        ":assert",
-        ":bind",
-        ":call_traits",
-        ":config",
-        ":core",
-        ":current_function",
-        ":detail",
-        ":exception",
-        ":function",
-        ":io",
-        ":iterator",
-        ":limits",
-        ":mpl",
-        ":numeric_conversion",
-        ":optional",
-        ":preprocessor",
-        ":smart_ptr",
-        ":static_assert",
-        ":timer",
-        ":type",
-        ":type_traits",
-        ":utility",
-        ":version",
-    ],
+    exclude_src = glob([
+        "libs/test/src/*.cpp",
+    ]),
+    deps = _BOOST_TEST_DEPS,
+)
+
+boost_library(
+    name = "test.a",
+    boost_name = "test",
+    exclude_hdr = glob([
+        "boost/test/included/*.hpp",
+    ]),
+    exclude_src = glob([
+        "libs/test/src/test_main.cpp",
+        "libs/test/src/cpp_main.cpp",
+    ]),
+    linkstatic = True,
+    deps = _BOOST_TEST_DEPS,
+)
+
+boost_library(
+    name = "test.so",
+    boost_name = "test",
+    exclude_hdr = glob([
+        "boost/test/included/*.hpp",
+    ]),
+    exclude_src = glob([
+        "libs/test/src/test_main.cpp",
+        "libs/test/src/cpp_main.cpp",
+    ]),
+    defines = ["BOOST_TEST_DYN_LINK"],
+    deps = _BOOST_TEST_DEPS,
 )
 
 boost_library(

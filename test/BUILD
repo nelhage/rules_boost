@@ -343,10 +343,26 @@ cc_test(
 )
 
 cc_test(
-    name = "test",
-    srcs = ["test.cc"],
+    name = "test_included_test",
+    srcs = ["test_included_test.cc"],
     deps = [
         "@boost//:test",
+    ],
+)
+
+cc_test(
+    name = "test_static_test",
+    srcs = ["test_static_test.cc"],
+    deps = [
+        "@boost//:test.a",
+    ],
+)
+
+cc_test(
+    name = "test_dynamic_test",
+    srcs = ["test_dynamic_test.cc"],
+    deps = [
+        "@boost//:test.so",
     ],
 )
 

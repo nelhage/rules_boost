@@ -39,11 +39,12 @@ def srcs_list(library_name, exclude):
 def includes_list(library_name):
     return [".", include_pattern % library_name]
 
-def hdr_list(library_name):
-    return native.glob([p % (library_name,) for p in hdrs_patterns])
+def hdr_list(library_name, exclude = []):
+    return native.glob([p % (library_name,) for p in hdrs_patterns], exclude = exclude)
 
 def boost_library(
         name,
+        boost_name = None,
         defines = None,
         includes = None,
         hdrs = None,
@@ -51,8 +52,13 @@ def boost_library(
         deps = None,
         copts = None,
         exclude_src = [],
+        exclude_hdr = [],
         linkopts = None,
+        linkstatic = None,
         visibility = ["//visibility:public"]):
+    if boost_name == None:
+        boost_name = name
+
     if defines == None:
         defines = []
 
@@ -78,12 +84,13 @@ def boost_library(
         name = name,
         visibility = visibility,
         defines = default_defines + defines,
-        includes = includes_list(name) + includes,
-        hdrs = hdr_list(name) + hdrs,
-        srcs = srcs_list(name, exclude_src) + srcs,
+        includes = includes_list(boost_name) + includes,
+        hdrs = hdr_list(boost_name) + hdrs,
+        srcs = srcs_list(boost_name, exclude_src) + srcs,
         deps = deps,
         copts = default_copts + copts,
         linkopts = linkopts,
+        linkstatic = linkstatic,
         licenses = ["notice"],
     )
 
