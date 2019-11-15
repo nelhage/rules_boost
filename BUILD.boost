@@ -758,6 +758,19 @@ boost_library(
 )
 
 boost_library(
+    name = "gil",
+    deps = [
+        ":concept_check",
+        ":config",
+        ":iterator",
+        ":integer",
+        ":mpl",
+        ":ref",
+        ":type_traits",
+    ],
+)
+
+boost_library(
     name = "property_tree",
     deps = [
         ":any",
