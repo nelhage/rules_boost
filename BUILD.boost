@@ -1957,15 +1957,21 @@ boost_so_binary(
     visibility = ["//visibility:private"],
 )
 
+filegroup(
+    name = "libtest_dll_interface_file",
+    srcs = [":libtest.dll"],
+    output_group = "interface_library",
+)
+
 cc_import(
     name = "_imported_libtest.so",
-    shared_library = "libtest.so",
+    shared_library = ":libtest.so",
 )
 
 cc_import(
     name = "_imported_libtest.dll",
-    shared_library = "libtest.dll",
-    interface_library = "libtest.lib",
+    shared_library = ":libtest.dll",
+    interface_library = ":libtest_dll_interface_file",
 )
 
 # A dynamically linked Boost.Test library, used through boost/test/*.  Bazel
