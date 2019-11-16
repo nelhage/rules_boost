@@ -1965,6 +1965,7 @@ cc_import(
 cc_import(
     name = "_imported_libtest.dll",
     shared_library = "libtest.dll",
+    interface_library = "libtest.lib",
 )
 
 # A dynamically linked Boost.Test library, used through boost/test/*.  Bazel
