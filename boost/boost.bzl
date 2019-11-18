@@ -122,7 +122,6 @@ def boost_so_library(
             copts = default_copts + copts,
             defines = default_defines + defines,
             linkshared = True,
-            linkstatic = False,
             licenses = ["notice"],
         )
     native.filegroup(
