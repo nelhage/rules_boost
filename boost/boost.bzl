@@ -94,36 +94,72 @@ def boost_library(
         licenses = ["notice"],
     )
 
-def boost_so_binary(
+# Some boost libraries are not safe to use as dynamic libraries unless a
+# BOOST_*_DYN_LINK define is set when they are compiled and included, notably
+# Boost.Test. When the define is set, the libraries are not safe to use
+# statically. This is an attempt to work around that. We build an explicit .so
+# with cc_binary's linkshared=True and then we reimport it as a C++ library and
+# expose it as a boost_library.
+
+def boost_so_library(
         name,
         boost_name = None,
         defines = [],
-        srcs = None,
-        deps = None,
-        copts = None,
+        srcs = [],
+        deps = [],
+        copts = [],
         exclude_src = [],
-        visibility = ["//visibility:public"]):
+        exclude_hdr = []):
     if boost_name == None:
         boost_name = name
 
-    if srcs == None:
-        srcs = []
-
-    if deps == None:
-        deps = []
-
-    if copts == None:
-        copts = []
-
-    return native.cc_binary(
+    for suffix in ["so", "dll", "dylib"]:
+        native.cc_binary(
+            name = "lib_internal_%s.%s" % (name, suffix),
+            visibility = ["//visibility:private"],
+            srcs = hdr_list(boost_name, exclude_hdr) + srcs_list(boost_name, exclude_src) + srcs,
+            deps = deps,
+            copts = default_copts + copts,
+            defines = default_defines + defines,
+            linkshared = True,
+            linkstatic = False,
+            licenses = ["notice"],
+        )
+    native.filegroup(
+        name = "%s_dll_interface_file" % name,
+        srcs = [":lib_internal_%s.dll" % name],
+        output_group = "interface_library",
+        visibility = ["//visibility:private"],
+    )
+    native.cc_import(
+        name = "_imported_%s.so" % name,
+        shared_library = ":lib_internal_%s.so" % name,
+        visibility = ["//visibility:private"],
+    )
+    native.cc_import(
+        name = "_imported_%s.dylib" % name,
+        shared_library = ":lib_internal_%s.dylib" % name,
+        visibility = ["//visibility:private"],
+    )
+    native.cc_import(
+        name = "_imported_%s.dll" % name,
+        shared_library = ":lib_internal_%s.dll" % name,
+        interface_library = ":%s_dll_interface_file" % name,
+        visibility = ["//visibility:private"],
+    )
+    return boost_library(
         name = name,
-        visibility = visibility,
-        srcs = hdr_list(boost_name) + srcs_list(boost_name, exclude_src) + srcs,
-        deps = deps,
-        copts = default_copts + copts,
-        defines = default_defines + defines,
-        linkshared = True,
-        licenses = ["notice"],
+        boost_name = boost_name,
+        exclude_hdr = exclude_hdr,
+        exclude_src = native.glob([
+            "libs/%s/**" % boost_name,
+        ]),
+        defines = defines,
+        deps = deps + select({
+            "@boost//:linux": [":_imported_%s.so" % name],
+            "@boost//:osx": [":_imported_%s.dylib" % name],
+            "@boost//:windows": [":_imported_%s.dll" % name],
+        }),
     )
 
 def boost_deps():
