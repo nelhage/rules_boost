@@ -1970,8 +1970,6 @@ BOOST_LOG_CFLAGS = select({
 BOOST_LOG_DEFINES = [
     "BOOST_LOG_WITHOUT_WCHAR_T",
     "BOOST_LOG_USE_STD_REGEX",
-    "BOOST_LOG_WITHOUT_DEFAULT_FACTORIES",
-    "BOOST_LOG_WITHOUT_SETTINGS_PARSERS",
     "BOOST_LOG_WITHOUT_DEBUG_OUTPUT",
     "BOOST_LOG_WITHOUT_EVENT_LOG",
     "BOOST_LOG_WITHOUT_SYSLOG",
@@ -1985,6 +1983,7 @@ BOOST_LOG_DEPS = [
     ":locale",
     ":parameter",
     ":phoenix",
+    ":property_tree",
     ":random",
     ":spirit",
     ":system",
@@ -2015,8 +2014,14 @@ cc_library(
 
 boost_library(
     name = "log",
-    copts = BOOST_LOG_CFLAGS,
+    copts = BOOST_LOG_CFLAGS + [
+        "-Iexternal/boost/libs/log/src/",
+    ],
     defines = BOOST_LOG_DEFINES,
+    srcs = glob([
+        "libs/log/src/setup/*.hpp",
+        "libs/log/src/setup/*.cpp",
+    ]),
     exclude_src = [
         "libs/log/src/dump_avx2.cpp",
         "libs/log/src/dump_ssse3.cpp",
