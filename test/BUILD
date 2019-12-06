@@ -226,15 +226,6 @@ cc_test(
 )
 
 cc_test(
-    name = "log_setup_test",
-    size = "small",
-    srcs = ["log_setup_test.cc"],
-    deps = [
-        "@boost//:log",
-    ],
-)
-
-cc_test(
     name = "mp11_test",
     size = "small",
     srcs = ["mp11_test.cc"],
