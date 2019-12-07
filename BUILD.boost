@@ -564,6 +564,10 @@ boost_library(
 
 boost_library(
     name = "cstdint",
+    deps = [
+        ":config",
+        ":limits",
+    ],
 )
 
 boost_library(
@@ -814,10 +818,10 @@ boost_library(
 boost_library(
     name = "integer",
     hdrs = [
-        "boost/cstdint.hpp",
         "boost/integer_traits.hpp",
     ],
     deps = [
+        ":cstdint",
         ":static_assert",
     ],
 )
@@ -1018,7 +1022,6 @@ boost_library(
 boost_library(
     name = "math",
     hdrs = [
-        "boost/cstdint.hpp",
     ],
 )
 
