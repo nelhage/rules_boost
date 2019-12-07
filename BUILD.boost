@@ -1794,13 +1794,17 @@ boost_library(
     name = "utility",
     hdrs = [
         "boost/compressed_pair.hpp",
-        "boost/next_prior.hpp",
     ],
     deps = [
         ":config",
+        ":container_hash",
+        ":core",
+        ":cstdint",
         ":detail",
         ":preprocessor",
+        ":static_assert",
         ":swap",
+        ":throw_exception",
         ":type_traits",
     ],
 )
