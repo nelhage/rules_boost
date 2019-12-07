@@ -1190,6 +1190,23 @@ boost_library(
 
 boost_library(
     name = "units",
+    deps = [
+        ":assert",
+        ":config",
+        ":core",
+        ":integer",
+        ":io",
+        ":lambda",
+        ":math",
+        ":mpl",
+        ":preprocessor",
+        ":serialization",
+        ":static_assert",
+        ":typeof",
+        ":type_traits",
+        ":utility",
+        ":version",
+    ],
 )
 
 boost_library(
