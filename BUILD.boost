@@ -564,6 +564,10 @@ boost_library(
 
 boost_library(
     name = "cstdint",
+    deps = [
+        ":config",
+        ":limits",
+    ],
 )
 
 boost_library(
@@ -814,10 +818,10 @@ boost_library(
 boost_library(
     name = "integer",
     hdrs = [
-        "boost/cstdint.hpp",
         "boost/integer_traits.hpp",
     ],
     deps = [
+        ":cstdint",
         ":static_assert",
     ],
 )
@@ -1018,7 +1022,37 @@ boost_library(
 boost_library(
     name = "math",
     hdrs = [
-        "boost/cstdint.hpp",
+        "boost/cstdfloat.hpp",
+    ],
+    deps = [
+        ":array",
+        ":assert",
+        ":atomic",
+        ":concept_check",
+        ":config",
+        ":core",
+        ":cstdint",
+        ":detail",
+        ":fusion",
+        ":integer",
+        ":lambda",
+        # https://github.com/boostorg/lexical_cast/issues/27
+        #":lexical_cast",
+        ":limits",
+        ":mp11",
+        ":mpl",
+        # https://github.com/boostorg/math/issues/201
+        #":multiprecision",
+        ":predef",
+        ":range",
+        ":scoped_array",
+        ":static_assert",
+        ":throw_exception",
+        ":tuple",
+        ":type",
+        ":type_traits",
+        ":utility",
+        ":version",
     ],
 )
 
