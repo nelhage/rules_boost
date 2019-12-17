@@ -49,6 +49,15 @@ config_setting(
 )
 
 config_setting(
+    name = "linux_ppc",
+    constraint_values = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:ppc",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
     name = "linux_x86_64",
     constraint_values = [
         "@bazel_tools//platforms:linux",
@@ -95,6 +104,11 @@ BOOST_CTX_ASM_SOURCES = select({
         "libs/context/src/asm/jump_arm_aapcs_elf_gas.S",
         "libs/context/src/asm/make_arm_aapcs_elf_gas.S",
         "libs/context/src/asm/ontop_arm_aapcs_elf_gas.S",
+    ],
+    ":linux_ppc": [
+        "libs/context/src/asm/jump_ppc64_sysv_elf_gas.S",
+        "libs/context/src/asm/make_ppc64_sysv_elf_gas.S",
+        "libs/context/src/asm/ontop_ppc64_sysv_elf_gas.S",
     ],
     ":linux_x86_64": [
         "libs/context/src/asm/jump_x86_64_sysv_elf_gas.S",
@@ -149,6 +163,10 @@ boost_library(
 BOOST_FIBER_NUMA_SRCS = select({
     ":linux_arm": [
     ],
+    ":linux_ppc": [
+        "libs/fiber/src/numa/linux/pin_thread.cpp",
+        "libs/fiber/src/numa/linux/topology.cpp",
+    ], # MAYBE SHOULD BE BLANK
     ":linux_x86_64": [
         "libs/fiber/src/numa/linux/pin_thread.cpp",
         "libs/fiber/src/numa/linux/topology.cpp",
@@ -982,12 +1000,14 @@ boost_library(
     name = "locale",
     srcs = select({
             ":linux_arm": BOOST_LOCALE_POSIX_SOURCES,
+            ":linux_ppc": BOOST_LOCALE_POSIX_SOURCES,
             ":linux_x86_64": BOOST_LOCALE_POSIX_SOURCES,
             ":osx_x86_64": BOOST_LOCALE_POSIX_SOURCES,
             ":windows_x86_64": BOOST_LOCALE_WIN32_SOURCES,
             }),
     copts = select({
             ":linux_arm": BOOST_LOCALE_POSIX_COPTS,
+            ":linux_ppc": BOOST_LOCALE_POSIX_COPTS,
             ":linux_x86_64": BOOST_LOCALE_POSIX_COPTS,
             ":osx_x86_64": BOOST_LOCALE_POSIX_COPTS,
             ":windows_x86_64": BOOST_LOCALE_WIN32_COPTS,
@@ -1588,6 +1608,9 @@ BOOST_STACKTRACE_SOURCES = select({
         "libs/stacktrace/src/basic.cpp",
         "libs/stacktrace/src/noop.cpp",
     ],
+    ":linux_ppc": [
+        "libs/stacktrace/src/backtrace.cpp",
+    ],
     ":linux_x86_64": [
         "libs/stacktrace/src/backtrace.cpp",
     ],
@@ -1611,6 +1634,9 @@ boost_library(
     }),
     exclude_src = ["libs/stacktrace/src/*.cpp"],
     linkopts = select({
+        ":linux_ppc": [
+            "-lbacktrace -ldl",
+        ],
         ":linux_x86_64": [
             "-lbacktrace -ldl",
         ],
@@ -1689,6 +1715,7 @@ boost_library(
     }),
     defines = select({
         ":linux_arm": [],
+        ":linux_ppc": [],
         ":linux_x86_64": [],
         ":osx_x86_64": [],
         ":windows_x86_64": [
@@ -2017,6 +2044,8 @@ boost_library(
 BOOST_LOG_CFLAGS = select({
     ":linux_arm": [
     ],
+    ":linux_ppc": [
+    ],
     ":x86_64": [
         "-msse4.2",
     ],
@@ -2048,6 +2077,8 @@ BOOST_LOG_DEPS = [
 
 BOOST_LOG_SSSE3_DEP = select({
     ":linux_arm": [
+    ],
+    ":linux_ppc": [
     ],
     ":x86_64": [
         ":log_dump_ssse3",
