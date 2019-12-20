@@ -234,6 +234,7 @@ boost_library(
         ":fusion",
         ":mpl",
         ":parameter",
+        ":serialization",
         ":type_traits",
         ":utility",
         ":version",
