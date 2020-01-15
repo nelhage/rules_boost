@@ -107,7 +107,10 @@ cc_library(
         "src/liblzma/simple/x86.c",
     ],
     hdrs = glob(["src/**/*.h"]) + ["config.h"],
-    copts = ["-std=c99"],
+    copts = select({
+        ":windows": [],
+        "//conditions:default": ["-std=c99"],
+    }),
     defines = [
         "HAVE_CONFIG_H",
     ],
