@@ -37,10 +37,13 @@ script:
   # - env EXTRA_BAZEL_ARGS="--host_javabase=@local_jdk//:jdk" bash ./compile.sh
   # - cd output
   # - export PATH=`pwd`:$PATH
-  - ls
-  - ls **/*
   - pwd
+  - ls
   - echo $PATH
   - bash build.sh
+  - ls
+  - cat github_version.txt
+  - cat ftp_version.txt
+  # run CI for nelhage/rules_boost
   - cd $TRAVIS_BUILD_DIR/test && cp .bazelrc.circle .bazelrc
   - cd $TRAVIS_BUILD_DIR/test && bazel test --test_output=errors //...
