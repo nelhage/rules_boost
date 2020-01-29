@@ -17,7 +17,7 @@ before_install:
   # https://github.com/Unicamp-OpenPower/bazel-releases/blob/master/.travis.yml
   - git clone https://github.com/Unicamp-OpenPower/bazel-releases
   - cd bazel-releases
-  - sudo apt-get update && apt-get -y install build-essential python zip unzip python3-pip
+  - sudo apt-get update && sudo apt-get -y install build-essential python zip unzip python3-pip
   - wget https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jre_ppc64le_linux_hotspot_11.0.6_10.tar.gz
   - wget https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jdk_ppc64le_linux_hotspot_11.0.6_10.tar.gz
   - tar -xf OpenJDK11U-jre_ppc64le_linux_hotspot_11.0.6_10.tar.gz
