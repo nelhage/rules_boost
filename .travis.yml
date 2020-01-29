@@ -1,0 +1,42 @@
+os: linux
+arch: ppc64le
+language: shell
+
+jobs:
+  include:
+    - dist: xenial
+      env:
+        - dist_version=16.04
+        # forked version: https://github.com/akhileshbhople/bazel-releases/blob/master/bazel-version.py
+        # - ver=1.1.0  # bazel version passsed to bazel-version.py
+
+before_install:
+  # https://github.com/nelhage/rules_boost/blob/master/.circleci/config.yml
+  # - apt-get update && apt-get -y install pkg-config zip g++ zlib1g-dev unzip python curl ocl-icd-opencl-dev opencl-headers
+  #
+  # https://github.com/Unicamp-OpenPower/bazel-releases/blob/master/.travis.yml
+  - git clone https://github.com/Unicamp-OpenPower/bazel-releases
+  - cd bazel-releases
+  - apt-get update && apt-get -y install build-essential python zip unzip python3-pip
+  - wget https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jre_ppc64le_linux_hotspot_11.0.6_10.tar.gz
+  - wget https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jdk_ppc64le_linux_hotspot_11.0.6_10.tar.gz
+  - tar -xf OpenJDK11U-jre_ppc64le_linux_hotspot_11.0.6_10.tar.gz
+  - tar -xf OpenJDK11U-jdk_ppc64le_linux_hotspot_11.0.6_10.tar.gz
+  - export PATH=$PWD/jdk-11.0.6+10-jre/bin:$PATH
+  - export PATH=$PWD/jdk-11.0.6+10/bin:$PATH
+  - sudo pip3 install requests
+  - python3 bazel-version.py $dist_version
+  #
+script:
+  #- cd /tmp/ && curl -LO https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh
+  # - bash /tmp/bazel-1.1.0-installer-linux-x86_64.sh
+  #
+  # KGF: manually build from source for ppc64le
+  # - cd /tmp/ && wget https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-dist.zip
+  # - unzip bazel*
+  # - env EXTRA_BAZEL_ARGS="--host_javabase=@local_jdk//:jdk" bash ./compile.sh
+  # - cd output
+  # - export PATH=`pwd`:$PATH
+  - bash build.sh
+  - cd $TRAVIS_BUILD_DIR/test && cp .bazelrc.circle .bazelrc
+  - cd $TRAVIS_BUILD_DIR/test && bazel test --test_output=errors //...
