@@ -37,6 +37,10 @@ script:
   # - env EXTRA_BAZEL_ARGS="--host_javabase=@local_jdk//:jdk" bash ./compile.sh
   # - cd output
   # - export PATH=`pwd`:$PATH
+  - ls
+  - ls **/*
+  - pwd
+  - echo $PATH
   - bash build.sh
   - cd $TRAVIS_BUILD_DIR/test && cp .bazelrc.circle .bazelrc
   - cd $TRAVIS_BUILD_DIR/test && bazel test --test_output=errors //...
