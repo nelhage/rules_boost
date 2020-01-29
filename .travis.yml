@@ -25,6 +25,7 @@ before_install:
   - export PATH=$PWD/jdk-11.0.6+10-jre/bin:$PATH
   - export PATH=$PWD/jdk-11.0.6+10/bin:$PATH
   - sudo pip3 install requests
+  - echo $dist_version
   - python3 bazel-version.py $dist_version
   #
 script:
