@@ -38,13 +38,16 @@ script:
   # - env EXTRA_BAZEL_ARGS="--host_javabase=@local_jdk//:jdk" bash ./compile.sh
   # - cd output
   # - export PATH=`pwd`:$PATH
-  - pwd
-  - ls
-  - echo $PATH
-  - bash build.sh
-  - ls
-  - cat github_version.txt
-  - cat ftp_version.txt
+  # - pwd
+  # - ls
+  # - echo $PATH
+  # - bash build.sh
+  # - ls
+  - wc -w github_version.txt
+  - wc -w ftp_version.txt
+  - wget -q https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/ubuntu_${dist_version}/bazel_bin_ppc64le_1.1.0
+  - sudo mv bazel_bin_ppc64le_1.1.0 /usr/local/bin/bazel
+  - sudo chmod +x /usr/local/bin/bazel
   # run CI for nelhage/rules_boost
   - cd $TRAVIS_BUILD_DIR/test && cp .bazelrc.circle .bazelrc
   - cd $TRAVIS_BUILD_DIR/test && bazel test --test_output=errors //...
