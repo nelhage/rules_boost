@@ -15,8 +15,8 @@ before_install:
   # - sudo apt-get update && apt-get -y install pkg-config zip g++ zlib1g-dev unzip python curl ocl-icd-opencl-dev opencl-headers
   #
   # https://github.com/Unicamp-OpenPower/bazel-releases/blob/master/.travis.yml
-  - git clone https://github.com/Unicamp-OpenPower/bazel-releases
-  - cd bazel-releases
+  # - git clone https://github.com/Unicamp-OpenPower/bazel-releases
+  # - cd bazel-releases
   - sudo apt-get update && sudo apt-get -y install build-essential python zip unzip python3-pip
   - wget https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jre_ppc64le_linux_hotspot_11.0.6_10.tar.gz
   - wget https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jdk_ppc64le_linux_hotspot_11.0.6_10.tar.gz
@@ -25,8 +25,8 @@ before_install:
   - export PATH=$PWD/jdk-11.0.6+10-jre/bin:$PATH
   - export PATH=$PWD/jdk-11.0.6+10/bin:$PATH
   - sudo pip3 install requests
-  - echo $dist_version
-  - python3 bazel-version.py $dist_version
+  # - echo $dist_version
+  # - python3 bazel-version.py $dist_version
   #
 script:
   #- cd /tmp/ && curl -LO https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh
@@ -38,16 +38,9 @@ script:
   # - env EXTRA_BAZEL_ARGS="--host_javabase=@local_jdk//:jdk" bash ./compile.sh
   # - cd output
   # - export PATH=`pwd`:$PATH
-  # - pwd
-  # - ls
-  # - echo $PATH
-  # - bash build.sh
-  # - ls
-  - wc -w github_version.txt
-  - wc -w ftp_version.txt
   - wget -q https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/ubuntu_${dist_version}/bazel_bin_ppc64le_1.1.0
   - sudo mv bazel_bin_ppc64le_1.1.0 /usr/local/bin/bazel
   - sudo chmod +x /usr/local/bin/bazel
   # run CI for nelhage/rules_boost
   - cd $TRAVIS_BUILD_DIR/test && cp .bazelrc.circle .bazelrc
-  - cd $TRAVIS_BUILD_DIR/test && EXTRA_BAZEL_ARGS=--host_javabase=@local_jdk//:jdk bazel test --test_output=errors //...
+  - cd $TRAVIS_BUILD_DIR/test && bazel test --host_javabase=@local_jdk//:jdk --test_output=errors //...
