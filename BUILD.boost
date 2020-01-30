@@ -864,6 +864,12 @@ boost_library(
         ":unordered",
         ":utility",
     ],
+    linkopts = select({
+        ":linux": [
+            "-lrt",
+        ],
+        "//conditions:default": [],
+    }),
 )
 
 boost_library(
