@@ -58,6 +58,15 @@ config_setting(
 )
 
 config_setting(
+    name = "linux_aarch64",
+    constraint_values = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:aarch64",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
     name = "linux_x86_64",
     constraint_values = [
         "@bazel_tools//platforms:linux",
@@ -100,6 +109,11 @@ config_setting(
 ) for name in ["make", "jump", "ontop"]]
 
 BOOST_CTX_ASM_SOURCES = select({
+    ":linux_aarch64": [
+        "libs/context/src/asm/jump_arm64_aapcs_elf_gas.S",
+        "libs/context/src/asm/make_arm64_aapcs_elf_gas.S",
+        "libs/context/src/asm/ontop_arm64_aapcs_elf_gas.S",
+    ],
     ":linux_arm": [
         "libs/context/src/asm/jump_arm_aapcs_elf_gas.S",
         "libs/context/src/asm/make_arm_aapcs_elf_gas.S",
@@ -125,6 +139,7 @@ BOOST_CTX_ASM_SOURCES = select({
         "libs/context/src/asm/jump_x86_64_ms_pe_masm.S",
         "libs/context/src/asm/ontop_x86_64_ms_pe_masm.S",
     ],
+    "//conditions:default": [],
 })
 
 boost_library(
@@ -139,6 +154,7 @@ boost_library(
         ":windows_x86_64": [
             "libs/context/src/windows/stack_traits.cpp",
         ],
+        "//conditions:default": [],
     }),
     exclude_src = [
         "libs/context/src/fiber.cpp",
@@ -1737,6 +1753,7 @@ boost_library(
             "BOOST_THREAD_USE_LIB",
             "BOOST_WIN32_THREAD",
         ],
+        "//conditions:default": [],
     }),
     linkopts = select({
         ":linux": [
