@@ -107,7 +107,11 @@ config_setting(
     name = "rename_%s" % name,
     src = "libs/context/src/asm/%s_x86_64_ms_pe_masm.asm" % name,
     out = "libs/context/src/asm/%s_x86_64_ms_pe_masm.S" % name,
-) for name in ["make", "jump", "ontop"]]
+) for name in [
+    "make",
+    "jump",
+    "ontop",
+]]
 
 BOOST_CTX_ASM_SOURCES = select({
     ":linux_aarch64": [
@@ -157,15 +161,15 @@ boost_library(
         ],
         "//conditions:default": [],
     }),
+    copts = select({
+        ":windows_x86_64": ["/DBOOST_CONTEXT_EXPORT="],
+        "//conditions:default": [],
+    }),
     exclude_src = [
         "libs/context/src/fiber.cpp",
         "libs/context/src/untested.cpp",
         "libs/context/src/continuation.cpp",
     ],
-    copts = select({
-        ":windows_x86_64": ["/DBOOST_CONTEXT_EXPORT="],
-        "//conditions:default": [],
-    }),
     visibility = ["//visibility:public"],
     deps = [
         ":assert",
@@ -183,7 +187,7 @@ BOOST_FIBER_NUMA_SRCS = select({
     ":linux_ppc": [
         "libs/fiber/src/numa/linux/pin_thread.cpp",
         "libs/fiber/src/numa/linux/topology.cpp",
-    ], # MAYBE SHOULD BE BLANK
+    ],  # MAYBE SHOULD BE BLANK
     ":linux_x86_64": [
         "libs/fiber/src/numa/linux/pin_thread.cpp",
         "libs/fiber/src/numa/linux/topology.cpp",
@@ -341,8 +345,8 @@ boost_library(
 boost_library(
     name = "asio",
     srcs = [
-        "boost/asio/impl/src.cpp",
         "boost/asio/impl/src.hpp",
+        "@com_github_nelhage_rules_boost//src:build_asio.cpp",
     ],
     defines = [
         "BOOST_ASIO_SEPARATE_COMPILATION",
@@ -809,8 +813,8 @@ boost_library(
     deps = [
         ":concept_check",
         ":config",
-        ":iterator",
         ":integer",
+        ":iterator",
         ":mpl",
         ":ref",
         ":type_traits",
@@ -871,6 +875,12 @@ boost_library(
 
 boost_library(
     name = "interprocess",
+    linkopts = select({
+        ":linux": [
+            "-lrt",
+        ],
+        "//conditions:default": [],
+    }),
     deps = [
         ":assert",
         ":checked_delete",
@@ -888,12 +898,6 @@ boost_library(
         ":unordered",
         ":utility",
     ],
-    linkopts = select({
-        ":linux": [
-            "-lrt",
-        ],
-        "//conditions:default": [],
-    }),
 )
 
 boost_library(
@@ -962,10 +966,10 @@ boost_library(
         ":type",
         ":type_traits",
         ":utility",
+        "@com_github_facebook_zstd//:zstd",
         "@net_zlib_zlib//:zlib",
         "@org_bzip_bzip2//:bz2lib",
         "@org_lzma_lzma//:lzma",
-        "@com_github_facebook_zstd//:zstd",
     ],
 )
 
@@ -994,19 +998,22 @@ boost_library(
     name = "limits",
 )
 
-BOOST_LOCALE_COMMON_SOURCES = glob([
-    "libs/locale/src/encoding/*.cpp",
-    "libs/locale/src/encoding/*.hpp",
-    "libs/locale/src/encoding/*.ipp",
-    "libs/locale/src/shared/*.cpp",
-    "libs/locale/src/shared/*.hpp",
-    "libs/locale/src/std/*.cpp",
-    "libs/locale/src/std/*.hpp",
-    "libs/locale/src/util/*.cpp",
-    "libs/locale/src/util/*.hpp",
-], exclude=[
-    "libs/locale/src/util/iconv.hpp",
-])
+BOOST_LOCALE_COMMON_SOURCES = glob(
+    [
+        "libs/locale/src/encoding/*.cpp",
+        "libs/locale/src/encoding/*.hpp",
+        "libs/locale/src/encoding/*.ipp",
+        "libs/locale/src/shared/*.cpp",
+        "libs/locale/src/shared/*.hpp",
+        "libs/locale/src/std/*.cpp",
+        "libs/locale/src/std/*.hpp",
+        "libs/locale/src/util/*.cpp",
+        "libs/locale/src/util/*.hpp",
+    ],
+    exclude = [
+        "libs/locale/src/util/iconv.hpp",
+    ],
+)
 
 BOOST_LOCALE_POSIX_SOURCES = BOOST_LOCALE_COMMON_SOURCES + [
     "libs/locale/src/util/iconv.hpp",
@@ -1021,28 +1028,28 @@ BOOST_LOCALE_WIN32_SOURCES = BOOST_LOCALE_COMMON_SOURCES + glob([
 ])
 
 BOOST_LOCALE_POSIX_COPTS = [
-        "-DBOOST_LOCALE_WITH_ICONV",
-        "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
-    ]
+    "-DBOOST_LOCALE_WITH_ICONV",
+    "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
+]
 
 BOOST_LOCALE_WIN32_COPTS = []
 
 boost_library(
     name = "locale",
     srcs = select({
-            ":linux_arm": BOOST_LOCALE_POSIX_SOURCES,
-            ":linux_ppc": BOOST_LOCALE_POSIX_SOURCES,
-            ":linux_x86_64": BOOST_LOCALE_POSIX_SOURCES,
-            ":osx_x86_64": BOOST_LOCALE_POSIX_SOURCES,
-            ":windows_x86_64": BOOST_LOCALE_WIN32_SOURCES,
-            }),
+        ":linux_arm": BOOST_LOCALE_POSIX_SOURCES,
+        ":linux_ppc": BOOST_LOCALE_POSIX_SOURCES,
+        ":linux_x86_64": BOOST_LOCALE_POSIX_SOURCES,
+        ":osx_x86_64": BOOST_LOCALE_POSIX_SOURCES,
+        ":windows_x86_64": BOOST_LOCALE_WIN32_SOURCES,
+    }),
     copts = select({
-            ":linux_arm": BOOST_LOCALE_POSIX_COPTS,
-            ":linux_ppc": BOOST_LOCALE_POSIX_COPTS,
-            ":linux_x86_64": BOOST_LOCALE_POSIX_COPTS,
-            ":osx_x86_64": BOOST_LOCALE_POSIX_COPTS,
-            ":windows_x86_64": BOOST_LOCALE_WIN32_COPTS,
-            }) + _w_no_deprecated,
+        ":linux_arm": BOOST_LOCALE_POSIX_COPTS,
+        ":linux_ppc": BOOST_LOCALE_POSIX_COPTS,
+        ":linux_x86_64": BOOST_LOCALE_POSIX_COPTS,
+        ":osx_x86_64": BOOST_LOCALE_POSIX_COPTS,
+        ":windows_x86_64": BOOST_LOCALE_WIN32_COPTS,
+    }) + _w_no_deprecated,
     deps = [
         ":assert",
         ":config",
@@ -1287,8 +1294,8 @@ boost_library(
         ":preprocessor",
         ":serialization",
         ":static_assert",
-        ":typeof",
         ":type_traits",
+        ":typeof",
         ":utility",
         ":version",
     ],
@@ -2048,6 +2055,7 @@ boost_library(
 boost_so_library(
     name = "test.so",
     boost_name = "test",
+    defines = ["BOOST_TEST_DYN_LINK"],
     exclude_hdr = glob([
         "boost/test/included/*.hpp",
     ]),
@@ -2055,7 +2063,6 @@ boost_so_library(
         "libs/test/src/test_main.cpp",
         "libs/test/src/cpp_main.cpp",
     ]),
-    defines = ["BOOST_TEST_DYN_LINK"],
     deps = _BOOST_TEST_DEPS,
 )
 
@@ -2132,14 +2139,14 @@ cc_library(
 
 boost_library(
     name = "log",
-    copts = BOOST_LOG_CFLAGS + [
-        "-Iexternal/boost/libs/log/src/",
-    ],
-    defines = BOOST_LOG_DEFINES,
     srcs = glob([
         "libs/log/src/setup/*.hpp",
         "libs/log/src/setup/*.cpp",
     ]),
+    copts = BOOST_LOG_CFLAGS + [
+        "-Iexternal/boost/libs/log/src/",
+    ],
+    defines = BOOST_LOG_DEFINES,
     exclude_src = [
         "libs/log/src/dump_avx2.cpp",
         "libs/log/src/dump_ssse3.cpp",
@@ -2234,8 +2241,8 @@ boost_library(
         ":smart_ptr",
         ":static_assert",
         ":thread",
-        ":typeof",
         ":type_traits",
+        ":typeof",
         ":utility",
     ],
 )
