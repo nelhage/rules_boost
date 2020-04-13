@@ -22,4 +22,6 @@ script:
   - sudo mv bazel_bin_ppc64le_1.1.0 /usr/local/bin/bazel
   - sudo chmod +x /usr/local/bin/bazel
   - cd $TRAVIS_BUILD_DIR/test && cp .bazelrc.ci .bazelrc
+  - df -h .
+  - du -sh $TRAVIS_BUILD_DIR
   - cd $TRAVIS_BUILD_DIR/test && bazel test --host_javabase=@local_jdk//:jdk --test_output=errors //...
