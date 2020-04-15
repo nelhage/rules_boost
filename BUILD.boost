@@ -1321,6 +1321,16 @@ boost_library(
 )
 
 boost_library(
+    name = "outcome",
+    deps = [
+        ":config",
+        ":exception",
+        ":smart_ptr",
+        ":system",
+    ],
+)
+
+boost_library(
     name = "parameter",
     deps = [
         ":mp11",
