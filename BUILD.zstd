@@ -57,7 +57,11 @@ cc_library(
     hdrs = glob([
         "lib/legacy/*.h",
     ]),
-    copts = ["-Wno-uninitialized"],
+    copts =
+        select({
+            ":windows": [],
+            "//conditions:default": ["-Wno-uninitialized"],
+        }),
     defines = [
         "ZSTD_LEGACY_SUPPORT=4",
     ],
@@ -223,5 +227,12 @@ cc_library(
         ":threading",
         ":xxhash",
         ":zstd_common",
+    ],
+)
+
+config_setting(
+    name = "windows",
+    constraint_values = [
+        "@bazel_tools//platforms:windows",
     ],
 )
