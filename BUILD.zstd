@@ -57,6 +57,7 @@ cc_library(
     hdrs = glob([
         "lib/legacy/*.h",
     ]),
+    copts = ["-Wno-uninitialized"],
     defines = [
         "ZSTD_LEGACY_SUPPORT=4",
     ],
