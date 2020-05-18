@@ -36,6 +36,15 @@ cc_test(
 )
 
 cc_test(
+    name = "asio_ssl_test",
+    size = "small",
+    srcs = ["asio_ssl_test.cc"],
+    deps = [
+        "@boost//:asio_ssl",
+    ],
+)
+
+cc_test(
     name = "assign_test",
     size = "small",
     srcs = ["assign_test.cc"],

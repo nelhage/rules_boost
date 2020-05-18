@@ -364,6 +364,18 @@ boost_library(
     ],
 )
 
+cc_library(
+    name = "asio_ssl",
+    srcs = [
+        "@com_github_nelhage_rules_boost//src:build_asio_ssl.cpp",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":asio",
+        "@openssl//:ssl",
+    ],
+)
+
 boost_library(
     name = "assert",
 )

@@ -1,4 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 include_pattern = "boost/%s/"
 
@@ -232,5 +233,13 @@ def boost_deps():
                 "https://mirror.bazel.build/dl.bintray.com/boostorg/release/1.71.0/source/boost_1_71_0.tar.bz2",
                 "https://dl.bintray.com/boostorg/release/1.71.0/source/boost_1_71_0.tar.bz2",
             ],
-            patch_cmds = [ "rm -f doc/pdf/BUILD", ],
+            patch_cmds = ["rm -f doc/pdf/BUILD"],
+        )
+
+    if "openssl" not in native.existing_rules():
+        git_repository(
+            name = "openssl",
+            commit = "758e4ab071c960e8ef189ca70460c1ab7c16a5cf",
+            remote = "https://boringssl.googlesource.com/boringssl",
+            shallow_since = "1589821400 +0000",
         )
