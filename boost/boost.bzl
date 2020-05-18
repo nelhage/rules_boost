@@ -1,5 +1,4 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 include_pattern = "boost/%s/"
 
@@ -237,9 +236,10 @@ def boost_deps():
         )
 
     if "openssl" not in native.existing_rules():
-        git_repository(
+        # https://github.com/google/boringssl/archive/758e4ab071c960e8ef189ca70460c1ab7c16a5cf.zip
+        http_archive(
             name = "openssl",
-            commit = "758e4ab071c960e8ef189ca70460c1ab7c16a5cf",
-            remote = "https://boringssl.googlesource.com/boringssl",
-            shallow_since = "1589821400 +0000",
+            url = "https://github.com/google/boringssl/archive/758e4ab071c960e8ef189ca70460c1ab7c16a5cf.tar.gz",
+            sha256 = "9244051b0ec86e2161dd1910ed5fa3824c715dbcb8dca4dbc5bc1dfb6eb6479e",
+            strip_prefix = "boringssl-758e4ab071c960e8ef189ca70460c1ab7c16a5cf/",
         )
