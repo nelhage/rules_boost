@@ -232,5 +232,14 @@ def boost_deps():
                 "https://mirror.bazel.build/dl.bintray.com/boostorg/release/1.71.0/source/boost_1_71_0.tar.bz2",
                 "https://dl.bintray.com/boostorg/release/1.71.0/source/boost_1_71_0.tar.bz2",
             ],
-            patch_cmds = [ "rm -f doc/pdf/BUILD", ],
+            patch_cmds = ["rm -f doc/pdf/BUILD"],
+        )
+
+    if "openssl" not in native.existing_rules():
+        # https://github.com/google/boringssl/archive/758e4ab071c960e8ef189ca70460c1ab7c16a5cf.zip
+        http_archive(
+            name = "openssl",
+            url = "https://github.com/google/boringssl/archive/758e4ab071c960e8ef189ca70460c1ab7c16a5cf.tar.gz",
+            sha256 = "9244051b0ec86e2161dd1910ed5fa3824c715dbcb8dca4dbc5bc1dfb6eb6479e",
+            strip_prefix = "boringssl-758e4ab071c960e8ef189ca70460c1ab7c16a5cf/",
         )
