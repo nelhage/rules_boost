@@ -149,11 +149,11 @@ def boost_so_library(
     return boost_library(
         name = name,
         boost_name = boost_name,
+        defines = defines,
         exclude_hdr = exclude_hdr,
         exclude_src = native.glob([
             "libs/%s/**" % boost_name,
         ]),
-        defines = defines,
         deps = deps + select({
             "@boost//:linux": [":_imported_%s.so" % name],
             "@boost//:osx": [":_imported_%s.dylib" % name],
@@ -213,33 +213,33 @@ def boost_deps():
     if "com_github_facebook_zstd" not in native.existing_rules():
         http_archive(
             name = "com_github_facebook_zstd",
+            build_file = "@com_github_nelhage_rules_boost//:BUILD.zstd",
+            sha256 = "59ef70ebb757ffe74a7b3fe9c305e2ba3350021a918d168a046c6300aeea9315",
+            strip_prefix = "zstd-1.4.4",
             urls = [
                 "https://mirror.bazel.build/github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz",
                 "https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz",
             ],
-            sha256 = "59ef70ebb757ffe74a7b3fe9c305e2ba3350021a918d168a046c6300aeea9315",
-            build_file = "@com_github_nelhage_rules_boost//:BUILD.zstd",
-            strip_prefix = "zstd-1.4.4",
         )
 
     if "boost" not in native.existing_rules():
         http_archive(
             name = "boost",
             build_file = "@com_github_nelhage_rules_boost//:BUILD.boost",
+            patch_cmds = ["rm -f doc/pdf/BUILD"],
             sha256 = "d73a8da01e8bf8c7eda40b4c84915071a8c8a0df4a6734537ddde4a8580524ee",
             strip_prefix = "boost_1_71_0",
             urls = [
                 "https://mirror.bazel.build/dl.bintray.com/boostorg/release/1.71.0/source/boost_1_71_0.tar.bz2",
                 "https://dl.bintray.com/boostorg/release/1.71.0/source/boost_1_71_0.tar.bz2",
             ],
-            patch_cmds = ["rm -f doc/pdf/BUILD"],
         )
 
     if "openssl" not in native.existing_rules():
         # https://github.com/google/boringssl/archive/758e4ab071c960e8ef189ca70460c1ab7c16a5cf.zip
         http_archive(
             name = "openssl",
-            url = "https://github.com/google/boringssl/archive/758e4ab071c960e8ef189ca70460c1ab7c16a5cf.tar.gz",
             sha256 = "9244051b0ec86e2161dd1910ed5fa3824c715dbcb8dca4dbc5bc1dfb6eb6479e",
             strip_prefix = "boringssl-758e4ab071c960e8ef189ca70460c1ab7c16a5cf/",
+            url = "https://github.com/google/boringssl/archive/758e4ab071c960e8ef189ca70460c1ab7c16a5cf.tar.gz",
         )
