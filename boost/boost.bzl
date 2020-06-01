@@ -184,6 +184,8 @@ def boost_deps():
             ],
         )
 
+    SOURCEFORGE_MIRRORS = ["phoenixnap", "newcontinuum", "cfhcable", "superb-sea2", "cytranet", "iweb", "gigenet", "ayera", "astuteinternet", "pilotfiber", "svwh"]
+
     if "org_bzip_bzip2" not in native.existing_rules():
         http_archive(
             name = "org_bzip_bzip2",
@@ -191,12 +193,10 @@ def boost_deps():
             sha256 = "a2848f34fcd5d6cf47def00461fcb528a0484d8edef8208d6d2e2909dc61d9cd",
             strip_prefix = "bzip2-1.0.6",
             urls = [
-                "https://mirror.bazel.build/www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz",
-                "http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz",
+                "https://%s.dl.sourceforge.net/project/bzip2/bzip2-1.0.6.tar.gz" % (m,)
+                for m in SOURCEFORGE_MIRRORS
             ],
         )
-
-    SOURCEFORGE_MIRRORS = ["phoenixnap", "newcontinuum", "cfhcable", "superb-sea2", "cytranet", "iweb", "gigenet", "ayera", "astuteinternet", "pilotfiber", "svwh"]
 
     if "org_lzma_lzma" not in native.existing_rules():
         http_archive(
