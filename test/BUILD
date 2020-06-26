@@ -352,6 +352,16 @@ cc_test(
 )
 
 cc_test(
+    name = "spirit_test",
+    size = "small",
+    srcs = ["spirit_test.cc"],
+    copts = ["-std=c++14"],
+    deps = [
+        "@boost//:spirit",
+    ],
+)
+
+cc_test(
     name = "test_included_test",
     srcs = ["test_included_test.cc"],
     deps = [

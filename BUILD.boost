@@ -1435,7 +1435,6 @@ boost_library(
         ":limits",
         ":math",
         ":mpl",
-        ":multi_index",
         ":noncopyable",
         ":operators",
         ":range",
@@ -1647,10 +1646,15 @@ boost_library(
 boost_library(
     name = "spirit",
     deps = [
+        ":variant",
         ":optional",
         ":phoenix",
+        ":function",
+        ":foreach",
+        ":iostreams",
         ":range",
         ":ref",
+        ":tti",
         ":utility",
     ],
 )
@@ -2091,6 +2095,7 @@ boost_library(
     name = "phoenix",
     deps = [
         ":proto",
+        ":bind",
     ],
 )
 
