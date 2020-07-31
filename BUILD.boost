@@ -656,6 +656,13 @@ boost_library(
 )
 
 boost_library(
+    name = "dll",
+    deps = [
+        ":filesystem",
+    ],
+)
+
+boost_library(
     name = "dynamic_bitset",
     deps = [
         ":config",
