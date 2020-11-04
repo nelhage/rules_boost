@@ -1092,7 +1092,13 @@ boost_library(
     name = "math",
     hdrs = [
         "boost/cstdfloat.hpp",
+        # See https://github.com/boostorg/math/blob/boost-1.56.0/doc/overview/roadmap.qbk#L11-L14
+        "libs/math/include_private/boost/math/tools/remez.hpp",
+        "libs/math/include_private/boost/math/constants/generate.hpp",
+        "libs/math/include_private/boost/math/tools/solve.hpp",
+        "libs/math/include_private/boost/math/tools/test.hpp",
     ],
+    includes = ["libs/math/include_private"],
     deps = [
         ":array",
         ":assert",
