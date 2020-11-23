@@ -1,7 +1,40 @@
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/read.hpp>
 #include <boost/iostreams/device/back_inserter.hpp>
+#include <boost/iostreams/filter/bzip2.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
+#include <boost/iostreams/filter/lzma.hpp>
+#include <boost/iostreams/filter/zlib.hpp>
 #include <boost/iostreams/filter/zstd.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
+
+#include <string>
+#include <sstream>
+#include <utility>
+
+template <typename Compressor, typename Decompressor,
+          typename... CompressorArgs>
+bool test_iostream_roundtrip(CompressorArgs &&...args)
+{
+std::string original = "hello, world! this test verifies that iostreams can "
+                       "compress and decompress a string";
+  std::stringstream compressed;
+  std::stringstream uncompressed;
+
+  {
+    boost::iostreams::filtering_ostream compressed_out;
+    compressed_out.push(Compressor(std::forward<CompressorArgs>(args)...));
+    compressed_out.push(compressed);
+    boost::iostreams::write(compressed_out, original.data(), original.size());
+  }
+
+  boost::iostreams::filtering_ostream uncompressed_out;
+  uncompressed_out.push(Decompressor());
+  uncompressed_out.push(uncompressed);
+  boost::iostreams::copy(compressed, uncompressed_out);
+
+  return uncompressed.str() == original;
+}
 
 int main()
 {
@@ -23,33 +56,18 @@ int main()
       return 1;
     }
   }
-  {
-    std::string original ("hello");
-    std::string compressed;
-    std::string uncompressed;
 
-    boost::iostreams::filtering_ostream compressed_out;
-    compressed_out.push(
-        boost::iostreams::zstd_compressor(boost::iostreams::zstd::best_speed));
-    compressed_out.push(boost::iostreams::back_inserter(compressed));
-    boost::iostreams::write(compressed_out,
-                            reinterpret_cast<const char*>(original.data()),
-                            original.size());
-    boost::iostreams::close(compressed_out);
-
-    boost::iostreams::filtering_ostream uncompressed_out;
-    uncompressed_out.push(
-        boost::iostreams::zstd_decompressor());
-    uncompressed_out.push(boost::iostreams::back_inserter(uncompressed));
-    boost::iostreams::write(uncompressed_out,
-                            reinterpret_cast<const char*>(compressed.data()),
-                            compressed.size());
-    boost::iostreams::close(uncompressed_out);
-
-    if (uncompressed != original) {
-      return 1;
-    }
-  }
+  using namespace boost::iostreams;
+  if (!test_iostream_roundtrip<gzip_compressor, gzip_decompressor>(zlib::best_speed))
+    return 1;
+  if (!test_iostream_roundtrip<zlib_compressor, zlib_decompressor>(zlib::best_speed))
+    return 1;
+  if (!test_iostream_roundtrip<zstd_compressor, zstd_decompressor>(zstd::best_speed))
+    return 1;
+  if (!test_iostream_roundtrip<lzma_compressor, lzma_decompressor>(lzma::best_speed))
+    return 1;
+  if (!test_iostream_roundtrip<bzip2_compressor, bzip2_decompressor>())
+    return 1;
 
   return 0;
 }

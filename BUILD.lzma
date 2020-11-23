@@ -26,7 +26,7 @@ copy_file(
         ":osx": "@com_github_nelhage_rules_boost//:config.lzma-osx.h",
         ":windows": "@com_github_nelhage_rules_boost//:config.lzma-windows.h",
     }),
-    out = "config.h",
+    out = "src/liblzma/api/config.h", # minimize the number of exported include paths
 )
 
 cc_library(
@@ -105,29 +105,54 @@ cc_library(
         "src/liblzma/simple/simple_encoder.c",
         "src/liblzma/simple/sparc.c",
         "src/liblzma/simple/x86.c",
+        "src/liblzma/api/config.h",
+    ] + glob(["src/**/*.h"]),
+    hdrs = [
+        "src/liblzma/api/lzma.h",
+        "src/liblzma/api/lzma/base.h",
+        "src/liblzma/api/lzma/bcj.h",
+        "src/liblzma/api/lzma/block.h",
+        "src/liblzma/api/lzma/check.h",
+        "src/liblzma/api/lzma/container.h",
+        "src/liblzma/api/lzma/delta.h",
+        "src/liblzma/api/lzma/filter.h",
+        "src/liblzma/api/lzma/hardware.h",
+        "src/liblzma/api/lzma/index.h",
+        "src/liblzma/api/lzma/index_hash.h",
+        "src/liblzma/api/lzma/lzma12.h",
+        "src/liblzma/api/lzma/stream_flags.h",
+        "src/liblzma/api/lzma/version.h",
+        "src/liblzma/api/lzma/vli.h",
     ],
-    hdrs = glob(["src/**/*.h"]) + ["config.h"],
     copts = select({
         ":windows": [],
         "//conditions:default": ["-std=c99"],
-    }),
-    defines = [
-        "HAVE_CONFIG_H",
+    }) + [
+        "-I external/org_lzma_lzma/src/common",
+        "-I external/org_lzma_lzma/src/liblzma",
+        "-I external/org_lzma_lzma/src/liblzma/api",
+        "-I external/org_lzma_lzma/src/liblzma/common",
+        "-I external/org_lzma_lzma/src/liblzma/check",
+        "-I external/org_lzma_lzma/src/liblzma/delta",
+        "-I external/org_lzma_lzma/src/liblzma/lz",
+        "-I external/org_lzma_lzma/src/liblzma/lzma",
+        "-I external/org_lzma_lzma/src/liblzma/rangecoder",
+        "-I external/org_lzma_lzma/src/liblzma/simple",
     ],
+    defines = select({
+        ":windows": ["LZMA_API_STATIC"],
+        "//conditions:default": [],
+    }),
     includes = [
-        ".",
-        "src",
-        "src/common",
-        "src/liblzma",
         "src/liblzma/api",
-        "src/liblzma/check",
-        "src/liblzma/common",
-        "src/liblzma/delta",
-        "src/liblzma/lz",
-        "src/liblzma/lzma",
-        "src/liblzma/rangecoder",
-        "src/liblzma/simple",
     ],
     linkopts = ["-lpthread"],
+    linkstatic = select({
+        ":windows": True,
+        "//conditions:default": False,
+    }),
+    local_defines = [
+        "HAVE_CONFIG_H",
+    ],
     visibility = ["//visibility:public"],
 )
