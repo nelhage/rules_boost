@@ -4,6 +4,7 @@
 #include <boost/iostreams/filter/bzip2.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
 #include <boost/iostreams/filter/lzma.hpp>
+#include <boost/iostreams/filter/zlib.hpp>
 #include <boost/iostreams/filter/zstd.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
 
@@ -58,6 +59,8 @@ int main()
 
   using namespace boost::iostreams;
   if (!test_iostream_roundtrip<gzip_compressor, gzip_decompressor>(zlib::best_speed))
+    return 1;
+  if (!test_iostream_roundtrip<zlib_compressor, zlib_decompressor>(zlib::best_speed))
     return 1;
   if (!test_iostream_roundtrip<zstd_compressor, zstd_decompressor>(zstd::best_speed))
     return 1;
