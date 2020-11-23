@@ -1525,9 +1525,6 @@ boost_library(
     hdrs = [
         "boost/cregex.hpp",
     ],
-    defines = [
-        "BOOST_FALLTHROUGH",
-    ],
     deps = [
         ":assert",
         ":config",
@@ -1782,7 +1779,7 @@ boost_library(
         ],
         ":windows_x86_64": [],
     }),
-    defines = select({
+    local_defines = select({
         ":linux_arm": [],
         ":linux_ppc": [],
         ":linux_x86_64": [],
@@ -2160,7 +2157,7 @@ cc_library(
     srcs = ["libs/log/src/dump_ssse3.cpp"] + hdr_list("log"),
     hdrs = [],
     copts = ["-msse4.2"],
-    defines = BOOST_LOG_DEFINES,
+    local_defines = BOOST_LOG_DEFINES,
     includes = [],
     licenses = ["notice"],
     linkopts = [],
@@ -2177,7 +2174,7 @@ boost_library(
     copts = BOOST_LOG_CFLAGS + [
         "-Iexternal/boost/libs/log/src/",
     ],
-    defines = BOOST_LOG_DEFINES,
+    local_defines = BOOST_LOG_DEFINES,
     exclude_src = [
         "libs/log/src/dump_avx2.cpp",
         "libs/log/src/dump_ssse3.cpp",
