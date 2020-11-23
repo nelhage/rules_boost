@@ -297,14 +297,22 @@ boost_library(
 
 boost_library(
     name = "atomic",
+    srcs = select({
+        ":windows_x86_64": ["libs/atomic/src/wait_ops_windows.cpp"],
+        "//conditions:default": [],
+    }),
     hdrs = [
         "boost/memory_order.hpp",
     ],
+    copts = ["-Iexternal/boost/libs/atomic/src"],
+    exclude_src = ["libs/atomic/src/wait_ops_windows.cpp"],
     deps = [
         ":assert",
         ":config",
         ":cstdint",
+        ":predef",
         ":type_traits",
+        ":winapi",
     ],
 )
 
@@ -352,6 +360,7 @@ boost_library(
     linkopts = ["-lpthread"],
     deps = [
         ":bind",
+        ":cerrno",
         ":date_time",
         ":regex",
     ],
@@ -628,15 +637,12 @@ boost_library(
 
 boost_library(
     name = "date_time",
-    srcs = glob(["libs/date_time/src/**/*.cpp"]),
-    hdrs = glob(["libs/date_time/src/**/*.hpp"]),
     deps = [
         ":algorithm",
         ":io",
         ":lexical_cast",
         ":mpl",
         ":operators",
-        ":smart_ptr",
         ":static_assert",
         ":tokenizer",
         ":type_traits",
@@ -826,6 +832,7 @@ boost_library(
         ":config",
         ":integer",
         ":iterator",
+        ":mp11",
         ":mpl",
         ":ref",
         ":type_traits",
@@ -1210,6 +1217,15 @@ boost_library(
         ":throw_exception",
         ":type_traits",
         ":utility",
+    ],
+)
+
+boost_library(
+    name = "nowide",
+    deps = [
+        ":config",
+        ":filesystem",
+        ":version",
     ],
 )
 
@@ -1727,6 +1743,25 @@ boost_library(
 )
 
 boost_library(
+    name = "static_string",
+    deps = [
+        ":assert",
+        ":container_hash",
+        ":static_assert",
+        ":throw_exception",
+        ":utility",
+    ],
+)
+
+boost_library(
+    name = "stl_interfaces",
+    deps = [
+        ":assert",
+        ":config",
+    ],
+)
+
+boost_library(
     name = "system",
     deps = [
         ":assert",
@@ -1949,6 +1984,7 @@ boost_library(
         ":core",
         ":cstdint",
         ":detail",
+        ":io",
         ":preprocessor",
         ":static_assert",
         ":swap",
@@ -1992,6 +2028,7 @@ boost_library(
 boost_library(
     name = "variant2",
     deps = [
+        ":cstdint",
         ":mp11",
     ],
 )

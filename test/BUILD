@@ -31,7 +31,6 @@ cc_test(
     srcs = ["asio_test.cc"],
     deps = [
         "@boost//:asio",
-        "@boost//:date_time",
     ],
 )
 
@@ -163,6 +162,15 @@ cc_test(
 )
 
 cc_test(
+    name = "filesystem_test",
+    size = "small",
+    srcs = ["filesystem_test.cc"],
+    deps = [
+        "@boost//:filesystem",
+    ],
+)
+
+cc_test(
     name = "foreach_test",
     size = "small",
     srcs = ["foreach_test.cc"],
@@ -258,6 +266,15 @@ cc_test(
     srcs = ["numeric_conversion_test.cc"],
     deps = [
         "@boost//:numeric_conversion",
+    ],
+)
+
+cc_test(
+    name = "nowide_test",
+    size = "small",
+    srcs = ["nowide_test.cc"],
+    deps = [
+        "@boost//:nowide",
     ],
 )
 
@@ -501,5 +518,30 @@ cc_test(
     copts = ["-std=c++14"],
     deps = [
         "@boost//:variant2",
+    ],
+)
+
+cc_test(
+    name = "static_string_test",
+    srcs = ["static_string_test.cc"],
+    deps = [
+        "@boost//:static_string",
+    ],
+)
+
+cc_test(
+    name = "stl_interfaces_test",
+    srcs = ["stl_interfaces_test.cc"],
+    deps = [
+        "@boost//:stl_interfaces",
+    ],
+    copts = ["-std=c++1y"],
+)
+
+cc_test(
+    name = "date_time_test",
+    srcs = ["date_time_test.cc"],
+    deps = [
+        "@boost//:date_time",
     ],
 )
