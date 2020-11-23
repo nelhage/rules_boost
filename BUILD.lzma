@@ -26,7 +26,7 @@ copy_file(
         ":osx": "@com_github_nelhage_rules_boost//:config.lzma-osx.h",
         ":windows": "@com_github_nelhage_rules_boost//:config.lzma-windows.h",
     }),
-    out = "config/config.h",
+    out = "src/liblzma/api/config.h", # minimize the number of exported include paths
 )
 
 cc_library(
@@ -105,7 +105,7 @@ cc_library(
         "src/liblzma/simple/simple_encoder.c",
         "src/liblzma/simple/sparc.c",
         "src/liblzma/simple/x86.c",
-        "config/config.h",
+        "src/liblzma/api/config.h",
     ] + glob(["src/**/*.h"]),
     hdrs = [
         "src/liblzma/api/lzma.h",
@@ -139,11 +139,18 @@ cc_library(
         "-I external/org_lzma_lzma/src/liblzma/rangecoder",
         "-I external/org_lzma_lzma/src/liblzma/simple",
     ],
+    defines = select({
+        ":windows": ["LZMA_API_STATIC"],
+        "//conditions:default": [],
+    }),
     includes = [
-        "config",
         "src/liblzma/api",
     ],
     linkopts = ["-lpthread"],
+    linkstatic = select({
+        ":windows": True,
+        "//conditions:default": False,
+    }),
     local_defines = [
         "HAVE_CONFIG_H",
     ],
