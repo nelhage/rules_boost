@@ -1,0 +1,25 @@
+os: linux
+arch: ppc64le
+language: shell
+
+jobs:
+  include:
+    - dist: xenial
+      env:
+        - dist_version=16.04
+
+before_install:
+  - sudo apt-get update && sudo apt-get -y install build-essential python zip unzip python3-pip
+  - wget https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jre_ppc64le_linux_hotspot_11.0.6_10.tar.gz
+  - wget https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jdk_ppc64le_linux_hotspot_11.0.6_10.tar.gz
+  - tar -xf OpenJDK11U-jre_ppc64le_linux_hotspot_11.0.6_10.tar.gz
+  - tar -xf OpenJDK11U-jdk_ppc64le_linux_hotspot_11.0.6_10.tar.gz
+  - export PATH=$PWD/jdk-11.0.6+10-jre/bin:$PATH
+  - export PATH=$PWD/jdk-11.0.6+10/bin:$PATH
+  - sudo pip3 install requests
+script:
+  - wget -q https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/ubuntu_${dist_version}/bazel_bin_ppc64le_1.1.0
+  - sudo mv bazel_bin_ppc64le_1.1.0 /usr/local/bin/bazel
+  - sudo chmod +x /usr/local/bin/bazel
+  - cd $TRAVIS_BUILD_DIR/test && cp .bazelrc.ci .bazelrc
+  - cd $TRAVIS_BUILD_DIR/test && bazel test --host_javabase=@local_jdk//:jdk --test_output=errors //...

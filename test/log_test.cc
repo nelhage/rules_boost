@@ -6,6 +6,7 @@
 #include <boost/log/sinks/text_ostream_backend.hpp>
 #include <boost/log/sources/logger.hpp>
 #include <boost/log/sources/record_ostream.hpp>
+#include <boost/log/utility/setup/console.hpp>
 
 #include <sstream>
 
@@ -27,6 +28,10 @@ int main(int, char*[])
     // Register the sink in the logging core
     logging::core::get()->add_sink(sink);
 
+    // Register a console log with a format, which
+    // tests our usage of log_setup library.
+    // Tests resolution of https://github.com/nelhage/rules_boost/issues/151.
+    logging::add_console_log(std::cout, boost::log::keywords::format = "*%Severity%* %Message%");
 
     BOOST_LOG_TRIVIAL(trace) << "A trace severity message";
     BOOST_LOG_TRIVIAL(debug) << "A debug severity message";

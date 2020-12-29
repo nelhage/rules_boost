@@ -1,7 +1,9 @@
-load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "hdr_list", "includes_list")
+load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+load("@bazel_skylib//lib:selects.bzl", "selects")
+load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "boost_so_library", "hdr_list")
 
-_w_no_deprecated = select({
-    ":linux": [
+_w_no_deprecated = selects.with_or({
+    (":linux", ":osx"): [
         "-Wno-deprecated-declarations",
     ],
     "//conditions:default": [],
@@ -27,6 +29,33 @@ config_setting(
     name = "windows",
     constraint_values = [
         "@bazel_tools//platforms:windows",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "linux_arm",
+    constraint_values = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:arm",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "linux_ppc",
+    constraint_values = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:ppc",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "linux_aarch64",
+    constraint_values = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:aarch64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -58,7 +87,41 @@ config_setting(
     visibility = ["//visibility:public"],
 )
 
+config_setting(
+    name = "x86_64",
+    constraint_values = [
+        "@bazel_tools//platforms:x86_64",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# Rename .asm to .S so that it will be handled with the C preprocessor.
+[copy_file(
+    name = "rename_%s" % name,
+    src = "libs/context/src/asm/%s_x86_64_ms_pe_masm.asm" % name,
+    out = "libs/context/src/asm/%s_x86_64_ms_pe_masm.S" % name,
+) for name in [
+    "make",
+    "jump",
+    "ontop",
+]]
+
 BOOST_CTX_ASM_SOURCES = select({
+    ":linux_aarch64": [
+        "libs/context/src/asm/jump_arm64_aapcs_elf_gas.S",
+        "libs/context/src/asm/make_arm64_aapcs_elf_gas.S",
+        "libs/context/src/asm/ontop_arm64_aapcs_elf_gas.S",
+    ],
+    ":linux_arm": [
+        "libs/context/src/asm/jump_arm_aapcs_elf_gas.S",
+        "libs/context/src/asm/make_arm_aapcs_elf_gas.S",
+        "libs/context/src/asm/ontop_arm_aapcs_elf_gas.S",
+    ],
+    ":linux_ppc": [
+        "libs/context/src/asm/jump_ppc64_sysv_elf_gas.S",
+        "libs/context/src/asm/make_ppc64_sysv_elf_gas.S",
+        "libs/context/src/asm/ontop_ppc64_sysv_elf_gas.S",
+    ],
     ":linux_x86_64": [
         "libs/context/src/asm/jump_x86_64_sysv_elf_gas.S",
         "libs/context/src/asm/make_x86_64_sysv_elf_gas.S",
@@ -70,16 +133,17 @@ BOOST_CTX_ASM_SOURCES = select({
         "libs/context/src/asm/ontop_x86_64_sysv_macho_gas.S",
     ],
     ":windows_x86_64": [
-        "libs/context/src/asm/make_x86_64_ms_pe_masm.asm",
-        "libs/context/src/asm/jump_x86_64_ms_pe_masm.asm",
-        "libs/context/src/asm/ontop_x86_64_ms_pe_masm.asm",
+        "libs/context/src/asm/make_x86_64_ms_pe_masm.S",
+        "libs/context/src/asm/jump_x86_64_ms_pe_masm.S",
+        "libs/context/src/asm/ontop_x86_64_ms_pe_masm.S",
     ],
+    "//conditions:default": [],
 })
 
 boost_library(
     name = "context",
     srcs = BOOST_CTX_ASM_SOURCES + select({
-        ":linux_x86_64": [
+        ":linux": [
             "libs/context/src/posix/stack_traits.cpp",
         ],
         ":osx_x86_64": [
@@ -88,6 +152,11 @@ boost_library(
         ":windows_x86_64": [
             "libs/context/src/windows/stack_traits.cpp",
         ],
+        "//conditions:default": [],
+    }),
+    copts = select({
+        ":windows_x86_64": ["/DBOOST_CONTEXT_EXPORT="],
+        "//conditions:default": [],
     }),
     exclude_src = [
         "libs/context/src/fiber.cpp",
@@ -101,10 +170,17 @@ boost_library(
         ":cstdint",
         ":detail",
         ":intrusive_ptr",
+        ":pool",
     ],
 )
 
 BOOST_FIBER_NUMA_SRCS = select({
+    ":linux_arm": [
+    ],
+    ":linux_ppc": [
+        "libs/fiber/src/numa/linux/pin_thread.cpp",
+        "libs/fiber/src/numa/linux/topology.cpp",
+    ],  # MAYBE SHOULD BE BLANK
     ":linux_x86_64": [
         "libs/fiber/src/numa/linux/pin_thread.cpp",
         "libs/fiber/src/numa/linux/topology.cpp",
@@ -133,7 +209,7 @@ boost_library(
     }),
     exclude_src = ["libs/fiber/src/numa/**/*.cpp"],
     linkopts = select({
-        ":linux_x86_64": [
+        ":linux": [
             "-lpthread",
         ],
         ":osx_x86_64": [
@@ -172,6 +248,7 @@ boost_library(
         ":fusion",
         ":mpl",
         ":parameter",
+        ":serialization",
         ":type_traits",
         ":utility",
         ":version",
@@ -220,14 +297,22 @@ boost_library(
 
 boost_library(
     name = "atomic",
+    srcs = select({
+        ":windows_x86_64": ["libs/atomic/src/wait_ops_windows.cpp"],
+        "//conditions:default": [],
+    }),
     hdrs = [
         "boost/memory_order.hpp",
     ],
+    copts = ["-Iexternal/boost/libs/atomic/src"],
+    exclude_src = ["libs/atomic/src/wait_ops_windows.cpp"],
     deps = [
         ":assert",
         ":config",
         ":cstdint",
+        ":predef",
         ":type_traits",
+        ":winapi",
     ],
 )
 
@@ -260,7 +345,13 @@ boost_library(
 
 boost_library(
     name = "asio",
-    defines = select({
+    srcs = [
+        "boost/asio/impl/src.hpp",
+        "@com_github_nelhage_rules_boost//src:build_asio.cpp",
+    ],
+    defines = [
+        "BOOST_ASIO_SEPARATE_COMPILATION",
+    ] + select({
         ":osx_x86_64": [
             "BOOST_ASIO_DISABLE_STD_EXPERIMENTAL_STRING_VIEW",
         ],
@@ -269,8 +360,21 @@ boost_library(
     linkopts = ["-lpthread"],
     deps = [
         ":bind",
+        ":cerrno",
         ":date_time",
         ":regex",
+    ],
+)
+
+cc_library(
+    name = "asio_ssl",
+    srcs = [
+        "@com_github_nelhage_rules_boost//src:build_asio_ssl.cpp",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":asio",
+        "@openssl//:ssl",
     ],
 )
 
@@ -286,10 +390,12 @@ boost_library(
         ":core",
         ":detail",
         ":endian",
+        ":mp11",
         ":smart_ptr",
         ":static_assert",
         ":system",
         ":throw_exception",
+        ":tribool",
         ":utility",
     ],
 )
@@ -419,6 +525,7 @@ boost_library(
     hdrs = [
         "libs/container/src/dlmalloc_2_8_6.c",
     ],
+    copts = _w_no_deprecated,
     deps = [
         ":config",
         ":core",
@@ -467,7 +574,7 @@ boost_library(
 )
 
 BOOST_CORO_SRCS = select({
-    ":linux_x86_64": [
+    ":linux": [
         "libs/coroutine/src/posix/stack_traits.cpp",
     ],
     ":osx_x86_64": [
@@ -494,6 +601,20 @@ boost_library(
 )
 
 boost_library(
+    name = "coroutine2",
+    hdrs = glob([
+        "libs/coroutine2/include/**/*.hpp",
+        "libs/coroutine2/include/**/*.ipp",
+    ]),
+    deps = [
+        ":assert",
+        ":config",
+        ":context",
+        ":detail",
+    ],
+)
+
+boost_library(
     name = "crc",
     deps = [
         ":config",
@@ -504,6 +625,10 @@ boost_library(
 
 boost_library(
     name = "cstdint",
+    deps = [
+        ":config",
+        ":limits",
+    ],
 )
 
 boost_library(
@@ -512,15 +637,12 @@ boost_library(
 
 boost_library(
     name = "date_time",
-    srcs = glob(["libs/date_time/src/**/*.cpp"]),
-    hdrs = glob(["libs/date_time/src/**/*.hpp"]),
     deps = [
         ":algorithm",
         ":io",
         ":lexical_cast",
         ":mpl",
         ":operators",
-        ":smart_ptr",
         ":static_assert",
         ":tokenizer",
         ":type_traits",
@@ -540,11 +662,19 @@ boost_library(
 )
 
 boost_library(
+    name = "dll",
+    deps = [
+        ":filesystem",
+    ],
+)
+
+boost_library(
     name = "dynamic_bitset",
     deps = [
         ":config",
         ":core",
         ":detail",
+        ":functional",
         ":integer",
         ":move",
         ":throw_exception",
@@ -686,12 +816,26 @@ boost_library(
         ":lexical_cast",
         ":math",
         ":mpl",
-        ":numeric",
+        ":numeric_conversion",
         ":qvm",
         ":range",
         ":rational",
         ":tokenizer",
         ":variant",
+    ],
+)
+
+boost_library(
+    name = "gil",
+    deps = [
+        ":concept_check",
+        ":config",
+        ":integer",
+        ":iterator",
+        ":mp11",
+        ":mpl",
+        ":ref",
+        ":type_traits",
     ],
 )
 
@@ -739,18 +883,22 @@ boost_library(
 boost_library(
     name = "integer",
     hdrs = [
-        "boost/cstdint.hpp",
         "boost/integer_traits.hpp",
-        "boost/pending/integer_log2.hpp",
-        "boost/pending/lowest_bit.hpp",
     ],
     deps = [
+        ":cstdint",
         ":static_assert",
     ],
 )
 
 boost_library(
     name = "interprocess",
+    linkopts = select({
+        ":linux": [
+            "-lrt",
+        ],
+        "//conditions:default": [],
+    }),
     deps = [
         ":assert",
         ":checked_delete",
@@ -836,6 +984,7 @@ boost_library(
         ":type",
         ":type_traits",
         ":utility",
+        "@com_github_facebook_zstd//:zstd",
         "@net_zlib_zlib//:zlib",
         "@org_bzip_bzip2//:bz2lib",
         "@org_lzma_lzma//:lzma",
@@ -867,24 +1016,58 @@ boost_library(
     name = "limits",
 )
 
+BOOST_LOCALE_COMMON_SOURCES = glob(
+    [
+        "libs/locale/src/encoding/*.cpp",
+        "libs/locale/src/encoding/*.hpp",
+        "libs/locale/src/encoding/*.ipp",
+        "libs/locale/src/shared/*.cpp",
+        "libs/locale/src/shared/*.hpp",
+        "libs/locale/src/std/*.cpp",
+        "libs/locale/src/std/*.hpp",
+        "libs/locale/src/util/*.cpp",
+        "libs/locale/src/util/*.hpp",
+    ],
+    exclude = [
+        "libs/locale/src/util/iconv.hpp",
+    ],
+)
+
+BOOST_LOCALE_POSIX_SOURCES = BOOST_LOCALE_COMMON_SOURCES + [
+    "libs/locale/src/util/iconv.hpp",
+] + glob([
+    "libs/locale/src/posix/*.cpp",
+    "libs/locale/src/posix/*.hpp",
+])
+
+BOOST_LOCALE_WIN32_SOURCES = BOOST_LOCALE_COMMON_SOURCES + glob([
+    "libs/locale/src/win32/*.cpp",
+    "libs/locale/src/win32/*.hpp",
+])
+
+BOOST_LOCALE_POSIX_COPTS = [
+    "-DBOOST_LOCALE_WITH_ICONV",
+    "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
+]
+
+BOOST_LOCALE_WIN32_COPTS = []
+
 boost_library(
     name = "locale",
-    srcs =
-        glob(
-            [
-                "libs/locale/src/**/*.cpp",
-                "libs/locale/src/**/*.hpp",
-                "libs/locale/src/**/*.ipp",
-            ],
-            exclude = [
-                "libs/locale/src/win32/*.cpp",
-                "libs/locale/src/icu/*.cpp",
-            ],
-        ),
-    copts = [
-        "-DBOOST_LOCALE_WITH_ICONV",
-        "-DBOOST_LOCALE_NO_WINAPI_BACKEND",
-    ] + _w_no_deprecated,
+    srcs = select({
+        ":linux_arm": BOOST_LOCALE_POSIX_SOURCES,
+        ":linux_ppc": BOOST_LOCALE_POSIX_SOURCES,
+        ":linux_x86_64": BOOST_LOCALE_POSIX_SOURCES,
+        ":osx_x86_64": BOOST_LOCALE_POSIX_SOURCES,
+        ":windows_x86_64": BOOST_LOCALE_WIN32_SOURCES,
+    }),
+    copts = select({
+        ":linux_arm": BOOST_LOCALE_POSIX_COPTS,
+        ":linux_ppc": BOOST_LOCALE_POSIX_COPTS,
+        ":linux_x86_64": BOOST_LOCALE_POSIX_COPTS,
+        ":osx_x86_64": BOOST_LOCALE_POSIX_COPTS,
+        ":windows_x86_64": BOOST_LOCALE_WIN32_COPTS,
+    }) + _w_no_deprecated,
     deps = [
         ":assert",
         ":config",
@@ -915,7 +1098,43 @@ boost_library(
 boost_library(
     name = "math",
     hdrs = [
-        "boost/cstdint.hpp",
+        "boost/cstdfloat.hpp",
+        # See https://github.com/boostorg/math/blob/boost-1.56.0/doc/overview/roadmap.qbk#L11-L14
+        "libs/math/include_private/boost/math/tools/remez.hpp",
+        "libs/math/include_private/boost/math/constants/generate.hpp",
+        "libs/math/include_private/boost/math/tools/solve.hpp",
+        "libs/math/include_private/boost/math/tools/test.hpp",
+    ],
+    includes = ["libs/math/include_private"],
+    deps = [
+        ":array",
+        ":assert",
+        ":atomic",
+        ":concept_check",
+        ":config",
+        ":core",
+        ":cstdint",
+        ":detail",
+        ":fusion",
+        ":integer",
+        ":lambda",
+        # https://github.com/boostorg/lexical_cast/issues/27
+        #":lexical_cast",
+        ":limits",
+        ":mp11",
+        ":mpl",
+        # https://github.com/boostorg/math/issues/201
+        #":multiprecision",
+        ":predef",
+        ":range",
+        ":scoped_array",
+        ":static_assert",
+        ":throw_exception",
+        ":tuple",
+        ":type",
+        ":type_traits",
+        ":utility",
+        ":version",
     ],
 )
 
@@ -1002,6 +1221,15 @@ boost_library(
 )
 
 boost_library(
+    name = "nowide",
+    deps = [
+        ":config",
+        ":filesystem",
+        ":version",
+    ],
+)
+
+boost_library(
     name = "noncopyable",
     deps = [
         ":core",
@@ -1044,7 +1272,7 @@ boost_library(
         ":iterator",
         ":mpl",
         ":noncopyable",
-        ":numeric",
+        ":numeric_interval",
         ":range",
         ":serialization",
         ":shared_array",
@@ -1060,13 +1288,22 @@ boost_library(
     name = "numeric_odeint",
     hdrs = glob([
         "boost/numeric/odeint/**/*.hpp",
-    ]),
+    ]) + [
+        "boost/numeric/odeint.hpp",
+    ],
     deps = [
         ":fusion",
         ":lexical_cast",
         ":math",
+        # There is currently a circular dependency between math and
+        # multiprecision. We know that :numeric_odeint triggers it,
+        # despite only depending directly on :math, so we include
+        # :multiprecision here. Some users of :math will need to do
+        # so as well.
+        # See: https://github.com/boostorg/math/issues/201
+        ":multiprecision",
         ":multi_array",
-        ":numeric",
+        ":numeric_ublas",
         ":serialization",
         ":units",
     ],
@@ -1078,6 +1315,23 @@ boost_library(
 
 boost_library(
     name = "units",
+    deps = [
+        ":assert",
+        ":config",
+        ":core",
+        ":integer",
+        ":io",
+        ":lambda",
+        ":math",
+        ":mpl",
+        ":preprocessor",
+        ":serialization",
+        ":static_assert",
+        ":type_traits",
+        ":typeof",
+        ":utility",
+        ":version",
+    ],
 )
 
 boost_library(
@@ -1100,7 +1354,30 @@ boost_library(
 )
 
 boost_library(
+    name = "outcome",
+    deps = [
+        ":config",
+        ":exception",
+        ":smart_ptr",
+        ":system",
+    ],
+)
+
+boost_library(
     name = "parameter",
+    deps = [
+        ":mp11",
+    ],
+)
+
+boost_library(
+    name = "polygon",
+    deps = [
+        ":config",
+        ":integer",
+        ":mpl",
+        ":utility",
+    ],
 )
 
 boost_library(
@@ -1187,7 +1464,6 @@ boost_library(
         ":limits",
         ":math",
         ":mpl",
-        ":multi_index",
         ":noncopyable",
         ":operators",
         ":range",
@@ -1264,9 +1540,6 @@ boost_library(
     name = "regex",
     hdrs = [
         "boost/cregex.hpp",
-    ],
-    defines = [
-        "BOOST_FALLTHROUGH",
     ],
     deps = [
         ":assert",
@@ -1399,15 +1672,27 @@ boost_library(
 boost_library(
     name = "spirit",
     deps = [
+        ":variant",
         ":optional",
         ":phoenix",
+        ":function",
+        ":foreach",
+        ":iostreams",
         ":range",
         ":ref",
+        ":tti",
         ":utility",
     ],
 )
 
 BOOST_STACKTRACE_SOURCES = select({
+    ":linux_arm": [
+        "libs/stacktrace/src/basic.cpp",
+        "libs/stacktrace/src/noop.cpp",
+    ],
+    ":linux_ppc": [
+        "libs/stacktrace/src/backtrace.cpp",
+    ],
     ":linux_x86_64": [
         "libs/stacktrace/src/backtrace.cpp",
     ],
@@ -1431,6 +1716,9 @@ boost_library(
     }),
     exclude_src = ["libs/stacktrace/src/*.cpp"],
     linkopts = select({
+        ":linux_ppc": [
+            "-lbacktrace -ldl",
+        ],
         ":linux_x86_64": [
             "-lbacktrace -ldl",
         ],
@@ -1449,6 +1737,25 @@ boost_library(
 
 boost_library(
     name = "static_assert",
+)
+
+boost_library(
+    name = "static_string",
+    deps = [
+        ":assert",
+        ":container_hash",
+        ":static_assert",
+        ":throw_exception",
+        ":utility",
+    ],
+)
+
+boost_library(
+    name = "stl_interfaces",
+    deps = [
+        ":assert",
+        ":config",
+    ],
 )
 
 boost_library(
@@ -1484,7 +1791,7 @@ boost_library(
 boost_library(
     name = "thread",
     srcs = select({
-        ":linux_x86_64": [
+        ":linux": [
             "libs/thread/src/pthread/once.cpp",
             "libs/thread/src/pthread/thread.cpp",
         ],
@@ -1499,7 +1806,7 @@ boost_library(
         ],
     }),
     hdrs = select({
-        ":linux_x86_64": [
+        ":linux": [
             "libs/thread/src/pthread/once_atomic.cpp",
         ],
         ":osx_x86_64": [
@@ -1507,17 +1814,21 @@ boost_library(
         ],
         ":windows_x86_64": [],
     }),
-    defines = select({
+    local_defines = select({
+        ":linux_arm": [],
+        ":linux_ppc": [],
         ":linux_x86_64": [],
         ":osx_x86_64": [],
         ":windows_x86_64": [
             "BOOST_ALL_NO_LIB",
+            "BOOST_THREAD_BUILD_LIB",
             "BOOST_THREAD_USE_LIB",
             "BOOST_WIN32_THREAD",
         ],
+        "//conditions:default": [],
     }),
     linkopts = select({
-        ":linux_x86_64": [
+        ":linux": [
             "-lpthread",
         ],
         ":osx_x86_64": [
@@ -1663,13 +1974,18 @@ boost_library(
     name = "utility",
     hdrs = [
         "boost/compressed_pair.hpp",
-        "boost/next_prior.hpp",
     ],
     deps = [
         ":config",
+        ":container_hash",
+        ":core",
+        ":cstdint",
         ":detail",
+        ":io",
         ":preprocessor",
+        ":static_assert",
         ":swap",
+        ":throw_exception",
         ":type_traits",
     ],
 )
@@ -1707,6 +2023,14 @@ boost_library(
 )
 
 boost_library(
+    name = "variant2",
+    deps = [
+        ":cstdint",
+        ":mp11",
+    ],
+)
+
+boost_library(
     name = "version",
 )
 
@@ -1729,38 +2053,82 @@ boost_library(
 )
 
 boost_library(
-    name = "numeric",
+    name = "numeric_interval",
+    hdrs = glob([
+        "boost/numeric/interval/**/*.hpp",
+    ]) + [
+        "boost/numeric/interval.hpp",
+    ],
+    deps = [
+    ],
 )
 
+_BOOST_TEST_DEPS = [
+    ":algorithm",
+    ":assert",
+    ":bind",
+    ":call_traits",
+    ":config",
+    ":core",
+    ":current_function",
+    ":detail",
+    ":exception",
+    ":function",
+    ":io",
+    ":iterator",
+    ":limits",
+    ":mpl",
+    ":numeric_conversion",
+    ":optional",
+    ":preprocessor",
+    ":smart_ptr",
+    ":static_assert",
+    ":timer",
+    ":type",
+    ":type_traits",
+    ":utility",
+    ":version",
+]
+
+# An uncompiled Boost.Test library, to be used through boost/test/included/*.
 boost_library(
     name = "test",
-    exclude_src = glob(["libs/test/src/*.cpp"]),
-    deps = [
-        ":algorithm",
-        ":assert",
-        ":bind",
-        ":call_traits",
-        ":config",
-        ":core",
-        ":current_function",
-        ":detail",
-        ":exception",
-        ":function",
-        ":io",
-        ":iterator",
-        ":limits",
-        ":mpl",
-        ":numeric_conversion",
-        ":optional",
-        ":preprocessor",
-        ":smart_ptr",
-        ":static_assert",
-        ":timer",
-        ":type",
-        ":type_traits",
-        ":utility",
-        ":version",
-    ],
+    exclude_src = glob([
+        "libs/test/src/*.cpp",
+    ]),
+    deps = _BOOST_TEST_DEPS,
+)
+
+# A statically linked Boost.Test library, used through boost/test/* and without
+# defining BOOST_TEST_DYN_LINK.
+boost_library(
+    name = "test.a",
+    boost_name = "test",
+    exclude_hdr = glob([
+        "boost/test/included/*.hpp",
+    ]),
+    exclude_src = glob([
+        "libs/test/src/test_main.cpp",
+        "libs/test/src/cpp_main.cpp",
+    ]),
+    linkstatic = True,
+    deps = _BOOST_TEST_DEPS,
+)
+
+# A dynamically linked Boost.Test library, used through boost/test/*.  Bazel
+# will add -DBOOST_TEST_DYN_LINK for you if you depend on this library.
+boost_so_library(
+    name = "test.so",
+    boost_name = "test",
+    defines = ["BOOST_TEST_DYN_LINK"],
+    exclude_hdr = glob([
+        "boost/test/included/*.hpp",
+    ]),
+    exclude_src = glob([
+        "libs/test/src/test_main.cpp",
+        "libs/test/src/cpp_main.cpp",
+    ]),
+    deps = _BOOST_TEST_DEPS,
 )
 
 boost_library(
@@ -1774,38 +2142,81 @@ boost_library(
     name = "phoenix",
     deps = [
         ":proto",
+        ":bind",
     ],
+)
+
+BOOST_LOG_CFLAGS = select({
+    ":linux_arm": [
+    ],
+    ":linux_ppc": [
+    ],
+    ":x86_64": [
+        "-msse4.2",
+    ],
+})
+
+BOOST_LOG_DEFINES = [
+    "BOOST_LOG_WITHOUT_WCHAR_T",
+    "BOOST_LOG_USE_STD_REGEX",
+    "BOOST_LOG_WITHOUT_DEBUG_OUTPUT",
+    "BOOST_LOG_WITHOUT_EVENT_LOG",
+    "BOOST_LOG_WITHOUT_SYSLOG",
+]
+
+BOOST_LOG_DEPS = [
+    ":asio",
+    ":date_time",
+    ":filesystem",
+    ":interprocess",
+    ":parameter",
+    ":phoenix",
+    ":property_tree",
+    ":random",
+    ":spirit",
+    ":system",
+    ":thread",
+    ":variant",
+]
+
+BOOST_LOG_SSSE3_DEP = select({
+    ":linux_arm": [
+    ],
+    ":linux_ppc": [
+    ],
+    ":x86_64": [
+        ":log_dump_ssse3",
+    ],
+})
+
+cc_library(
+    name = "log_dump_ssse3",
+    srcs = ["libs/log/src/dump_ssse3.cpp"] + hdr_list("log"),
+    hdrs = [],
+    copts = ["-msse4.2"],
+    local_defines = BOOST_LOG_DEFINES,
+    includes = [],
+    licenses = ["notice"],
+    linkopts = [],
+    visibility = ["//visibility:public"],
+    deps = BOOST_LOG_DEPS,
 )
 
 boost_library(
     name = "log",
-    copts = ["-msse4.2"],
-    defines = [
-        "BOOST_LOG_WITHOUT_WCHAR_T",
-        "BOOST_LOG_USE_STD_REGEX",
-        "BOOST_LOG_WITHOUT_DEFAULT_FACTORIES",
-        "BOOST_LOG_WITHOUT_SETTINGS_PARSERS",
-        "BOOST_LOG_WITHOUT_DEBUG_OUTPUT",
-        "BOOST_LOG_WITHOUT_EVENT_LOG",
-        "BOOST_LOG_WITHOUT_SYSLOG",
+    srcs = glob([
+        "libs/log/src/setup/*.hpp",
+        "libs/log/src/setup/*.cpp",
+    ]) + ["boost/locale/utf.hpp"],
+    copts = BOOST_LOG_CFLAGS + [
+        "-Iexternal/boost/libs/log/src/",
     ],
+    local_defines = BOOST_LOG_DEFINES,
     exclude_src = [
         "libs/log/src/dump_avx2.cpp",
+        "libs/log/src/dump_ssse3.cpp",
     ],
-    deps = [
-        ":asio",
-        ":date_time",
-        ":filesystem",
-        ":interprocess",
-        ":locale",
-        ":parameter",
-        ":phoenix",
-        ":random",
-        ":spirit",
-        ":system",
-        ":thread",
-        ":variant",
-    ],
+    deps = BOOST_LOG_DEPS + BOOST_LOG_SSSE3_DEP,
 )
 
 boost_library(
@@ -1841,7 +2252,9 @@ boost_library(
     name = "graph",
     hdrs = [
         "boost/pending/container_traits.hpp",
+        "boost/pending/detail/disjoint_sets.hpp",
         "boost/pending/detail/property.hpp",
+        "boost/pending/disjoint_sets.hpp",
         "boost/pending/indirect_cmp.hpp",
         "boost/pending/property.hpp",
         "boost/pending/queue.hpp",
@@ -1866,4 +2279,35 @@ boost_library(
 
 boost_library(
     name = "lambda",
+)
+
+boost_library(
+    name = "sort",
+)
+
+boost_library(
+    name = "contract",
+    hdrs = [
+        "boost/contract_macro.hpp",
+    ],
+    deps = [
+        ":any",
+        ":assert",
+        ":config",
+        ":detail",
+        ":exception",
+        ":function",
+        ":function_types",
+        ":mpl",
+        ":noncopyable",
+        ":optional",
+        ":preprocessor",
+        ":shared_ptr",
+        ":smart_ptr",
+        ":static_assert",
+        ":thread",
+        ":type_traits",
+        ":typeof",
+        ":utility",
+    ],
 )

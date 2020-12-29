@@ -3,10 +3,13 @@
 To use these rules, add the following to your `WORKSPACE` file:
 
 ```bazel
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
 git_repository(
     name = "com_github_nelhage_rules_boost",
-    commit = "6d6fd834281cb8f8e758dd9ad76df86304bf1869",
+    commit = "1e3a69bf2d5cd10c34b74f066054cd335d033d71",
     remote = "https://github.com/nelhage/rules_boost",
+    shallow_since = "1591047380 -0700",
 )
 
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_deps")
@@ -18,3 +21,14 @@ example `@boost//:algorithm`.
 
 
 Based in part on rules from https://github.com/mzhaom/trunk.
+
+## ASIO SSL support
+
+These rules implement support for Boost ASIO's SSL support. To use
+ASIO-SSL, you must depend on the `"@boost//:asio_ssl"` target, instead
+of `"@boost//:asio"`. ASIO-SSL depends on OpenSSL; By default,
+`rules_boost` will download and build a recent
+[BoringSSL](https://boringssl.googlesource.com/boringssl/) commit; To
+use a different OpenSSL implementation, create a remote named
+`openssl` before calling `boost_deps`. This remote must make available
+OpenSSL's libssl at `@openssl//:ssl`.

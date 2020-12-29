@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 
         auto const host = "example.com";
         auto const port = "80";
-        auto const target = argv[3];
+        auto const target = argc > 3 ? argv[3] : "/";
         int version = argc == 5 && !std::strcmp("1.0", argv[4]) ? 10 : 11;
 
         // The io_context is required for all I/O

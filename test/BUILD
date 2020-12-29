@@ -31,7 +31,15 @@ cc_test(
     srcs = ["asio_test.cc"],
     deps = [
         "@boost//:asio",
-        "@boost//:date_time",
+    ],
+)
+
+cc_test(
+    name = "asio_ssl_test",
+    size = "small",
+    srcs = ["asio_ssl_test.cc"],
+    deps = [
+        "@boost//:asio_ssl",
     ],
 )
 
@@ -108,11 +116,11 @@ cc_test(
 )
 
 cc_test(
-    name = "compute_test",
+    name = "coroutine2_test",
     size = "small",
-    srcs = ["compute_test.cc"],
+    srcs = ["coroutine2_test.cc"],
     deps = [
-        "@boost//:compute",
+        "@boost//:coroutine2",
     ],
 )
 
@@ -154,6 +162,15 @@ cc_test(
 )
 
 cc_test(
+    name = "filesystem_test",
+    size = "small",
+    srcs = ["filesystem_test.cc"],
+    deps = [
+        "@boost//:filesystem",
+    ],
+)
+
+cc_test(
     name = "foreach_test",
     size = "small",
     srcs = ["foreach_test.cc"],
@@ -166,7 +183,6 @@ cc_test(
     name = "format_test",
     size = "small",
     srcs = ["format_test.cc"],
-    copts = ["-Wno-unused-value"],
     deps = [
         "@boost//:format",
     ],
@@ -178,6 +194,15 @@ cc_test(
     srcs = ["fusion_test.cc"],
     deps = [
         "@boost//:fusion",
+    ],
+)
+
+cc_test(
+    name = "gil_test",
+    size = "small",
+    srcs = ["gil_test.cc"],
+    deps = [
+        "@boost//:gil",
     ],
 )
 
@@ -241,6 +266,15 @@ cc_test(
     srcs = ["numeric_conversion_test.cc"],
     deps = [
         "@boost//:numeric_conversion",
+    ],
+)
+
+cc_test(
+    name = "nowide_test",
+    size = "small",
+    srcs = ["nowide_test.cc"],
+    deps = [
+        "@boost//:nowide",
     ],
 )
 
@@ -335,10 +369,36 @@ cc_test(
 )
 
 cc_test(
-    name = "test",
-    srcs = ["test.cc"],
+    name = "spirit_test",
+    size = "small",
+    srcs = ["spirit_test.cc"],
+    copts = ["-std=c++14"],
+    deps = [
+        "@boost//:spirit",
+    ],
+)
+
+cc_test(
+    name = "test_included_test",
+    srcs = ["test_included_test.cc"],
     deps = [
         "@boost//:test",
+    ],
+)
+
+cc_test(
+    name = "test_static_test",
+    srcs = ["test_static_test.cc"],
+    deps = [
+        "@boost//:test.a",
+    ],
+)
+
+cc_test(
+    name = "test_dynamic_test",
+    srcs = ["test_dynamic_test.cc"],
+    deps = [
+        "@boost//:test.so",
     ],
 )
 
@@ -445,8 +505,43 @@ cc_test(
     name = "hana_test",
     size = "small",
     srcs = ["hana_test.cc"],
+    copts = ["-std=c++14"],
     deps = [
         "@boost//:hana",
     ],
-    copts=["-std=c++14",],
+)
+
+cc_test(
+    name = "variant2_test",
+    size = "small",
+    srcs = ["variant2_test.cc"],
+    copts = ["-std=c++14"],
+    deps = [
+        "@boost//:variant2",
+    ],
+)
+
+cc_test(
+    name = "static_string_test",
+    srcs = ["static_string_test.cc"],
+    deps = [
+        "@boost//:static_string",
+    ],
+)
+
+cc_test(
+    name = "stl_interfaces_test",
+    srcs = ["stl_interfaces_test.cc"],
+    deps = [
+        "@boost//:stl_interfaces",
+    ],
+    copts = ["-std=c++1y"],
+)
+
+cc_test(
+    name = "date_time_test",
+    srcs = ["date_time_test.cc"],
+    deps = [
+        "@boost//:date_time",
+    ],
 )

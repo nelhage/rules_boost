@@ -1,7 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-include_pattern = "boost/%s/"
-
 hdrs_patterns = [
     "boost/%s.h",
     "boost/%s_fwd.h",
@@ -21,7 +19,12 @@ srcs_patterns = [
 # Building boost results in many warnings for unused values. Downstream users
 # won't be interested, so just disable the warning.
 default_copts = select({
-    "@boost//:linux": ["-Wno-unused-value"],
+    "@boost//:windows": [],
+    "//conditions:default": ["-Wno-unused"],
+})
+
+default_defines = select({
+    ":windows_x86_64": ["BOOST_ALL_NO_LIB"],  # Turn auto_link off in MSVC compiler
     "//conditions:default": [],
 })
 
@@ -29,27 +32,35 @@ def srcs_list(library_name, exclude):
     return native.glob(
         [p % (library_name,) for p in srcs_patterns],
         exclude = exclude,
+        allow_empty = True,
     )
 
-def includes_list(library_name):
-    return [".", include_pattern % library_name]
-
-def hdr_list(library_name):
-    return native.glob([p % (library_name,) for p in hdrs_patterns])
+def hdr_list(library_name, exclude = []):
+    return native.glob([p % (library_name,) for p in hdrs_patterns], exclude = exclude, allow_empty = True)
 
 def boost_library(
         name,
+        boost_name = None,
         defines = None,
+        local_defines = None,
         includes = None,
         hdrs = None,
         srcs = None,
         deps = None,
         copts = None,
         exclude_src = [],
+        exclude_hdr = [],
         linkopts = None,
+        linkstatic = None,
         visibility = ["//visibility:public"]):
+    if boost_name == None:
+        boost_name = name
+
     if defines == None:
         defines = []
+
+    if local_defines == None:
+        local_defines = []
 
     if includes == None:
         includes = []
@@ -72,17 +83,96 @@ def boost_library(
     return native.cc_library(
         name = name,
         visibility = visibility,
-        defines = defines,
-        includes = includes_list(name) + includes,
-        hdrs = hdr_list(name) + hdrs,
-        srcs = srcs_list(name, exclude_src) + srcs,
+        defines = default_defines + defines,
+        includes = ["."] + includes,
+        local_defines = local_defines,
+        hdrs = hdr_list(boost_name, exclude_hdr) + hdrs,
+        srcs = srcs_list(boost_name, exclude_src) + srcs,
         deps = deps,
         copts = default_copts + copts,
         linkopts = linkopts,
+        linkstatic = linkstatic,
         licenses = ["notice"],
     )
 
+# Some boost libraries are not safe to use as dynamic libraries unless a
+# BOOST_*_DYN_LINK define is set when they are compiled and included, notably
+# Boost.Test. When the define is set, the libraries are not safe to use
+# statically. This is an attempt to work around that. We build an explicit .so
+# with cc_binary's linkshared=True and then we reimport it as a C++ library and
+# expose it as a boost_library.
+
+def boost_so_library(
+        name,
+        boost_name = None,
+        defines = [],
+        srcs = [],
+        deps = [],
+        copts = [],
+        exclude_src = [],
+        exclude_hdr = []):
+    if boost_name == None:
+        boost_name = name
+
+    for suffix in ["so", "dll", "dylib"]:
+        native.cc_binary(
+            name = "lib_internal_%s.%s" % (name, suffix),
+            visibility = ["//visibility:private"],
+            srcs = hdr_list(boost_name, exclude_hdr) + srcs_list(boost_name, exclude_src) + srcs,
+            deps = deps,
+            copts = default_copts + copts,
+            defines = default_defines + defines,
+            linkshared = True,
+            licenses = ["notice"],
+        )
+    native.filegroup(
+        name = "%s_dll_interface_file" % name,
+        srcs = [":lib_internal_%s.dll" % name],
+        output_group = "interface_library",
+        visibility = ["//visibility:private"],
+    )
+    native.cc_import(
+        name = "_imported_%s.so" % name,
+        shared_library = ":lib_internal_%s.so" % name,
+        visibility = ["//visibility:private"],
+    )
+    native.cc_import(
+        name = "_imported_%s.dylib" % name,
+        shared_library = ":lib_internal_%s.dylib" % name,
+        visibility = ["//visibility:private"],
+    )
+    native.cc_import(
+        name = "_imported_%s.dll" % name,
+        shared_library = ":lib_internal_%s.dll" % name,
+        interface_library = ":%s_dll_interface_file" % name,
+        visibility = ["//visibility:private"],
+    )
+    return boost_library(
+        name = name,
+        boost_name = boost_name,
+        defines = defines,
+        exclude_hdr = exclude_hdr,
+        exclude_src = native.glob([
+            "libs/%s/**" % boost_name,
+        ]),
+        deps = deps + select({
+            "@boost//:linux": [":_imported_%s.so" % name],
+            "@boost//:osx": [":_imported_%s.dylib" % name],
+            "@boost//:windows": [":_imported_%s.dll" % name],
+        }),
+    )
+
 def boost_deps():
+    if "bazel_skylib" not in native.existing_rules():
+        http_archive(
+            name = "bazel_skylib",
+            sha256 = "1dde365491125a3db70731e25658dfdd3bc5dbdfd11b840b3e987ecf043c7ca0",
+            urls = [
+                "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/0.9.0/bazel_skylib-0.9.0.tar.gz",
+                "https://github.com/bazelbuild/bazel-skylib/releases/download/0.9.0/bazel_skylib-0.9.0.tar.gz",
+            ],
+        )
+
     if "net_zlib_zlib" not in native.existing_rules():
         http_archive(
             name = "net_zlib_zlib",
@@ -95,19 +185,16 @@ def boost_deps():
             ],
         )
 
+    SOURCEFORGE_MIRRORS = ["phoenixnap", "newcontinuum", "cfhcable", "superb-sea2", "cytranet", "iweb", "gigenet", "ayera", "astuteinternet", "pilotfiber", "svwh"]
+
     if "org_bzip_bzip2" not in native.existing_rules():
         http_archive(
             name = "org_bzip_bzip2",
             build_file = "@com_github_nelhage_rules_boost//:BUILD.bzip2",
-            sha256 = "a2848f34fcd5d6cf47def00461fcb528a0484d8edef8208d6d2e2909dc61d9cd",
-            strip_prefix = "bzip2-1.0.6",
-            urls = [
-                "https://mirror.bazel.build/www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz",
-                "http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz",
-            ],
+            sha256 = "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
+            strip_prefix = "bzip2-1.0.8",
+            url = "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
         )
-
-    SOURCEFORGE_MIRRORS = ["phoenixnap", "newcontinuum", "cfhcable", "superb-sea2", "cytranet", "iweb", "gigenet", "ayera", "astuteinternet", "pilotfiber", "svwh"]
 
     if "org_lzma_lzma" not in native.existing_rules():
         http_archive(
@@ -121,14 +208,36 @@ def boost_deps():
             ],
         )
 
+    if "com_github_facebook_zstd" not in native.existing_rules():
+        http_archive(
+            name = "com_github_facebook_zstd",
+            build_file = "@com_github_nelhage_rules_boost//:BUILD.zstd",
+            sha256 = "59ef70ebb757ffe74a7b3fe9c305e2ba3350021a918d168a046c6300aeea9315",
+            strip_prefix = "zstd-1.4.4",
+            urls = [
+                "https://mirror.bazel.build/github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz",
+                "https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz",
+            ],
+        )
+
     if "boost" not in native.existing_rules():
         http_archive(
             name = "boost",
             build_file = "@com_github_nelhage_rules_boost//:BUILD.boost",
-            sha256 = "da3411ea45622579d419bfda66f45cd0f8c32a181d84adfa936f5688388995cf",
-            strip_prefix = "boost_1_68_0",
+            patch_cmds = ["rm -f doc/pdf/BUILD"],
+            sha256 = "afff36d392885120bcac079148c177d1f6f7730ec3d47233aa51b0afa4db94a5",
+            strip_prefix = "boost_1_74_0",
             urls = [
-                "https://%s.dl.sourceforge.net/project/boost/boost/1.68.0/boost_1_68_0.tar.gz" % m
-                for m in SOURCEFORGE_MIRRORS
+                # "https://mirror.bazel.build/dl.bintray.com/boostorg/release/1.74.0/source/boost_1_74_0.tar.gz",
+                "https://dl.bintray.com/boostorg/release/1.74.0/source/boost_1_74_0.tar.gz",
             ],
+        )
+
+    if "openssl" not in native.existing_rules():
+        # https://github.com/google/boringssl/archive/57c37a99b6a9f523b10344b7b6b93ce9ad1da795.zip
+        http_archive(
+            name = "openssl",
+            sha256 = "84afcec7a9ce3a72fde95dc42d52bc6662df5976bdd3d440b3e7e7543b7031b9",
+            strip_prefix = "boringssl-57c37a99b6a9f523b10344b7b6b93ce9ad1da795",
+            url = "https://github.com/google/boringssl/archive/57c37a99b6a9f523b10344b7b6b93ce9ad1da795.tar.gz",
         )
