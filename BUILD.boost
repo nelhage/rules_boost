@@ -308,6 +308,7 @@ boost_library(
     exclude_src = ["libs/atomic/src/wait_ops_windows.cpp"],
     deps = [
         ":assert",
+        ":align",
         ":config",
         ":cstdint",
         ":predef",
