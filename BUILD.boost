@@ -1654,6 +1654,7 @@ boost_library(
         "boost/enable_shared_from_this.hpp",
         "boost/make_shared.hpp",
         "boost/make_unique.hpp",
+        "boost/pointer_cast.hpp",
         "boost/pointer_to_other.hpp",
         "boost/weak_ptr.hpp",
     ],
