@@ -210,6 +210,7 @@ cc_test(
     name = "geometry_test",
     size = "small",
     srcs = ["geometry_test.cc"],
+    copts = ["-std=c++14"],
     deps = [
         "@boost//:geometry",
     ],
@@ -543,5 +544,41 @@ cc_test(
     srcs = ["date_time_test.cc"],
     deps = [
         "@boost//:date_time",
+    ],
+)
+
+cc_test(
+    name = "json_test",
+    srcs = ["json_test.cc"],
+    deps = [
+        "@boost//:json",
+    ],
+)
+
+cc_test(
+    name = "leaf_test",
+    srcs = ["leaf_test.cc"],
+    deps = [
+        "@boost//:leaf",
+    ],
+)
+
+config_setting(
+    name = "windows",
+    constraint_values = [
+        "@bazel_tools//platforms:windows",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_test(
+    name = "pfr_test",
+    srcs = ["pfr_test.cc"],
+    copts = select({
+        ":windows": ["/std:c++17"],
+        "//conditions:default": ["-std=c++1z"],
+    }),
+    deps = [
+        "@boost//:pfr",
     ],
 )

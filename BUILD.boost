@@ -295,6 +295,36 @@ boost_library(
     ],
 )
 
+BOOST_ATOMIC_SSE_SRCS = glob(
+    [
+        "libs/atomic/src/*sse2.cpp",
+        "libs/atomic/src/*sse41.cpp",
+    ],
+    allow_empty = True,
+)
+
+BOOST_ATOMIC_DEPS = [
+    ":align",
+    ":assert",
+    ":config",
+    ":cstdint",
+    ":predef",
+    ":type_traits",
+    ":winapi",
+]
+
+cc_library(
+    name = "atomic_sse",
+    srcs = BOOST_ATOMIC_SSE_SRCS + glob(["libs/atomic/src/*.hpp", "boost/atomic/detail/*.hpp"]),
+    copts = [
+        "-msse2",
+        "-msse4.1",
+        "-Iexternal/boost/libs/atomic/src",
+    ],
+    visibility = ["//visibility:private"],
+    deps = BOOST_ATOMIC_DEPS,
+)
+
 boost_library(
     name = "atomic",
     srcs = select({
@@ -305,15 +335,11 @@ boost_library(
         "boost/memory_order.hpp",
     ],
     copts = ["-Iexternal/boost/libs/atomic/src"],
-    exclude_src = ["libs/atomic/src/wait_ops_windows.cpp"],
-    deps = [
-        ":assert",
-        ":config",
-        ":cstdint",
-        ":predef",
-        ":type_traits",
-        ":winapi",
-    ],
+    exclude_src = ["libs/atomic/src/wait_ops_windows.cpp"] + BOOST_ATOMIC_SSE_SRCS,
+    deps = BOOST_ATOMIC_DEPS + select({
+        ":x86_64": [":atomic_sse"],
+        "//conditions:default": [],
+    }),
 )
 
 boost_library(
@@ -1674,16 +1700,16 @@ boost_library(
 boost_library(
     name = "spirit",
     deps = [
-        ":variant",
+        ":foreach",
+        ":function",
+        ":iostreams",
         ":optional",
         ":phoenix",
-        ":function",
-        ":foreach",
-        ":iostreams",
         ":range",
         ":ref",
         ":tti",
         ":utility",
+        ":variant",
     ],
 )
 
@@ -1816,6 +1842,15 @@ boost_library(
         ],
         ":windows_x86_64": [],
     }),
+    linkopts = select({
+        ":linux": [
+            "-lpthread",
+        ],
+        ":osx_x86_64": [
+            "-lpthread",
+        ],
+        ":windows_x86_64": [],
+    }),
     local_defines = select({
         ":linux_arm": [],
         ":linux_ppc": [],
@@ -1828,15 +1863,6 @@ boost_library(
             "BOOST_WIN32_THREAD",
         ],
         "//conditions:default": [],
-    }),
-    linkopts = select({
-        ":linux": [
-            "-lpthread",
-        ],
-        ":osx_x86_64": [
-            "-lpthread",
-        ],
-        ":windows_x86_64": [],
     }),
     deps = [
         ":algorithm",
@@ -2143,8 +2169,8 @@ boost_library(
 boost_library(
     name = "phoenix",
     deps = [
-        ":proto",
         ":bind",
+        ":proto",
     ],
 )
 
@@ -2196,10 +2222,10 @@ cc_library(
     srcs = ["libs/log/src/dump_ssse3.cpp"] + hdr_list("log"),
     hdrs = [],
     copts = ["-msse4.2"],
-    local_defines = BOOST_LOG_DEFINES,
     includes = [],
     licenses = ["notice"],
     linkopts = [],
+    local_defines = BOOST_LOG_DEFINES,
     visibility = ["//visibility:public"],
     deps = BOOST_LOG_DEPS,
 )
@@ -2213,11 +2239,11 @@ boost_library(
     copts = BOOST_LOG_CFLAGS + [
         "-Iexternal/boost/libs/log/src/",
     ],
-    local_defines = BOOST_LOG_DEFINES,
     exclude_src = [
         "libs/log/src/dump_avx2.cpp",
         "libs/log/src/dump_ssse3.cpp",
     ],
+    local_defines = BOOST_LOG_DEFINES,
     deps = BOOST_LOG_DEPS + BOOST_LOG_SSSE3_DEP,
 )
 
@@ -2312,4 +2338,25 @@ boost_library(
         ":typeof",
         ":utility",
     ],
+)
+
+boost_library(
+    name = "json",
+    deps = [
+        ":config",
+        ":container",
+        ":system",
+        ":shared_ptr",
+        ":smart_ptr",
+        ":throw_exception",
+        ":utility",
+    ],
+)
+
+boost_library(
+    name = "leaf",
+)
+
+boost_library(
+    name = "pfr",
 )

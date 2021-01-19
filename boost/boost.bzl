@@ -225,11 +225,11 @@ def boost_deps():
             name = "boost",
             build_file = "@com_github_nelhage_rules_boost//:BUILD.boost",
             patch_cmds = ["rm -f doc/pdf/BUILD"],
-            sha256 = "afff36d392885120bcac079148c177d1f6f7730ec3d47233aa51b0afa4db94a5",
-            strip_prefix = "boost_1_74_0",
+            sha256 = "aeb26f80e80945e82ee93e5939baebdca47b9dee80a07d3144be1e1a6a66dd6a",
+            strip_prefix = "boost_1_75_0",
             urls = [
-                # "https://mirror.bazel.build/dl.bintray.com/boostorg/release/1.74.0/source/boost_1_74_0.tar.gz",
-                "https://dl.bintray.com/boostorg/release/1.74.0/source/boost_1_74_0.tar.gz",
+                # "https://mirror.bazel.build/dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.tar.gz",
+                "https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.tar.gz",
             ],
         )
 
