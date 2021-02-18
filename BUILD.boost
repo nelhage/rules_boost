@@ -70,6 +70,15 @@ config_setting(
 )
 
 config_setting(
+    name = "osx_arm64",
+    constraint_values = [
+        "@bazel_tools//platforms:osx",
+        "@bazel_tools//platforms:aarch64",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
     name = "osx_x86_64",
     constraint_values = [
         "@bazel_tools//platforms:osx",
@@ -127,6 +136,11 @@ BOOST_CTX_ASM_SOURCES = select({
         "libs/context/src/asm/make_x86_64_sysv_elf_gas.S",
         "libs/context/src/asm/ontop_x86_64_sysv_elf_gas.S",
     ],
+    ":osx_arm64": [
+        "libs/context/src/asm/jump_arm64_aapcs_macho_gas.S",
+        "libs/context/src/asm/make_arm64_aapcs_macho_gas.S",
+        "libs/context/src/asm/ontop_arm64_aapcs_macho_gas.S",
+    ],
     ":osx_x86_64": [
         "libs/context/src/asm/jump_x86_64_sysv_macho_gas.S",
         "libs/context/src/asm/make_x86_64_sysv_macho_gas.S",
@@ -146,7 +160,7 @@ boost_library(
         ":linux": [
             "libs/context/src/posix/stack_traits.cpp",
         ],
-        ":osx_x86_64": [
+        ":osx": [
             "libs/context/src/posix/stack_traits.cpp",
         ],
         ":windows_x86_64": [
@@ -212,7 +226,7 @@ boost_library(
         ":linux": [
             "-lpthread",
         ],
-        ":osx_x86_64": [
+        ":osx": [
             "-lpthread",
         ],
         "//conditions:default": [],
@@ -378,7 +392,7 @@ boost_library(
     defines = [
         "BOOST_ASIO_SEPARATE_COMPILATION",
     ] + select({
-        ":osx_x86_64": [
+        ":osx": [
             "BOOST_ASIO_DISABLE_STD_EXPERIMENTAL_STRING_VIEW",
         ],
         "//conditions:default": [],
@@ -500,7 +514,7 @@ boost_library(
 boost_library(
     name = "compute",
     linkopts = select({
-        ":osx_x86_64": [
+        ":osx": [
             "-framework OpenCL",
         ],
         "//conditions:default": [
@@ -604,7 +618,7 @@ BOOST_CORO_SRCS = select({
     ":linux": [
         "libs/coroutine/src/posix/stack_traits.cpp",
     ],
-    ":osx_x86_64": [
+    ":osx": [
         "libs/coroutine/src/posix/stack_traits.cpp",
     ],
     ":windows_x86_64": [
@@ -1085,14 +1099,14 @@ boost_library(
         ":linux_arm": BOOST_LOCALE_POSIX_SOURCES,
         ":linux_ppc": BOOST_LOCALE_POSIX_SOURCES,
         ":linux_x86_64": BOOST_LOCALE_POSIX_SOURCES,
-        ":osx_x86_64": BOOST_LOCALE_POSIX_SOURCES,
+        ":osx": BOOST_LOCALE_POSIX_SOURCES,
         ":windows_x86_64": BOOST_LOCALE_WIN32_SOURCES,
     }),
     copts = select({
         ":linux_arm": BOOST_LOCALE_POSIX_COPTS,
         ":linux_ppc": BOOST_LOCALE_POSIX_COPTS,
         ":linux_x86_64": BOOST_LOCALE_POSIX_COPTS,
-        ":osx_x86_64": BOOST_LOCALE_POSIX_COPTS,
+        ":osx": BOOST_LOCALE_POSIX_COPTS,
         ":windows_x86_64": BOOST_LOCALE_WIN32_COPTS,
     }) + _w_no_deprecated,
     deps = [
@@ -1724,7 +1738,7 @@ BOOST_STACKTRACE_SOURCES = select({
     ":linux_x86_64": [
         "libs/stacktrace/src/backtrace.cpp",
     ],
-    ":osx_x86_64": [
+    ":osx": [
         "libs/stacktrace/src/addr2line.cpp",
     ],
     ":windows_x86_64": [
@@ -1737,7 +1751,7 @@ boost_library(
     name = "stacktrace",
     srcs = BOOST_STACKTRACE_SOURCES,
     defines = select({
-        ":osx_x86_64": [
+        ":osx": [
             "BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED",
         ],
         "//conditions:default": [],
@@ -1823,7 +1837,7 @@ boost_library(
             "libs/thread/src/pthread/once.cpp",
             "libs/thread/src/pthread/thread.cpp",
         ],
-        ":osx_x86_64": [
+        ":osx": [
             "libs/thread/src/pthread/once.cpp",
             "libs/thread/src/pthread/thread.cpp",
         ],
@@ -1837,7 +1851,7 @@ boost_library(
         ":linux": [
             "libs/thread/src/pthread/once_atomic.cpp",
         ],
-        ":osx_x86_64": [
+        ":osx": [
             "libs/thread/src/pthread/once_atomic.cpp",
         ],
         ":windows_x86_64": [],
@@ -1846,7 +1860,7 @@ boost_library(
         ":linux": [
             "-lpthread",
         ],
-        ":osx_x86_64": [
+        ":osx": [
             "-lpthread",
         ],
         ":windows_x86_64": [],
@@ -1855,7 +1869,7 @@ boost_library(
         ":linux_arm": [],
         ":linux_ppc": [],
         ":linux_x86_64": [],
-        ":osx_x86_64": [],
+        ":osx": [],
         ":windows_x86_64": [
             "BOOST_ALL_NO_LIB",
             "BOOST_THREAD_BUILD_LIB",
@@ -2175,12 +2189,10 @@ boost_library(
 )
 
 BOOST_LOG_CFLAGS = select({
-    ":linux_arm": [
-    ],
-    ":linux_ppc": [
-    ],
     ":x86_64": [
         "-msse4.2",
+    ],
+    "//conditions:default": [
     ],
 })
 
@@ -2208,12 +2220,10 @@ BOOST_LOG_DEPS = [
 ]
 
 BOOST_LOG_SSSE3_DEP = select({
-    ":linux_arm": [
-    ],
-    ":linux_ppc": [
-    ],
     ":x86_64": [
         ":log_dump_ssse3",
+    ],
+    "//conditions:default": [
     ],
 })
 
