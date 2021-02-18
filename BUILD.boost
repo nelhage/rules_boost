@@ -18,6 +18,15 @@ config_setting(
 )
 
 config_setting(
+    name = "android",
+    constraint_values = [
+        "@bazel_tools//platforms:android",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+
+config_setting(
     name = "osx",
     constraint_values = [
         "@bazel_tools//platforms:osx",
@@ -397,7 +406,10 @@ boost_library(
         ],
         "//conditions:default": [],
     }),
-    linkopts = ["-lpthread"],
+    linkopts = select({
+        ":android": [],
+        "//conditions:default": ["-lpthread"],
+    }),
     deps = [
         ":bind",
         ":cerrno",
@@ -1832,8 +1844,8 @@ boost_library(
 
 boost_library(
     name = "thread",
-    srcs = select({
-        ":linux": [
+    srcs = selects.with_or({
+        (":linux", ":android"): [
             "libs/thread/src/pthread/once.cpp",
             "libs/thread/src/pthread/thread.cpp",
         ],
@@ -1847,8 +1859,8 @@ boost_library(
             "libs/thread/src/win32/tss_pe.cpp",
         ],
     }),
-    hdrs = select({
-        ":linux": [
+    hdrs = selects.with_or({
+        (":linux", ":android"): [
             "libs/thread/src/pthread/once_atomic.cpp",
         ],
         ":osx": [
@@ -1864,6 +1876,7 @@ boost_library(
             "-lpthread",
         ],
         ":windows_x86_64": [],
+        ":android": [],
     }),
     local_defines = select({
         ":linux_arm": [],
