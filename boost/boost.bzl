@@ -156,6 +156,7 @@ def boost_so_library(
             "libs/%s/**" % boost_name,
         ]),
         deps = deps + select({
+            "@boost//:android": [":_imported_%s.so" % name],
             "@boost//:linux": [":_imported_%s.so" % name],
             "@boost//:osx": [":_imported_%s.dylib" % name],
             "@boost//:windows": [":_imported_%s.dll" % name],
