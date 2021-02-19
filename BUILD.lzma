@@ -30,9 +30,15 @@ config_setting(
     constraint_values = ["@bazel_tools//platforms:windows"],
 )
 
+config_setting(
+    name = "android",
+    constraint_values = ["@bazel_tools//platforms:android"],
+)
+
 copy_file(
     name = "copy_config",
     src = select({
+        ":android": "@com_github_nelhage_rules_boost//:config.lzma-linux.h",
         ":linux": "@com_github_nelhage_rules_boost//:config.lzma-linux.h",
         ":osx_arm64": "@com_github_nelhage_rules_boost//:config.lzma-osx-arm64.h",
         ":osx_x86_64": "@com_github_nelhage_rules_boost//:config.lzma-osx-x86_64.h",
@@ -158,7 +164,10 @@ cc_library(
     includes = [
         "src/liblzma/api",
     ],
-    linkopts = ["-lpthread"],
+    linkopts = select({
+        ":android": [],
+        "//conditions:default": ["-lpthread"],
+    }),
     linkstatic = select({
         ":windows": True,
         "//conditions:default": False,

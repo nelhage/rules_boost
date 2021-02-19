@@ -582,3 +582,11 @@ cc_test(
         "@boost//:pfr",
     ],
 )
+
+platform(
+    name = "android",
+    constraint_values = [
+        "@platforms//os:android",
+        "@platforms//cpu:aarch64",
+    ],
+)
