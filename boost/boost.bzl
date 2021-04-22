@@ -230,8 +230,7 @@ def boost_deps():
             sha256 = "7bd7ddceec1a1dfdcbdb3e609b60d01739c38390a5f956385a12f3122049f0ca",
             strip_prefix = "boost_1_76_0",
             urls = [
-                # "https://mirror.bazel.build/dl.bintray.com/boostorg/release/1.76.0/source/boost_1_76_0.tar.gz",
-                "https://dl.bintray.com/boostorg/release/1.76.0/source/boost_1_76_0.tar.gz",
+                "https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz",
             ],
         )
 
