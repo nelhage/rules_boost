@@ -235,10 +235,10 @@ def boost_deps():
         )
 
     if "openssl" not in native.existing_rules():
-        # https://github.com/google/boringssl/archive/57c37a99b6a9f523b10344b7b6b93ce9ad1da795.zip
+        # https://github.com/google/boringssl/archive/b3d98af9c80643b0a36d495693cc0e669181c0af.zip
         http_archive(
             name = "openssl",
-            sha256 = "84afcec7a9ce3a72fde95dc42d52bc6662df5976bdd3d440b3e7e7543b7031b9",
-            strip_prefix = "boringssl-57c37a99b6a9f523b10344b7b6b93ce9ad1da795",
-            url = "https://github.com/google/boringssl/archive/57c37a99b6a9f523b10344b7b6b93ce9ad1da795.tar.gz",
+            sha256 = "17f5e63875d592ac8f596a6c3d579978a7bf943247c1f8cbc8051935ea42b3e5",
+            strip_prefix = "boringssl-b3d98af9c80643b0a36d495693cc0e669181c0af",
+            url = "https://github.com/google/boringssl/archive/b3d98af9c80643b0a36d495693cc0e669181c0af.tar.gz",
         )
