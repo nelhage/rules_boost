@@ -114,36 +114,25 @@ def boost_so_library(
     if boost_name == None:
         boost_name = name
 
-    for suffix in ["so", "dll", "dylib"]:
-        native.cc_binary(
-            name = "lib_internal_%s.%s" % (name, suffix),
-            visibility = ["//visibility:private"],
-            srcs = hdr_list(boost_name, exclude_hdr) + srcs_list(boost_name, exclude_src) + srcs,
-            deps = deps,
-            copts = default_copts + copts,
-            defines = default_defines + defines,
-            linkshared = True,
-            licenses = ["notice"],
-        )
+    native.cc_binary(
+        name = "lib_internal_%s" % name,
+        visibility = ["//visibility:private"],
+        srcs = hdr_list(boost_name, exclude_hdr) + srcs_list(boost_name, exclude_src) + srcs,
+        deps = deps,
+        copts = default_copts + copts,
+        defines = default_defines + defines,
+        linkshared = True,
+        licenses = ["notice"],
+    )
     native.filegroup(
         name = "%s_dll_interface_file" % name,
-        srcs = [":lib_internal_%s.dll" % name],
+        srcs = [":lib_internal_%s" % name],
         output_group = "interface_library",
         visibility = ["//visibility:private"],
     )
     native.cc_import(
-        name = "_imported_%s.so" % name,
-        shared_library = ":lib_internal_%s.so" % name,
-        visibility = ["//visibility:private"],
-    )
-    native.cc_import(
-        name = "_imported_%s.dylib" % name,
-        shared_library = ":lib_internal_%s.dylib" % name,
-        visibility = ["//visibility:private"],
-    )
-    native.cc_import(
-        name = "_imported_%s.dll" % name,
-        shared_library = ":lib_internal_%s.dll" % name,
+        name = "_imported_%s" % name,
+        shared_library = ":lib_internal_%s" % name,
         interface_library = ":%s_dll_interface_file" % name,
         visibility = ["//visibility:private"],
     )
@@ -155,12 +144,7 @@ def boost_so_library(
         exclude_src = native.glob([
             "libs/%s/**" % boost_name,
         ]),
-        deps = deps + select({
-            "@boost//:android": [":_imported_%s.so" % name],
-            "@boost//:linux": [":_imported_%s.so" % name],
-            "@boost//:osx": [":_imported_%s.dylib" % name],
-            "@boost//:windows": [":_imported_%s.dll" % name],
-        }),
+        deps = deps + [":_imported_%s" % name],
     )
 
 def boost_deps():
