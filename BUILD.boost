@@ -209,8 +209,8 @@ boost_library(
         ":config",
         ":cstdint",
         ":detail",
-        ":intrusive_ptr",
         ":pool",
+        ":smart_ptr",
     ],
 )
 
@@ -234,13 +234,7 @@ BOOST_FIBER_NUMA_SRCS = select({
 
 boost_library(
     name = "fiber",
-    srcs = BOOST_FIBER_NUMA_SRCS + glob(["libs/fiber/src/algo/**/*.cpp"]) + [
-        "libs/fiber/examples/asio/detail/yield.hpp",
-    ],
-    hdrs = [
-        "libs/fiber/examples/asio/round_robin.hpp",
-        "libs/fiber/examples/asio/yield.hpp",
-    ],
+    srcs = BOOST_FIBER_NUMA_SRCS + glob(["libs/fiber/src/algo/**/*.cpp"]),
     copts = select({
         ":windows_x86_64": [
             "/D_WIN32_WINNT=0x0601",
@@ -266,8 +260,8 @@ boost_library(
         ":filesystem",
         ":format",
         ":intrusive",
-        ":intrusive_ptr",
         ":pool",
+        ":smart_ptr",
         ":system",
         ":throw_exception",
     ],
@@ -452,6 +446,11 @@ cc_library(
 
 boost_library(
     name = "assert",
+    deps = [
+        ":config",
+        ":cstdint",
+        ":current_function",
+    ]
 )
 
 boost_library(
@@ -505,10 +504,6 @@ boost_library(
 
 boost_library(
     name = "cerrno",
-)
-
-boost_library(
-    name = "checked_delete",
 )
 
 boost_library(
@@ -646,6 +641,13 @@ boost_library(
     ],
 )
 
+alias(
+    name = "checked_delete",
+    actual = ":core",
+    deprecation = "Use @boost//:core instead",
+    visibility = ["//visibility:public"],
+)
+
 BOOST_CORO_SRCS = select({
     ":android": [
         "libs/coroutine/src/posix/stack_traits.cpp",
@@ -678,7 +680,7 @@ boost_library(
 
 boost_library(
     name = "coroutine2",
-    hdrs = glob([
+    srcs = glob([
         "libs/coroutine2/include/**/*.hpp",
         "libs/coroutine2/include/**/*.ipp",
     ]),
@@ -759,17 +761,12 @@ boost_library(
 )
 
 boost_library(
-    name = "enable_shared_from_this",
-)
-
-boost_library(
     name = "endian",
     deps = [
         ":config",
         ":core",
         ":cstdint",
         ":detail",
-        ":predef",
         ":type_traits",
     ],
 )
@@ -778,18 +775,24 @@ boost_library(
     name = "exception",
     hdrs = [
         "boost/exception_ptr.hpp",
+        "boost/throw_exception.hpp",
     ],
     deps = [
+        ":assert",
         ":config",
+        ":current_function",
         ":detail",
+        ":smart_ptr",
+        ":tuple",
+        ":type_traits",
     ],
 )
 
-boost_library(
+alias(
     name = "exception_ptr",
-    deps = [
-        ":config",
-    ],
+    actual = ":exception",
+    deprecation = "Use @boost//:exception instead",
+    visibility = ["//visibility:public"],
 )
 
 boost_library(
@@ -972,12 +975,12 @@ boost_library(
     linkopts = select({
         ":linux": [
             "-lrt",
+            "-lpthread",
         ],
         "//conditions:default": [],
     }),
     deps = [
         ":assert",
-        ":checked_delete",
         ":config",
         ":container",
         ":core",
@@ -1024,15 +1027,6 @@ boost_library(
 )
 
 boost_library(
-    name = "intrusive_ptr",
-    deps = [
-        ":assert",
-        ":detail",
-        ":smart_ptr",
-    ],
-)
-
-boost_library(
     name = "io",
 )
 
@@ -1042,7 +1036,7 @@ boost_library(
         ":assert",
         ":bind",
         ":call_traits",
-        ":checked_delete",
+        ":core",
         ":config",
         ":detail",
         ":function",
@@ -1054,7 +1048,7 @@ boost_library(
         ":range",
         ":ref",
         ":regex",
-        ":shared_ptr",
+        ":smart_ptr",
         ":static_assert",
         ":throw_exception",
         ":type",
@@ -1215,7 +1209,7 @@ boost_library(
         #":multiprecision",
         ":predef",
         ":range",
-        ":scoped_array",
+        ":smart_ptr",
         ":static_assert",
         ":throw_exception",
         ":tuple",
@@ -1363,7 +1357,7 @@ boost_library(
         ":numeric_interval",
         ":range",
         ":serialization",
-        ":shared_array",
+        ":smart_ptr",
         ":static_assert",
         ":timer",
         ":type_traits",
@@ -1505,7 +1499,7 @@ boost_library(
         ":lexical_cast",
         ":limits",
         ":noncopyable",
-        ":shared_ptr",
+        ":smart_ptr",
         ":static_assert",
         ":throw_exception",
         ":tokenizer",
@@ -1518,7 +1512,7 @@ boost_library(
     name = "ptr_container",
     deps = [
         ":assert",
-        ":checked_delete",
+        ":core",
         ":circular_buffer",
         ":config",
         ":iterator",
@@ -1563,8 +1557,7 @@ boost_library(
         ":noncopyable",
         ":operators",
         ":range",
-        ":regex",
-        ":shared_ptr",
+        ":smart_ptr",
         ":static_assert",
         ":system",
         ":throw_exception",
@@ -1670,34 +1663,6 @@ boost_library(
 )
 
 boost_library(
-    name = "scoped_array",
-    deps = [
-        ":checked_delete",
-    ],
-)
-
-boost_library(
-    name = "scoped_ptr",
-    deps = [
-        ":checked_delete",
-    ],
-)
-
-boost_library(
-    name = "shared_ptr",
-    deps = [
-        ":checked_delete",
-    ],
-)
-
-boost_library(
-    name = "shared_array",
-    deps = [
-        ":checked_delete",
-    ],
-)
-
-boost_library(
     name = "signals2",
     deps = [
         ":assert",
@@ -1716,8 +1681,6 @@ boost_library(
         ":predef",
         ":preprocessor",
         ":ref",
-        ":scoped_ptr",
-        ":shared_ptr",
         ":smart_ptr",
         ":swap",
         ":throw_exception",
@@ -1747,36 +1710,79 @@ boost_library(
     name = "smart_ptr",
     hdrs = [
         "boost/enable_shared_from_this.hpp",
+        "boost/intrusive_ptr.hpp",
         "boost/make_shared.hpp",
         "boost/make_unique.hpp",
         "boost/pointer_cast.hpp",
         "boost/pointer_to_other.hpp",
+        "boost/scoped_array.hpp",
+        "boost/scoped_ptr.hpp",
+        "boost/shared_array.hpp",
+        "boost/shared_ptr.hpp",
         "boost/weak_ptr.hpp",
     ],
     deps = [
         ":align",
+        ":assert",
+        ":config",
         ":core",
-        ":predef",
-        ":scoped_array",
-        ":scoped_ptr",
-        ":shared_array",
-        ":shared_ptr",
         ":throw_exception",
         ":utility",
     ],
 )
 
+alias(
+    name = "scoped_array",
+    actual = ":smart_ptr",
+    deprecation = "Use @boost//:smart_ptr instead",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "scoped_ptr",
+    actual = ":smart_ptr",
+    deprecation = "Use @boost//:smart_ptr instead",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "shared_ptr",
+    actual = ":smart_ptr",
+    deprecation = "Use @boost//:smart_ptr instead",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "enable_shared_from_this",
+    actual = ":smart_ptr",
+    deprecation = "Use @boost//:smart_ptr instead",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "intrusive_ptr",
+    actual = ":smart_ptr",
+    deprecation = "Use @boost//:smart_ptr instead",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "shared_array",
+    actual = ":smart_ptr",
+    deprecation = "Use @boost//:smart_ptr instead",
+    visibility = ["//visibility:public"],
+)
+
 boost_library(
     name = "spirit",
     deps = [
+        ":endian",
         ":foreach",
         ":function",
-        ":iostreams",
         ":optional",
         ":phoenix",
         ":range",
         ":ref",
-        ":tti",
         ":utility",
         ":variant",
     ],
@@ -1882,10 +1888,12 @@ boost_library(
 
 boost_library(
     name = "throw_exception",
+    hdrs = ["boost/exception/exception.hpp"],
     deps = [
+        ":assert",
         ":current_function",
         ":detail",
-        ":exception",
+        ":config",
     ],
 )
 
@@ -1947,7 +1955,6 @@ boost_library(
         ":core",
         ":date_time",
         ":detail",
-        ":enable_shared_from_this",
         ":exception",
         ":function",
         ":io",
@@ -2062,6 +2069,7 @@ boost_library(
         ":iterator",
         ":limits",
         ":move",
+        ":predef",
         ":preprocessor",
         ":smart_ptr",
         ":swap",
@@ -2361,13 +2369,12 @@ boost_library(
     deps = [
         ":algorithm",
         ":conversion",
-        ":fusion",
-        ":intrusive_ptr",
         ":lexical_cast",
         ":parameter",
         ":property_map",
         ":property_tree",
-        ":proto",
+        ":regex",
+        ":smart_ptr",
         ":tti",
         ":typeof",
         ":unordered",
@@ -2400,7 +2407,6 @@ boost_library(
         ":noncopyable",
         ":optional",
         ":preprocessor",
-        ":shared_ptr",
         ":smart_ptr",
         ":static_assert",
         ":thread",
@@ -2415,10 +2421,9 @@ boost_library(
     deps = [
         ":config",
         ":container",
-        ":shared_ptr",
         ":smart_ptr",
         ":system",
-        ":throw_exception",
+        ":exception",
         ":utility",
     ],
 )
