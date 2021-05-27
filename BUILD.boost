@@ -2141,6 +2141,13 @@ boost_library(
 )
 
 boost_library(
+    name = "vmd",
+    deps = [
+        ":preprocessor",
+    ],
+)
+
+boost_library(
     name = "timer",
     deps = [
         ":cerrno",
