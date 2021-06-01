@@ -44,3 +44,11 @@ OpenSSL's libssl at `@openssl//:ssl`.
 To enable io\_uring for asio, use `--@boost//:asio_has_io_uring`.
 Optionally, pass`--@boost//:asio_disable_epoll` to use io\_uring
 for all operations.
+
+## Beast
+
+Boost Beast uses `beast::string_view` for things like request/response headers,
+which by default is a type alias of `boost::string_view`. If you're using a
+C++17 compiler that supports `std::string_view` you can use
+`--@boost//:beast_use_std_string_view` to make `beast::string_view` instead be a
+type alias of `std::string_view`.
