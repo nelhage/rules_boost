@@ -456,6 +456,7 @@ boost_library(
 
 boost_library(
     name = "beast",
+    defines = ["BOOST_BEAST_USE_STD_STRING_VIEW"],
     deps = [
         ":asio",
         ":config",
