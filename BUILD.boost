@@ -594,10 +594,14 @@ boost_library(
     ],
     copts = _w_no_deprecated,
     deps = [
+        ":assert",
         ":config",
+        ":container_hash",
         ":core",
         ":intrusive",
         ":move",
+        ":static_assert",
+        ":type_traits",
     ],
 )
 
@@ -635,6 +639,14 @@ boost_library(
     name = "core",
     srcs = [
         "boost/checked_delete.hpp",
+        "boost/non_type.hpp",
+        "boost/iterator.hpp",
+        "boost/get_pointer.hpp",
+        "boost/noncopyable.hpp",
+        "boost/ref.hpp",
+        "boost/swap.hpp",
+        "boost/type.hpp",
+        "boost/visit_each.hpp",
     ],
     deps = [
         ":config",
@@ -1028,6 +1040,9 @@ boost_library(
 
 boost_library(
     name = "io",
+    deps = [
+        ":config",
+    ],
 )
 
 boost_library(
@@ -1235,10 +1250,6 @@ boost_library(
 
 boost_library(
     name = "mp11",
-    deps = [
-        ":config",
-        ":detail",
-    ],
 )
 
 boost_library(
@@ -1426,6 +1437,10 @@ boost_library(
 
 boost_library(
     name = "optional",
+    hdrs = [
+        "boost/none.hpp",
+        "boost/none_t.hpp",
+    ],
     deps = [
         ":assert",
         ":config",
@@ -1532,6 +1547,9 @@ boost_library(
         "@boost//:android": ["-lm"],
         "//conditions:default": [],
     }),
+    hdrs = [
+        "boost/qvm_lite.hpp",
+    ],
     deps = [
         ":assert",
         ":core",
@@ -1544,6 +1562,9 @@ boost_library(
 
 boost_library(
     name = "random",
+    hdrs = [
+        "boost/nondet_random.hpp",
+    ],
     deps = [
         ":assert",
         ":config",
@@ -1667,7 +1688,6 @@ boost_library(
     deps = [
         ":assert",
         ":bind",
-        ":checked_delete",
         ":config",
         ":core",
         ":detail",
@@ -2136,6 +2156,7 @@ boost_library(
     name = "variant2",
     deps = [
         ":cstdint",
+        ":detail",
         ":mp11",
     ],
 )
@@ -2434,4 +2455,16 @@ boost_library(
 
 boost_library(
     name = "pfr",
+)
+
+boost_library(
+    name = "type_erasure",
+    deps = [
+        ":config",
+        ":mpl",
+        ":type_traits",
+        ":preprocessor",
+        ":thread",
+        ":utility",
+    ],
 )
