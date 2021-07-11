@@ -1143,6 +1143,7 @@ boost_library(
     srcs = select({
         ":android": BOOST_LOCALE_STD_SOURCES,
         ":linux_arm": BOOST_LOCALE_POSIX_SOURCES,
+        ":linux_aarch64": BOOST_LOCALE_POSIX_SOURCES,
         ":linux_ppc": BOOST_LOCALE_POSIX_SOURCES,
         ":linux_x86_64": BOOST_LOCALE_POSIX_SOURCES,
         ":osx": BOOST_LOCALE_POSIX_SOURCES,
@@ -1151,6 +1152,7 @@ boost_library(
     copts = select({
         ":android": BOST_LOCALE_STD_COPTS,
         ":linux_arm": BOOST_LOCALE_POSIX_COPTS,
+        ":linux_aarch64": BOOST_LOCALE_POSIX_COPTS,
         ":linux_ppc": BOOST_LOCALE_POSIX_COPTS,
         ":linux_x86_64": BOOST_LOCALE_POSIX_COPTS,
         ":osx": BOOST_LOCALE_POSIX_COPTS,
