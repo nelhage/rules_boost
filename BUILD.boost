@@ -1793,6 +1793,10 @@ BOOST_STACKTRACE_SOURCES = select({
         "libs/stacktrace/src/basic.cpp",
         "libs/stacktrace/src/noop.cpp",
     ],
+    ":linux_aarch64": [
+        "libs/stacktrace/src/basic.cpp",
+        # "libs/stacktrace/src/noop.cpp",
+    ],
     ":linux_ppc": [
         "libs/stacktrace/src/backtrace.cpp",
     ],
@@ -1806,6 +1810,7 @@ BOOST_STACKTRACE_SOURCES = select({
         "libs/stacktrace/src/windbg.cpp",
         "libs/stacktrace/src/windbg_cached.cpp",
     ],
+    "//conditions:default": [],
 })
 
 boost_library(
@@ -1823,6 +1828,9 @@ boost_library(
             "-lbacktrace -ldl",
         ],
         ":linux_x86_64": [
+            "-lbacktrace -ldl",
+        ],
+        ":linux_aarch64": [
             "-lbacktrace -ldl",
         ],
         "//conditions:default": [],
