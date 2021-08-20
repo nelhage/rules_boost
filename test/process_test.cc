@@ -1,3 +1,7 @@
+// work-around issue in Boost 1.77
+// https://github.com/boostorg/process/pull/215
+#include <algorithm>
+
 #include <boost/process.hpp>
 
 int main() 
