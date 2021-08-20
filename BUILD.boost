@@ -210,6 +210,7 @@ boost_library(
         ":cstdint",
         ":detail",
         ":intrusive_ptr",
+        ":mp11",
         ":pool",
     ],
 )
@@ -738,6 +739,13 @@ boost_library(
 )
 
 boost_library(
+    name = "describe",
+    deps = [
+        ":mp11",
+    ],
+)
+
+boost_library(
     name = "dll",
     deps = [
         ":filesystem",
@@ -795,7 +803,11 @@ boost_library(
 boost_library(
     name = "filesystem",
     copts = _w_no_deprecated,
+    defines = [
+        "BOOST_FILESYSTEM_NO_CXX20_ATOMIC_REF",
+    ],
     deps = [
+        ":atomic",
         ":config",
         ":functional",
         ":io",
@@ -2397,6 +2409,10 @@ boost_library(
 )
 
 boost_library(
+    name = "lambda2",
+)
+
+boost_library(
     name = "sort",
 )
 
@@ -2432,6 +2448,7 @@ boost_library(
     deps = [
         ":config",
         ":container",
+        ":mp11",
         ":shared_ptr",
         ":smart_ptr",
         ":system",
