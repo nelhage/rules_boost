@@ -220,10 +220,9 @@ def boost_deps():
     )
 
     maybe(
-        # https://github.com/google/boringssl/archive/b3d98af9c80643b0a36d495693cc0e669181c0af.zip
         http_archive,
         name = "openssl",
-        sha256 = "17f5e63875d592ac8f596a6c3d579978a7bf943247c1f8cbc8051935ea42b3e5",
-        strip_prefix = "boringssl-b3d98af9c80643b0a36d495693cc0e669181c0af",
-        url = "https://github.com/google/boringssl/archive/b3d98af9c80643b0a36d495693cc0e669181c0af.tar.gz",
+        sha256 = "6f640262999cd1fb33cf705922e453e835d2d20f3f06fe0d77f6426c19257308",
+        strip_prefix = "boringssl-fc44652a42b396e1645d5e72aba053349992136a",
+        url = "https://github.com/google/boringssl/archive/fc44652a42b396e1645d5e72aba053349992136a.tar.gz",
     )
