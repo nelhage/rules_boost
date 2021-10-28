@@ -788,8 +788,13 @@ boost_library(
         "boost/exception_ptr.hpp",
     ],
     deps = [
+        ":assert",
         ":config",
+        ":current_function",
         ":detail",
+        ":smart_ptr",
+        ":tuple",
+        ":type_traits",
     ],
 )
 
@@ -983,6 +988,7 @@ boost_library(
     name = "interprocess",
     linkopts = select({
         ":linux": [
+            "-lpthread",
             "-lrt",
         ],
         "//conditions:default": [],
@@ -1763,6 +1769,7 @@ boost_library(
     name = "smart_ptr",
     hdrs = [
         "boost/enable_shared_from_this.hpp",
+        "boost/intrusive_ptr.hpp",
         "boost/make_shared.hpp",
         "boost/make_unique.hpp",
         "boost/pointer_cast.hpp",
@@ -1906,10 +1913,13 @@ boost_library(
 
 boost_library(
     name = "throw_exception",
+    hdrs = ["boost/exception/exception.hpp"],
     deps = [
+        ":assert",
         ":current_function",
         ":detail",
-        ":exception",
+        ":config",
+        ":cstdint",
     ],
 )
 
@@ -2450,6 +2460,7 @@ boost_library(
     deps = [
         ":config",
         ":container",
+        ":exception",
         ":mp11",
         ":shared_ptr",
         ":smart_ptr",
