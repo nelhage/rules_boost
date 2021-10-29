@@ -457,6 +457,12 @@ boost_library(
 
 boost_library(
     name = "beast",
+    srcs = [
+        "@com_github_nelhage_rules_boost//src:build_beast.cpp",
+    ],
+    defines = [
+        "BOOST_BEAST_SEPARATE_COMPILATION",
+    ],
     deps = [
         ":asio",
         ":config",
