@@ -590,3 +590,51 @@ platform(
         "@platforms//cpu:aarch64",
     ],
 )
+
+cc_test(
+    name = "graph_test",
+    srcs = ["graph_test.cc"],
+    deps = [
+        "@boost//:graph",
+    ],
+)
+
+cc_test(
+    name = "smart_ptr_test",
+    srcs = ["smart_ptr_test.cc"],
+    deps = [
+        "@boost//:smart_ptr",
+    ],
+)
+
+cc_test(
+    name = "throw_exception_test",
+    srcs = ["throw_exception_test.cc"],
+    deps = [
+        "@boost//:throw_exception",
+    ],
+)
+
+cc_test(
+    name = "exception_test",
+    srcs = ["exception_test.cc"],
+    deps = [
+        "@boost//:exception",
+    ],
+)
+
+cc_test(
+    name = "interprocess_test",
+    srcs = ["interprocess_test.cc"],
+    deps = [
+        "@boost//:interprocess",
+    ],
+)
+
+cc_test(
+    name = "container_test",
+    srcs = ["container_test.cc"],
+    deps = [
+        "@boost//:container",
+    ],
+)
