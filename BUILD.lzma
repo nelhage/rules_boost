@@ -38,7 +38,7 @@ config_setting(
 copy_file(
     name = "copy_config",
     src = select({
-        ":android": "@com_github_nelhage_rules_boost//:config.lzma-linux.h",
+        ":android": "@com_github_nelhage_rules_boost//:config.lzma-android.h",
         ":linux": "@com_github_nelhage_rules_boost//:config.lzma-linux.h",
         ":osx_arm64": "@com_github_nelhage_rules_boost//:config.lzma-osx-arm64.h",
         ":osx_x86_64": "@com_github_nelhage_rules_boost//:config.lzma-osx-x86_64.h",
