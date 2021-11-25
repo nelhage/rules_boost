@@ -235,6 +235,15 @@ cc_test(
 )
 
 cc_test(
+    name = "integer_test",
+    size = "small",
+    srcs = ["integer_test.cc"],
+    deps = [
+        "@boost//:integer"
+    ],
+)
+
+cc_test(
     name = "iostreams_test",
     size = "small",
     srcs = ["iostreams_test.cc"],
