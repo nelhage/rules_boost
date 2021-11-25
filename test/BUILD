@@ -134,6 +134,15 @@ cc_test(
 )
 
 cc_test(
+    name = "crc_test",
+    size = "small",
+    srcs = ["crc_test.cc"],
+    deps = [
+        "@boost//:crc",
+    ],
+)
+
+cc_test(
     name = "dynamic_bitset_test",
     size = "small",
     srcs = ["dynamic_bitset_test.cc"],

@@ -700,7 +700,9 @@ boost_library(
 boost_library(
     name = "crc",
     deps = [
+        ":array",
         ":config",
+        ":cstdint",
         ":integer",
         ":limits",
     ],
