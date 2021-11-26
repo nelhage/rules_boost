@@ -700,7 +700,9 @@ boost_library(
 boost_library(
     name = "crc",
     deps = [
+        ":array",
         ":config",
+        ":cstdint",
         ":integer",
         ":limits",
     ],
@@ -1875,6 +1877,9 @@ boost_library(
 
 boost_library(
     name = "static_assert",
+    hdrs = [
+        "boost/detail/workaround.hpp"
+    ],
 )
 
 boost_library(
