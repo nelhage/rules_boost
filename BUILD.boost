@@ -372,14 +372,14 @@ cc_library(
 boost_library(
     name = "atomic",
     srcs = select({
-        ":windows_x86_64": ["libs/atomic/src/wait_ops_windows.cpp"],
+        ":windows_x86_64": ["libs/atomic/src/wait_on_address.cpp"],
         "//conditions:default": [],
     }),
     hdrs = [
         "boost/memory_order.hpp",
     ],
     copts = ["-Iexternal/boost/libs/atomic/src"],
-    exclude_src = ["libs/atomic/src/wait_ops_windows.cpp"] + BOOST_ATOMIC_SSE_SRCS,
+    exclude_src = ["libs/atomic/src/wait_on_address.cpp"] + BOOST_ATOMIC_SSE_SRCS,
     deps = BOOST_ATOMIC_DEPS + select({
         ":x86_64": [":atomic_sse"],
         "//conditions:default": [],
@@ -917,6 +917,7 @@ boost_library(
         ":lexical_cast",
         ":math",
         ":mpl",
+        ":multiprecision",
         ":numeric_conversion",
         ":qvm",
         ":range",
@@ -2172,6 +2173,7 @@ boost_library(
 boost_library(
     name = "variant2",
     deps = [
+        ":assert",
         ":cstdint",
         ":mp11",
     ],
