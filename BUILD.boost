@@ -1801,6 +1801,7 @@ boost_library(
 boost_library(
     name = "spirit",
     deps = [
+        ":endian",
         ":foreach",
         ":function",
         ":iostreams",
