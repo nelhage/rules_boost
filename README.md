@@ -22,7 +22,9 @@ example `@boost//:algorithm`.
 
 Based in part on rules from https://github.com/mzhaom/trunk.
 
-## ASIO SSL support
+## ASIO
+
+### SSL Support
 
 These rules implement support for Boost ASIO's SSL support. To use
 ASIO-SSL, you must depend on the `"@boost//:asio_ssl"` target, instead
@@ -32,3 +34,9 @@ of `"@boost//:asio"`. ASIO-SSL depends on OpenSSL; By default,
 use a different OpenSSL implementation, create a remote named
 `openssl` before calling `boost_deps`. This remote must make available
 OpenSSL's libssl at `@openssl//:ssl`.
+
+### io\_uring support
+
+To enable io\_uring for asio, use `--@boost//:asio_has_io_uring`.
+Optionally, pass`--@boost//:asio_disable_epoll` to use io\_uring
+for all operations.
