@@ -198,11 +198,10 @@ def boost_deps():
         http_archive,
         name = "com_github_facebook_zstd",
         build_file = "@com_github_nelhage_rules_boost//:BUILD.zstd",
-        sha256 = "59ef70ebb757ffe74a7b3fe9c305e2ba3350021a918d168a046c6300aeea9315",
-        strip_prefix = "zstd-1.4.4",
+        sha256 = "e28b2f2ed5710ea0d3a1ecac3f6a947a016b972b9dd30242369010e5f53d7002",
+        strip_prefix = "zstd-1.5.1",
         urls = [
-            "https://mirror.bazel.build/github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz",
-            "https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz",
+            "https://github.com/facebook/zstd/releases/download/v1.5.1/zstd-1.5.1.tar.gz",
         ],
     )
 
