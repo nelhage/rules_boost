@@ -226,6 +226,17 @@ cc_test(
 )
 
 cc_test(
+    name = "histogram_test",
+    size = "small",
+    srcs = ["histogram_test.cc"],
+    deps = [
+        "@boost//:histogram",
+        "@boost//:format",
+    ],
+    copts = ["-std=c++14"],
+)
+
+cc_test(
     name = "icl_test",
     size = "small",
     srcs = ["icl_test.cc"],
