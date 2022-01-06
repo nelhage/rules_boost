@@ -2525,3 +2525,14 @@ boost_library(
 boost_library(
     name = "pfr",
 )
+
+boost_library(
+    name = "histogram",
+    deps = [
+        ":config",
+        ":core",
+        ":mp11",
+        ":throw_exception",
+        ":variant2",
+    ],
+)
