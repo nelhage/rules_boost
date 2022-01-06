@@ -233,6 +233,7 @@ cc_test(
         "@boost//:histogram",
         "@boost//:format",
     ],
+    copts = ["-std=c++14"],
 )
 
 cc_test(
