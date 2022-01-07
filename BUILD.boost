@@ -489,6 +489,18 @@ boost_library(
     name = "assert",
 )
 
+bool_flag(
+    name = "beast_use_std_string_view",
+    build_setting_default = False,
+)
+
+config_setting(
+    name = "beast_std_string_view",
+    flag_values = {
+        ":beast_use_std_string_view": "True",
+    },
+)
+
 boost_library(
     name = "beast",
     srcs = [
@@ -496,7 +508,10 @@ boost_library(
     ],
     defines = [
         "BOOST_BEAST_SEPARATE_COMPILATION",
-    ],
+    ] + select({
+        ":beast_std_string_view": ["BOOST_BEAST_USE_STD_STRING_VIEW"],
+        "//conditions:default": [],
+    }),
     deps = [
         ":asio",
         ":config",
@@ -1914,7 +1929,7 @@ boost_library(
 boost_library(
     name = "static_assert",
     hdrs = [
-        "boost/detail/workaround.hpp"
+        "boost/detail/workaround.hpp",
     ],
 )
 
@@ -1963,10 +1978,10 @@ boost_library(
     hdrs = ["boost/exception/exception.hpp"],
     deps = [
         ":assert",
-        ":current_function",
-        ":detail",
         ":config",
         ":cstdint",
+        ":current_function",
+        ":detail",
     ],
 )
 
