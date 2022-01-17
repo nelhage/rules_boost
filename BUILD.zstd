@@ -22,10 +22,10 @@ cc_library(
         "lib/zstd.h",
         "lib/zstd_errors.h",
     ],
-    copts = [
-        "-DZSTD_LEGACY_SUPPORT=4",
-        "-DZSTD_MULTITHREAD",
-        "-DXXH_NAMESPACE=ZSTD_",
+    defines = [
+        "ZSTD_LEGACY_SUPPORT=4",
+        "ZSTD_MULTITHREAD",
+        "XXH_NAMESPACE=ZSTD_",
     ],
     includes = ["lib"],
     linkopts = [
