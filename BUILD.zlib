@@ -36,9 +36,9 @@ cc_library(
         "@boost//:windows": [],
         "//conditions:default": ["-Wno-shift-negative-value"],
     }),
-    defines = select({
+    includes = ["."],
+    local_defines = select({
         "@boost//:windows": [],
         "//conditions:default": ["Z_HAVE_UNISTD_H"],
     }),
-    includes = ["."],
 )

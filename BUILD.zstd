@@ -22,14 +22,14 @@ cc_library(
         "lib/zstd.h",
         "lib/zstd_errors.h",
     ],
-    defines = [
-        "ZSTD_LEGACY_SUPPORT=4",
-        "ZSTD_MULTITHREAD",
-        "XXH_NAMESPACE=ZSTD_",
-    ],
     includes = ["lib"],
     linkopts = [
         "-pthread",
+    ],
+    local_defines = [
+        "ZSTD_LEGACY_SUPPORT=4",
+        "ZSTD_MULTITHREAD",
+        "XXH_NAMESPACE=ZSTD_",
     ],
     visibility = ["//visibility:public"],
 )
