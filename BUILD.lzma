@@ -3,6 +3,7 @@
 #    Public Domain
 
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+load("@bazel_skylib//lib:selects.bzl", "selects")
 
 config_setting(
     name = "linux",
@@ -26,6 +27,29 @@ config_setting(
 )
 
 config_setting(
+    name = "ios",
+    constraint_values = [
+        "@bazel_tools//platforms:ios",
+    ],
+)
+
+config_setting(
+    name = "watchos",
+    constraint_values = [
+        "@platforms//os:watchos",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "tvos",
+    constraint_values = [
+        "@platforms//os:tvos",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
     name = "windows",
     constraint_values = ["@bazel_tools//platforms:windows"],
 )
@@ -35,16 +59,48 @@ config_setting(
     constraint_values = ["@bazel_tools//platforms:android"],
 )
 
+config_setting(
+    name = "arm",
+    constraint_values = ["@bazel_tools//platforms:arm"],
+)
+
+config_setting(
+    name = "aarch64",
+    constraint_values = ["@bazel_tools//platforms:aarch64"],
+)
+
+config_setting(
+    name = "x86_64",
+    constraint_values = ["@bazel_tools//platforms:x86_64"],
+)
+
+config_setting(
+    name = "x86_32",
+    constraint_values = ["@bazel_tools//platforms:x86_32"],
+)
+
 copy_file(
     name = "copy_config",
-    src = select({
+    src = selects.with_or({
         ":android": "@com_github_nelhage_rules_boost//:config.lzma-android.h",
         ":linux": "@com_github_nelhage_rules_boost//:config.lzma-linux.h",
         ":osx_arm64": "@com_github_nelhage_rules_boost//:config.lzma-osx-arm64.h",
         ":osx_x86_64": "@com_github_nelhage_rules_boost//:config.lzma-osx-x86_64.h",
+        (":ios", ":watchos", ":tvos"): "apple_config",
         ":windows": "@com_github_nelhage_rules_boost//:config.lzma-windows.h",
     }),
     out = "src/liblzma/api/config.h", # minimize the number of exported include paths
+)
+
+# Configuration is the same across iOS, watchOS, and tvOS
+alias(
+    name = "apple_config",
+    actual = select({
+        ":aarch64": "config.lzma-ios-arm64.h",
+        ":arm": "config.lzma-ios-armv7.h",
+        ":x86_64": "config.lzma-osx-x86_64.h", # Configuration same as macOS
+        ":x86_32": "config.lzma-ios-i386.h",
+    }),
 )
 
 cc_library(
