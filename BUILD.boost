@@ -195,8 +195,8 @@ boost_library(
         ],
         "//conditions:default": [],
     }),
-    copts = select({
-        ":windows_x86_64": ["/DBOOST_CONTEXT_EXPORT="],
+    local_defines = select({
+        ":windows_x86_64": ["BOOST_CONTEXT_EXPORT="],
         "//conditions:default": [],
     }),
     exclude_src = [
