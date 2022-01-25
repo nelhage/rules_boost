@@ -592,19 +592,11 @@ cc_test(
     ],
 )
 
-config_setting(
-    name = "windows",
-    constraint_values = [
-        "@platforms//os:windows",
-    ],
-    visibility = ["//visibility:public"],
-)
-
 cc_test(
     name = "pfr_test",
     srcs = ["pfr_test.cc"],
     copts = select({
-        ":windows": ["/std:c++17"],
+        "@platforms//os:windows": ["/std:c++17"],
         "//conditions:default": ["-std=c++1z"],
     }),
     deps = [

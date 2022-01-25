@@ -34,6 +34,8 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+# Hopefully, the need for these OSxCPU config_setting()s will be obviated by a fix to https://github.com/bazelbuild/platforms/issues/36
+
 config_setting(
     name = "linux_x86_64",
     constraint_values = [

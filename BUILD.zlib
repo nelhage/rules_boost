@@ -11,12 +11,17 @@ alias(
     })
 )
 
+# Longer term TODO: Blocked until at least after Bazel 5.1 has been released.
+# config_setting()s wrappers for constraint_values are necessary for alias rules in Bazel because of a bug in 5.0
+# Needs release of fix to https://github.com/bazelbuild/bazel/issues/13047, which will likely happen in 5.1
+# At that time, remove these config settings below and update their use in the alias above to the raw @platforms//os constraint_value()s
+# Note: There are other instances of this message to update or resolve in sync.
+
 config_setting(
     name = "android",
     constraint_values = [
         "@platforms//os:android",
     ],
-    visibility = ["//visibility:public"],
 )
 
 config_setting(
@@ -24,7 +29,6 @@ config_setting(
     constraint_values = [
         "@platforms//os:ios",
     ],
-    visibility = ["//visibility:public"],
 )
 
 config_setting(
@@ -32,7 +36,6 @@ config_setting(
     constraint_values = [
         "@platforms//os:watchos",
     ],
-    visibility = ["//visibility:public"],
 )
 
 config_setting(
@@ -40,7 +43,6 @@ config_setting(
     constraint_values = [
         "@platforms//os:tvos",
     ],
-    visibility = ["//visibility:public"],
 )
 
 cc_library(
@@ -74,12 +76,12 @@ cc_library(
     ],
     hdrs = ["zlib.h"],
     copts = select({
-        "@boost//:windows": [],
+        "@platforms//os:windows": [],
         "//conditions:default": ["-Wno-shift-negative-value"],
     }),
     includes = ["."],
     local_defines = select({
-        "@boost//:windows": [],
+        "@platforms//os:windows": [],
         "//conditions:default": ["Z_HAVE_UNISTD_H"],
     }),
 )
