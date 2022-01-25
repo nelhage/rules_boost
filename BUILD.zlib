@@ -1,9 +1,50 @@
-package(default_visibility = ["//visibility:public"])
+load("@bazel_skylib//lib:selects.bzl", "selects")
 
 licenses(["notice"])  # BSD/MIT-like license (for zlib)
 
-cc_library(
+alias(
     name = "zlib",
+    visibility = ["//visibility:public"],
+    actual = selects.with_or({
+        (":android", ":ios", ":watchos", ":tvos"): ":zlib_system",
+        "//conditions:default": ":zlib_source",
+    })
+)
+
+config_setting(
+    name = "android",
+    constraint_values = [
+        "@platforms//os:android",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "ios",
+    constraint_values = [
+        "@platforms//os:ios",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "watchos",
+    constraint_values = [
+        "@platforms//os:watchos",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "tvos",
+    constraint_values = [
+        "@platforms//os:tvos",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "zlib_source",
     srcs = [
         "adler32.c",
         "compress.c",
@@ -41,4 +82,10 @@ cc_library(
         "@boost//:windows": [],
         "//conditions:default": ["Z_HAVE_UNISTD_H"],
     }),
+)
+
+# For OSs that bundle libz
+cc_library( 
+    name = "zlib_system",
+    linkopts = ["-lz"],
 )

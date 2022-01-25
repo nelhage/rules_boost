@@ -4,7 +4,7 @@ load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "boost_so_library", "hdr_list")
 
 _w_no_deprecated = selects.with_or({
-    (":linux", ":osx"): [
+    (":linux", ":osx", ":ios", ":watchos", ":tvos"): [
         "-Wno-deprecated-declarations",
     ],
     "//conditions:default": [],
@@ -13,7 +13,7 @@ _w_no_deprecated = selects.with_or({
 config_setting(
     name = "linux",
     constraint_values = [
-        "@bazel_tools//platforms:linux",
+        "@platforms//os:linux",
     ],
     visibility = ["//visibility:public"],
 )
@@ -21,7 +21,7 @@ config_setting(
 config_setting(
     name = "android",
     constraint_values = [
-        "@bazel_tools//platforms:android",
+        "@platforms//os:android",
     ],
     visibility = ["//visibility:public"],
 )
@@ -29,7 +29,31 @@ config_setting(
 config_setting(
     name = "osx",
     constraint_values = [
-        "@bazel_tools//platforms:osx",
+        "@platforms//os:osx",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "ios",
+    constraint_values = [
+        "@platforms//os:ios",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "watchos",
+    constraint_values = [
+        "@platforms//os:watchos",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "tvos",
+    constraint_values = [
+        "@platforms//os:tvos",
     ],
     visibility = ["//visibility:public"],
 )
@@ -37,7 +61,7 @@ config_setting(
 config_setting(
     name = "windows",
     constraint_values = [
-        "@bazel_tools//platforms:windows",
+        "@platforms//os:windows",
     ],
     visibility = ["//visibility:public"],
 )
@@ -45,8 +69,8 @@ config_setting(
 config_setting(
     name = "linux_arm",
     constraint_values = [
-        "@bazel_tools//platforms:linux",
-        "@bazel_tools//platforms:arm",
+        "@platforms//os:linux",
+        "@platforms//cpu:arm",
     ],
     visibility = ["//visibility:public"],
 )
@@ -54,8 +78,8 @@ config_setting(
 config_setting(
     name = "linux_ppc",
     constraint_values = [
-        "@bazel_tools//platforms:linux",
-        "@bazel_tools//platforms:ppc",
+        "@platforms//os:linux",
+        "@platforms//cpu:ppc",
     ],
     visibility = ["//visibility:public"],
 )
@@ -63,8 +87,8 @@ config_setting(
 config_setting(
     name = "linux_aarch64",
     constraint_values = [
-        "@bazel_tools//platforms:linux",
-        "@bazel_tools//platforms:aarch64",
+        "@platforms//os:linux",
+        "@platforms//cpu:aarch64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -72,8 +96,8 @@ config_setting(
 config_setting(
     name = "linux_x86_64",
     constraint_values = [
-        "@bazel_tools//platforms:linux",
-        "@bazel_tools//platforms:x86_64",
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -81,8 +105,8 @@ config_setting(
 config_setting(
     name = "osx_arm64",
     constraint_values = [
-        "@bazel_tools//platforms:osx",
-        "@bazel_tools//platforms:aarch64",
+        "@platforms//os:osx",
+        "@platforms//cpu:aarch64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -90,8 +114,8 @@ config_setting(
 config_setting(
     name = "osx_x86_64",
     constraint_values = [
-        "@bazel_tools//platforms:osx",
-        "@bazel_tools//platforms:x86_64",
+        "@platforms//os:osx",
+        "@platforms//cpu:x86_64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -99,8 +123,8 @@ config_setting(
 config_setting(
     name = "windows_x86_64",
     constraint_values = [
-        "@bazel_tools//platforms:windows",
-        "@bazel_tools//platforms:x86_64",
+        "@platforms//os:windows",
+        "@platforms//cpu:x86_64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -108,7 +132,7 @@ config_setting(
 config_setting(
     name = "x86_64",
     constraint_values = [
-        "@bazel_tools//platforms:x86_64",
+        "@platforms//cpu:x86_64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -116,8 +140,8 @@ config_setting(
 config_setting(
     name = "android_arm",
     constraint_values = [
-        "@bazel_tools//platforms:android",
-        "@bazel_tools//platforms:arm",
+        "@platforms//os:android",
+        "@platforms//cpu:arm",
     ],
     visibility = ["//visibility:public"],
 )
@@ -125,8 +149,8 @@ config_setting(
 config_setting(
     name = "android_aarch64",
     constraint_values = [
-        "@bazel_tools//platforms:android",
-        "@bazel_tools//platforms:aarch64",
+        "@platforms//os:android",
+        "@platforms//cpu:aarch64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -163,16 +187,7 @@ BOOST_CTX_ASM_SOURCES = selects.with_or({
         "libs/context/src/asm/make_x86_64_sysv_elf_gas.S",
         "libs/context/src/asm/ontop_x86_64_sysv_elf_gas.S",
     ],
-    ":osx_arm64": [
-        "libs/context/src/asm/jump_arm64_aapcs_macho_gas.S",
-        "libs/context/src/asm/make_arm64_aapcs_macho_gas.S",
-        "libs/context/src/asm/ontop_arm64_aapcs_macho_gas.S",
-    ],
-    ":osx_x86_64": [
-        "libs/context/src/asm/jump_x86_64_sysv_macho_gas.S",
-        "libs/context/src/asm/make_x86_64_sysv_macho_gas.S",
-        "libs/context/src/asm/ontop_x86_64_sysv_macho_gas.S",
-    ],
+    (":osx", ":ios", ":watchos", ":tvos") : ["apple_ctx_asm_sources"],
     ":windows_x86_64": [
         "libs/context/src/asm/make_x86_64_ms_pe_masm.S",
         "libs/context/src/asm/jump_x86_64_ms_pe_masm.S",
@@ -181,13 +196,31 @@ BOOST_CTX_ASM_SOURCES = selects.with_or({
     "//conditions:default": [],
 })
 
+filegroup(
+    name = "apple_ctx_asm_sources",
+    srcs = select({
+        "@platforms//cpu:aarch64": [
+            "libs/context/src/asm/jump_arm64_aapcs_macho_gas.S",
+            "libs/context/src/asm/make_arm64_aapcs_macho_gas.S",
+            "libs/context/src/asm/ontop_arm64_aapcs_macho_gas.S",
+        ],
+        "@platforms//cpu:arm": [
+            "libs/context/src/asm/jump_arm_aapcs_macho_gas.S",
+            "libs/context/src/asm/make_arm_aapcs_macho_gas.S",
+            "libs/context/src/asm/ontop_arm_aapcs_macho_gas.S",
+        ],
+        "@platforms//cpu:x86_64": [
+            "libs/context/src/asm/jump_x86_64_sysv_macho_gas.S",
+            "libs/context/src/asm/make_x86_64_sysv_macho_gas.S",
+            "libs/context/src/asm/ontop_x86_64_sysv_macho_gas.S",
+        ],
+    })
+)
+
 boost_library(
     name = "context",
     srcs = BOOST_CTX_ASM_SOURCES + selects.with_or({
-        (":linux", ":android"): [
-            "libs/context/src/posix/stack_traits.cpp",
-        ],
-        ":osx": [
+        (":linux", ":android", ":osx", ":ios", ":watchos", ":tvos"): [
             "libs/context/src/posix/stack_traits.cpp",
         ],
         ":windows_x86_64": [
@@ -250,13 +283,8 @@ boost_library(
         "//conditions:default": [],
     }),
     exclude_src = ["libs/fiber/src/numa/**/*.cpp"],
-    linkopts = select({
-        ":linux": [
-            "-lpthread",
-        ],
-        ":osx": [
-            "-lpthread",
-        ],
+    linkopts = selects.with_or({
+        (":linux", ":osx", ":ios", ":watchos", ":tvos"): ["-lpthread"],
         "//conditions:default": [],
     }),
     visibility = ["//visibility:public"],
@@ -446,8 +474,8 @@ boost_library(
     ],
     defines = [
         "BOOST_ASIO_SEPARATE_COMPILATION",
-    ] + select({
-        ":osx": [
+    ] + selects.with_or({
+        (":osx", ":ios", ":watchos", ":tvos"): [
             "BOOST_ASIO_DISABLE_STD_EXPERIMENTAL_STRING_VIEW",
         ],
         "//conditions:default": [],
@@ -601,9 +629,11 @@ boost_library(
 
 boost_library(
     name = "compute",
-    linkopts = select({
-        ":osx": [
-            "-framework OpenCL",
+    linkopts = selects.with_or({
+        # OpenCL (required for Boost.Compute) is deprecated on macOS and not supported on other Apple OSs.
+        # This will at least produce the right error message, indicating that OpenCL is not present
+        (":osx", ":ios", ":watchos", ":tvos"): [
+            "-framework OpenCL", 
         ],
         "//conditions:default": [
             "-lOpenCL",
@@ -702,14 +732,8 @@ boost_library(
     ],
 )
 
-BOOST_CORO_SRCS = select({
-    ":android": [
-        "libs/coroutine/src/posix/stack_traits.cpp",
-    ],
-    ":linux": [
-        "libs/coroutine/src/posix/stack_traits.cpp",
-    ],
-    ":osx": [
+BOOST_CORO_SRCS = selects.with_or({
+    (":linux", ":android", ":osx", ":ios", ":watchos", ":tvos"): [
         "libs/coroutine/src/posix/stack_traits.cpp",
     ],
     ":windows_x86_64": [
@@ -1218,22 +1242,14 @@ BOOST_LOCALE_WIN32_COPTS = [
 
 boost_library(
     name = "locale",
-    srcs = select({
+    srcs = selects.with_or({
         ":android": BOOST_LOCALE_STD_SOURCES,
-        ":linux_arm": BOOST_LOCALE_POSIX_SOURCES,
-        ":linux_aarch64": BOOST_LOCALE_POSIX_SOURCES,
-        ":linux_ppc": BOOST_LOCALE_POSIX_SOURCES,
-        ":linux_x86_64": BOOST_LOCALE_POSIX_SOURCES,
-        ":osx": BOOST_LOCALE_POSIX_SOURCES,
+        (":linux", ":osx", ":ios", ":watchos", ":tvos"): BOOST_LOCALE_POSIX_SOURCES,
         ":windows_x86_64": BOOST_LOCALE_WIN32_SOURCES,
     }),
-    copts = select({
+    copts = selects.with_or({
         ":android": BOST_LOCALE_STD_COPTS,
-        ":linux_arm": BOOST_LOCALE_POSIX_COPTS,
-        ":linux_aarch64": BOOST_LOCALE_POSIX_COPTS,
-        ":linux_ppc": BOOST_LOCALE_POSIX_COPTS,
-        ":linux_x86_64": BOOST_LOCALE_POSIX_COPTS,
-        ":osx": BOOST_LOCALE_POSIX_COPTS,
+        (":linux", ":osx", ":ios", ":watchos", ":tvos"): BOOST_LOCALE_POSIX_COPTS,
         ":windows_x86_64": BOOST_LOCALE_WIN32_COPTS,
     }) + _w_no_deprecated,
     deps = [
@@ -1864,7 +1880,7 @@ boost_library(
     ],
 )
 
-BOOST_STACKTRACE_SOURCES = select({
+BOOST_STACKTRACE_SOURCES = selects.with_or({
     ":android": [
         "libs/stacktrace/src/basic.cpp",
         #"libs/stacktrace/src/noop.cpp",
@@ -1883,7 +1899,7 @@ BOOST_STACKTRACE_SOURCES = select({
     ":linux_x86_64": [
         "libs/stacktrace/src/backtrace.cpp",
     ],
-    ":osx": [
+    (":osx", ":ios", ":watchos", ":tvos"): [
         "libs/stacktrace/src/addr2line.cpp",
     ],
     ":windows_x86_64": [
@@ -1896,8 +1912,8 @@ BOOST_STACKTRACE_SOURCES = select({
 boost_library(
     name = "stacktrace",
     srcs = BOOST_STACKTRACE_SOURCES,
-    defines = select({
-        ":osx": [
+    defines = selects.with_or({
+        (":osx", ":ios", ":watchos", ":tvos"): [
             "BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED",
         ],
         "//conditions:default": [],
@@ -1988,11 +2004,7 @@ boost_library(
 boost_library(
     name = "thread",
     srcs = selects.with_or({
-        (":linux", ":android"): [
-            "libs/thread/src/pthread/once.cpp",
-            "libs/thread/src/pthread/thread.cpp",
-        ],
-        ":osx": [
+        (":linux", ":android", ":osx", ":ios", ":watchos", ":tvos"): [
             "libs/thread/src/pthread/once.cpp",
             "libs/thread/src/pthread/thread.cpp",
         ],
@@ -2003,29 +2015,18 @@ boost_library(
         ],
     }),
     hdrs = selects.with_or({
-        (":linux", ":android"): [
-            "libs/thread/src/pthread/once_atomic.cpp",
-        ],
-        ":osx": [
+        (":linux", ":android", ":osx", ":ios", ":watchos", ":tvos"): [
             "libs/thread/src/pthread/once_atomic.cpp",
         ],
         ":windows_x86_64": [],
     }),
-    linkopts = select({
-        ":linux": [
-            "-lpthread",
-        ],
-        ":osx": [
-            "-lpthread",
-        ],
+    linkopts = selects.with_or({
+        (":linux", ":osx", ":ios", ":watchos", ":tvos"): ["-lpthread"],
         ":windows_x86_64": [],
         ":android": [],
     }),
-    local_defines = select({
-        ":linux_arm": [],
-        ":linux_ppc": [],
-        ":linux_x86_64": [],
-        ":osx": [],
+    local_defines = selects.with_or({
+        (":linux", ":osx", ":ios", ":watchos", ":tvos"): [],
         ":windows_x86_64": [
             "BOOST_ALL_NO_LIB",
             "BOOST_THREAD_BUILD_LIB",
