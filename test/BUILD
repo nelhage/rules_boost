@@ -605,7 +605,7 @@ cc_test(
     srcs = ["pfr_test.cc"],
     copts = select({
         ":windows": ["/std:c++17"],
-        "//conditions:default": ["-std=c++1z"],
+        "//conditions:default": ["-std=c++17"],
     }),
     deps = [
         "@boost//:pfr",
