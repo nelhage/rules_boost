@@ -4,67 +4,13 @@ load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "boost_so_library", "hdr_list")
 
 _w_no_deprecated = selects.with_or({
-    (":linux", ":osx", ":ios", ":watchos", ":tvos"): [
+    ("@platforms//os:linux", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): [
         "-Wno-deprecated-declarations",
     ],
     "//conditions:default": [],
 })
 
-config_setting(
-    name = "linux",
-    constraint_values = [
-        "@platforms//os:linux",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "android",
-    constraint_values = [
-        "@platforms//os:android",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "osx",
-    constraint_values = [
-        "@platforms//os:osx",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "ios",
-    constraint_values = [
-        "@platforms//os:ios",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "watchos",
-    constraint_values = [
-        "@platforms//os:watchos",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "tvos",
-    constraint_values = [
-        "@platforms//os:tvos",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "windows",
-    constraint_values = [
-        "@platforms//os:windows",
-    ],
-    visibility = ["//visibility:public"],
-)
+# Hopefully, the need for these OSxCPU config_setting()s will be obviated by a fix to https://github.com/bazelbuild/platforms/issues/36
 
 config_setting(
     name = "linux_arm",
@@ -72,7 +18,6 @@ config_setting(
         "@platforms//os:linux",
         "@platforms//cpu:arm",
     ],
-    visibility = ["//visibility:public"],
 )
 
 config_setting(
@@ -81,7 +26,6 @@ config_setting(
         "@platforms//os:linux",
         "@platforms//cpu:ppc",
     ],
-    visibility = ["//visibility:public"],
 )
 
 config_setting(
@@ -90,7 +34,6 @@ config_setting(
         "@platforms//os:linux",
         "@platforms//cpu:aarch64",
     ],
-    visibility = ["//visibility:public"],
 )
 
 config_setting(
@@ -99,7 +42,6 @@ config_setting(
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
     ],
-    visibility = ["//visibility:public"],
 )
 
 config_setting(
@@ -108,7 +50,6 @@ config_setting(
         "@platforms//os:osx",
         "@platforms//cpu:aarch64",
     ],
-    visibility = ["//visibility:public"],
 )
 
 config_setting(
@@ -117,7 +58,6 @@ config_setting(
         "@platforms//os:osx",
         "@platforms//cpu:x86_64",
     ],
-    visibility = ["//visibility:public"],
 )
 
 config_setting(
@@ -126,15 +66,6 @@ config_setting(
         "@platforms//os:windows",
         "@platforms//cpu:x86_64",
     ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "x86_64",
-    constraint_values = [
-        "@platforms//cpu:x86_64",
-    ],
-    visibility = ["//visibility:public"],
 )
 
 config_setting(
@@ -143,7 +74,6 @@ config_setting(
         "@platforms//os:android",
         "@platforms//cpu:arm",
     ],
-    visibility = ["//visibility:public"],
 )
 
 config_setting(
@@ -152,7 +82,6 @@ config_setting(
         "@platforms//os:android",
         "@platforms//cpu:aarch64",
     ],
-    visibility = ["//visibility:public"],
 )
 
 # Rename .asm to .S so that it will be handled with the C preprocessor.
@@ -187,7 +116,7 @@ BOOST_CTX_ASM_SOURCES = selects.with_or({
         "libs/context/src/asm/make_x86_64_sysv_elf_gas.S",
         "libs/context/src/asm/ontop_x86_64_sysv_elf_gas.S",
     ],
-    (":osx", ":ios", ":watchos", ":tvos") : ["apple_ctx_asm_sources"],
+    ("@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos") : ["apple_ctx_asm_sources"],
     ":windows_x86_64": [
         "libs/context/src/asm/make_x86_64_ms_pe_masm.S",
         "libs/context/src/asm/jump_x86_64_ms_pe_masm.S",
@@ -220,7 +149,7 @@ filegroup(
 boost_library(
     name = "context",
     srcs = BOOST_CTX_ASM_SOURCES + selects.with_or({
-        (":linux", ":android", ":osx", ":ios", ":watchos", ":tvos"): [
+        ("@platforms//os:linux", "@platforms//os:android", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): [
             "libs/context/src/posix/stack_traits.cpp",
         ],
         ":windows_x86_64": [
@@ -284,7 +213,7 @@ boost_library(
     }),
     exclude_src = ["libs/fiber/src/numa/**/*.cpp"],
     linkopts = selects.with_or({
-        (":linux", ":osx", ":ios", ":watchos", ":tvos"): ["-lpthread"],
+        ("@platforms//os:linux", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): ["-lpthread"],
         "//conditions:default": [],
     }),
     visibility = ["//visibility:public"],
@@ -410,7 +339,7 @@ boost_library(
     copts = ["-Iexternal/boost/libs/atomic/src"],
     exclude_src = ["libs/atomic/src/wait_on_address.cpp"] + BOOST_ATOMIC_SSE_SRCS,
     deps = BOOST_ATOMIC_DEPS + select({
-        ":x86_64": [":atomic_sse"],
+        "@platforms//cpu:x86_64": [":atomic_sse"],
         "//conditions:default": [],
     }),
 )
@@ -475,7 +404,7 @@ boost_library(
     defines = [
         "BOOST_ASIO_SEPARATE_COMPILATION",
     ] + selects.with_or({
-        (":osx", ":ios", ":watchos", ":tvos"): [
+        ("@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): [
             "BOOST_ASIO_DISABLE_STD_EXPERIMENTAL_STRING_VIEW",
         ],
         "//conditions:default": [],
@@ -487,7 +416,7 @@ boost_library(
         "//conditions:default": [],
     }),
     linkopts = select({
-        ":android": [],
+        "@platforms//os:android": [],
         "//conditions:default": ["-lpthread"],
     }) + select({
         ":asio_io_uring": ["-luring"],
@@ -632,7 +561,7 @@ boost_library(
     linkopts = selects.with_or({
         # OpenCL (required for Boost.Compute) is deprecated on macOS and not supported on other Apple OSs.
         # This will at least produce the right error message, indicating that OpenCL is not present
-        (":osx", ":ios", ":watchos", ":tvos"): [
+        ("@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): [
             "-framework OpenCL", 
         ],
         "//conditions:default": [
@@ -733,7 +662,7 @@ boost_library(
 )
 
 BOOST_CORO_SRCS = selects.with_or({
-    (":linux", ":android", ":osx", ":ios", ":watchos", ":tvos"): [
+    ("@platforms//os:linux", "@platforms//os:android", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): [
         "libs/coroutine/src/posix/stack_traits.cpp",
     ],
     ":windows_x86_64": [
@@ -1069,7 +998,7 @@ boost_library(
 boost_library(
     name = "interprocess",
     linkopts = select({
-        ":linux": [
+        "@platforms//os:linux": [
             "-lpthread",
             "-lrt",
         ],
@@ -1243,13 +1172,13 @@ BOOST_LOCALE_WIN32_COPTS = [
 boost_library(
     name = "locale",
     srcs = selects.with_or({
-        ":android": BOOST_LOCALE_STD_SOURCES,
-        (":linux", ":osx", ":ios", ":watchos", ":tvos"): BOOST_LOCALE_POSIX_SOURCES,
+        "@platforms//os:android": BOOST_LOCALE_STD_SOURCES,
+        ("@platforms//os:linux", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): BOOST_LOCALE_POSIX_SOURCES,
         ":windows_x86_64": BOOST_LOCALE_WIN32_SOURCES,
     }),
     copts = selects.with_or({
-        ":android": BOST_LOCALE_STD_COPTS,
-        (":linux", ":osx", ":ios", ":watchos", ":tvos"): BOOST_LOCALE_POSIX_COPTS,
+        "@platforms//os:android": BOST_LOCALE_STD_COPTS,
+        ("@platforms//os:linux", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): BOOST_LOCALE_POSIX_COPTS,
         ":windows_x86_64": BOOST_LOCALE_WIN32_COPTS,
     }) + _w_no_deprecated,
     deps = [
@@ -1476,7 +1405,7 @@ boost_library(
         "boost/numeric/odeint.hpp",
     ],
     linkopts = select({
-        "@boost//:android": ["-lm"],
+        "@platforms//os:android": ["-lm"],
         "//conditions:default": [],
     }),
     deps = [
@@ -1631,7 +1560,7 @@ boost_library(
 boost_library(
     name = "qvm",
     linkopts = select({
-        "@boost//:android": ["-lm"],
+        "@platforms//os:android": ["-lm"],
         "//conditions:default": [],
     }),
     deps = [
@@ -1881,7 +1810,7 @@ boost_library(
 )
 
 BOOST_STACKTRACE_SOURCES = selects.with_or({
-    ":android": [
+    "@platforms//os:android": [
         "libs/stacktrace/src/basic.cpp",
         #"libs/stacktrace/src/noop.cpp",
     ],
@@ -1899,7 +1828,7 @@ BOOST_STACKTRACE_SOURCES = selects.with_or({
     ":linux_x86_64": [
         "libs/stacktrace/src/backtrace.cpp",
     ],
-    (":osx", ":ios", ":watchos", ":tvos"): [
+    ("@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): [
         "libs/stacktrace/src/addr2line.cpp",
     ],
     ":windows_x86_64": [
@@ -1913,7 +1842,7 @@ boost_library(
     name = "stacktrace",
     srcs = BOOST_STACKTRACE_SOURCES,
     defines = selects.with_or({
-        (":osx", ":ios", ":watchos", ":tvos"): [
+        ("@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): [
             "BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED",
         ],
         "//conditions:default": [],
@@ -2004,7 +1933,7 @@ boost_library(
 boost_library(
     name = "thread",
     srcs = selects.with_or({
-        (":linux", ":android", ":osx", ":ios", ":watchos", ":tvos"): [
+        ("@platforms//os:linux", "@platforms//os:android", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): [
             "libs/thread/src/pthread/once.cpp",
             "libs/thread/src/pthread/thread.cpp",
         ],
@@ -2015,18 +1944,18 @@ boost_library(
         ],
     }),
     hdrs = selects.with_or({
-        (":linux", ":android", ":osx", ":ios", ":watchos", ":tvos"): [
+        ("@platforms//os:linux", "@platforms//os:android", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): [
             "libs/thread/src/pthread/once_atomic.cpp",
         ],
         ":windows_x86_64": [],
     }),
     linkopts = selects.with_or({
-        (":linux", ":osx", ":ios", ":watchos", ":tvos"): ["-lpthread"],
+        ("@platforms//os:linux", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): ["-lpthread"],
         ":windows_x86_64": [],
-        ":android": [],
+        "@platforms//os:android": [],
     }),
     local_defines = selects.with_or({
-        (":linux", ":osx", ":ios", ":watchos", ":tvos"): [],
+        ("@platforms//os:linux", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): [],
         ":windows_x86_64": [
             "BOOST_ALL_NO_LIB",
             "BOOST_THREAD_BUILD_LIB",
@@ -2354,7 +2283,7 @@ boost_library(
 )
 
 BOOST_LOG_CFLAGS = select({
-    ":x86_64": [
+    "@platforms//cpu:x86_64": [
         "-msse4.2",
     ],
     "//conditions:default": [
@@ -2385,7 +2314,7 @@ BOOST_LOG_DEPS = [
 ]
 
 BOOST_LOG_SSSE3_DEP = select({
-    ":x86_64": [
+    "@platforms//cpu:x86_64": [
         ":log_dump_ssse3",
     ],
     "//conditions:default": [
