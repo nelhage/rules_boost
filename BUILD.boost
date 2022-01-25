@@ -13,7 +13,7 @@ _w_no_deprecated = selects.with_or({
 config_setting(
     name = "linux",
     constraint_values = [
-        "@bazel_tools//platforms:linux",
+        "@platforms//os:linux",
     ],
     visibility = ["//visibility:public"],
 )
@@ -21,7 +21,7 @@ config_setting(
 config_setting(
     name = "android",
     constraint_values = [
-        "@bazel_tools//platforms:android",
+        "@platforms//os:android",
     ],
     visibility = ["//visibility:public"],
 )
@@ -29,7 +29,7 @@ config_setting(
 config_setting(
     name = "osx",
     constraint_values = [
-        "@bazel_tools//platforms:osx",
+        "@platforms//os:osx",
     ],
     visibility = ["//visibility:public"],
 )
@@ -37,7 +37,7 @@ config_setting(
 config_setting(
     name = "ios",
     constraint_values = [
-        "@bazel_tools//platforms:ios",
+        "@platforms//os:ios",
     ],
     visibility = ["//visibility:public"],
 )
@@ -61,7 +61,7 @@ config_setting(
 config_setting(
     name = "windows",
     constraint_values = [
-        "@bazel_tools//platforms:windows",
+        "@platforms//os:windows",
     ],
     visibility = ["//visibility:public"],
 )
@@ -69,8 +69,8 @@ config_setting(
 config_setting(
     name = "linux_arm",
     constraint_values = [
-        "@bazel_tools//platforms:linux",
-        "@bazel_tools//platforms:arm",
+        "@platforms//os:linux",
+        "@platforms//cpu:arm",
     ],
     visibility = ["//visibility:public"],
 )
@@ -78,8 +78,8 @@ config_setting(
 config_setting(
     name = "linux_ppc",
     constraint_values = [
-        "@bazel_tools//platforms:linux",
-        "@bazel_tools//platforms:ppc",
+        "@platforms//os:linux",
+        "@platforms//cpu:ppc",
     ],
     visibility = ["//visibility:public"],
 )
@@ -87,8 +87,8 @@ config_setting(
 config_setting(
     name = "linux_aarch64",
     constraint_values = [
-        "@bazel_tools//platforms:linux",
-        "@bazel_tools//platforms:aarch64",
+        "@platforms//os:linux",
+        "@platforms//cpu:aarch64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -96,8 +96,8 @@ config_setting(
 config_setting(
     name = "linux_x86_64",
     constraint_values = [
-        "@bazel_tools//platforms:linux",
-        "@bazel_tools//platforms:x86_64",
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -105,8 +105,8 @@ config_setting(
 config_setting(
     name = "osx_arm64",
     constraint_values = [
-        "@bazel_tools//platforms:osx",
-        "@bazel_tools//platforms:aarch64",
+        "@platforms//os:osx",
+        "@platforms//cpu:aarch64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -114,8 +114,8 @@ config_setting(
 config_setting(
     name = "osx_x86_64",
     constraint_values = [
-        "@bazel_tools//platforms:osx",
-        "@bazel_tools//platforms:x86_64",
+        "@platforms//os:osx",
+        "@platforms//cpu:x86_64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -123,8 +123,8 @@ config_setting(
 config_setting(
     name = "windows_x86_64",
     constraint_values = [
-        "@bazel_tools//platforms:windows",
-        "@bazel_tools//platforms:x86_64",
+        "@platforms//os:windows",
+        "@platforms//cpu:x86_64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -132,7 +132,7 @@ config_setting(
 config_setting(
     name = "x86_64",
     constraint_values = [
-        "@bazel_tools//platforms:x86_64",
+        "@platforms//cpu:x86_64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -140,8 +140,8 @@ config_setting(
 config_setting(
     name = "android_arm",
     constraint_values = [
-        "@bazel_tools//platforms:android",
-        "@bazel_tools//platforms:arm",
+        "@platforms//os:android",
+        "@platforms//cpu:arm",
     ],
     visibility = ["//visibility:public"],
 )
@@ -149,8 +149,8 @@ config_setting(
 config_setting(
     name = "android_aarch64",
     constraint_values = [
-        "@bazel_tools//platforms:android",
-        "@bazel_tools//platforms:aarch64",
+        "@platforms//os:android",
+        "@platforms//cpu:aarch64",
     ],
     visibility = ["//visibility:public"],
 )
@@ -199,17 +199,17 @@ BOOST_CTX_ASM_SOURCES = selects.with_or({
 filegroup(
     name = "apple_ctx_asm_sources",
     srcs = select({
-        "@bazel_tools//platforms:aarch64": [
+        "@platforms//cpu:aarch64": [
             "libs/context/src/asm/jump_arm64_aapcs_macho_gas.S",
             "libs/context/src/asm/make_arm64_aapcs_macho_gas.S",
             "libs/context/src/asm/ontop_arm64_aapcs_macho_gas.S",
         ],
-        "@bazel_tools//platforms:arm": [
+        "@platforms//cpu:arm": [
             "libs/context/src/asm/jump_arm_aapcs_macho_gas.S",
             "libs/context/src/asm/make_arm_aapcs_macho_gas.S",
             "libs/context/src/asm/ontop_arm_aapcs_macho_gas.S",
         ],
-        "@bazel_tools//platforms:x86_64": [
+        "@platforms//cpu:x86_64": [
             "libs/context/src/asm/jump_x86_64_sysv_macho_gas.S",
             "libs/context/src/asm/make_x86_64_sysv_macho_gas.S",
             "libs/context/src/asm/ontop_x86_64_sysv_macho_gas.S",

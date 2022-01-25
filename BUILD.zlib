@@ -14,7 +14,7 @@ alias(
 config_setting(
     name = "android",
     constraint_values = [
-        "@bazel_tools//platforms:android",
+        "@platforms//os:android",
     ],
     visibility = ["//visibility:public"],
 )
@@ -22,7 +22,7 @@ config_setting(
 config_setting(
     name = "ios",
     constraint_values = [
-        "@bazel_tools//platforms:ios",
+        "@platforms//os:ios",
     ],
     visibility = ["//visibility:public"],
 )
