@@ -209,6 +209,7 @@ def boost_deps():
         http_archive,
         name = "boost",
         build_file = "@com_github_nelhage_rules_boost//:BUILD.boost",
+        patches = ["@com_github_nelhage_rules_boost//:0001-json-array-erase-relocate.patch"],
         patch_cmds = ["rm -f doc/pdf/BUILD"],
         patch_cmds_win = ["Remove-Item -Force doc/pdf/BUILD"],
         sha256 = "273f1be93238a068aba4f9735a4a2b003019af067b9c183ed227780b8f36062c",
