@@ -242,6 +242,7 @@ boost_library(
 boost_library(
     name = "accumulators",
     deps = [
+        ":circular_buffer",
         ":concept_check",
         ":config",
         ":fusion",
