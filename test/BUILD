@@ -180,6 +180,15 @@ cc_test(
 )
 
 cc_test(
+    name = "flyweight_test",
+    size = "small",
+    srcs = ["flyweight_test.cc"],
+    deps = [
+        "@boost//:flyweight",
+    ],
+)
+
+cc_test(
     name = "foreach_test",
     size = "small",
     srcs = ["foreach_test.cc"],

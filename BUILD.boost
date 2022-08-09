@@ -836,6 +836,23 @@ boost_library(
 )
 
 boost_library(
+    name = "flyweight",
+    deps = [
+        ":core",
+        ":detail",
+        ":interprocess",
+        ":mpl",
+        ":multi_index",
+        ":parameter",
+        ":preprocessor",
+        ":serialization",
+        ":smart_ptr",
+        ":throw_exception",
+        ":type_traits",
+    ],
+)
+
+boost_library(
     name = "foreach",
     deps = [
         ":config",
