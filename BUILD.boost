@@ -116,7 +116,7 @@ BOOST_CTX_ASM_SOURCES = selects.with_or({
         "libs/context/src/asm/make_x86_64_sysv_elf_gas.S",
         "libs/context/src/asm/ontop_x86_64_sysv_elf_gas.S",
     ],
-    ("@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos") : ["apple_ctx_asm_sources"],
+    ("@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): ["apple_ctx_asm_sources"],
     ":windows_x86_64": [
         "libs/context/src/asm/make_x86_64_ms_pe_masm.S",
         "libs/context/src/asm/jump_x86_64_ms_pe_masm.S",
@@ -143,7 +143,7 @@ filegroup(
             "libs/context/src/asm/make_x86_64_sysv_macho_gas.S",
             "libs/context/src/asm/ontop_x86_64_sysv_macho_gas.S",
         ],
-    })
+    }),
 )
 
 boost_library(
@@ -157,15 +157,15 @@ boost_library(
         ],
         "//conditions:default": [],
     }),
-    local_defines = select({
-        ":windows_x86_64": ["BOOST_CONTEXT_EXPORT="],
-        "//conditions:default": [],
-    }),
     exclude_src = [
         "libs/context/src/fiber.cpp",
         "libs/context/src/untested.cpp",
         "libs/context/src/continuation.cpp",
     ],
+    local_defines = select({
+        ":windows_x86_64": ["BOOST_CONTEXT_EXPORT="],
+        "//conditions:default": [],
+    }),
     visibility = ["//visibility:public"],
     deps = [
         ":assert",
@@ -563,7 +563,7 @@ boost_library(
         # OpenCL (required for Boost.Compute) is deprecated on macOS and not supported on other Apple OSs.
         # This will at least produce the right error message, indicating that OpenCL is not present
         ("@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): [
-            "-framework OpenCL", 
+            "-framework OpenCL",
         ],
         "//conditions:default": [
             "-lOpenCL",
@@ -821,7 +821,12 @@ boost_library(
     copts = _w_no_deprecated,
     defines = [
         "BOOST_FILESYSTEM_NO_CXX20_ATOMIC_REF",
-    ],
+    ] + select({
+        "@platforms//os:linux": [
+            "BOOST_FILESYSTEM_HAS_POSIX_AT_APIS",
+        ],
+        "//conditions:default": [],
+    }),
     deps = [
         ":atomic",
         ":config",
@@ -1141,35 +1146,35 @@ boost_library(
 
 BOOST_LOCALE_COMMON_SOURCES = glob(
     [
-        "libs/locale/src/encoding/*.cpp",
-        "libs/locale/src/encoding/*.hpp",
-        "libs/locale/src/encoding/*.ipp",
-        "libs/locale/src/shared/*.cpp",
-        "libs/locale/src/shared/*.hpp",
-        "libs/locale/src/std/*.cpp",
-        "libs/locale/src/std/*.hpp",
-        "libs/locale/src/util/*.cpp",
-        "libs/locale/src/util/*.hpp",
+        "libs/locale/src/boost/locale/encoding/*.cpp",
+        "libs/locale/src/boost/locale/encoding/*.hpp",
+        "libs/locale/src/boost/locale/encoding/*.ipp",
+        "libs/locale/src/boost/locale/shared/*.cpp",
+        "libs/locale/src/boost/locale/shared/*.hpp",
+        "libs/locale/src/boost/locale/std/*.cpp",
+        "libs/locale/src/boost/locale/std/*.hpp",
+        "libs/locale/src/boost/locale/util/*.cpp",
+        "libs/locale/src/boost/locale/util/*.hpp",
     ],
     exclude = [
-        "libs/locale/src/util/iconv.hpp",
+        "libs/locale/src/boost/locale/util/iconv.hpp",
     ],
 )
 
 BOOST_LOCALE_STD_SOURCES = BOOST_LOCALE_COMMON_SOURCES + [
-    "libs/locale/src/util/iconv.hpp",
+    "libs/locale/src/boost/locale/util/iconv.hpp",
 ]
 
 BOOST_LOCALE_POSIX_SOURCES = BOOST_LOCALE_COMMON_SOURCES + [
-    "libs/locale/src/util/iconv.hpp",
+    "libs/locale/src/boost/locale/util/iconv.hpp",
 ] + glob([
-    "libs/locale/src/posix/*.cpp",
-    "libs/locale/src/posix/*.hpp",
+    "libs/locale/src/boost/locale/posix/*.cpp",
+    "libs/locale/src/boost/locale/posix/*.hpp",
 ])
 
 BOOST_LOCALE_WIN32_SOURCES = BOOST_LOCALE_COMMON_SOURCES + glob([
-    "libs/locale/src/win32/*.cpp",
-    "libs/locale/src/win32/*.hpp",
+    "libs/locale/src/boost/locale/win32/*.cpp",
+    "libs/locale/src/boost/locale/win32/*.hpp",
 ])
 
 BOST_LOCALE_STD_COPTS = [
@@ -1199,6 +1204,7 @@ boost_library(
         ("@platforms//os:linux", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): BOOST_LOCALE_POSIX_COPTS,
         ":windows_x86_64": BOOST_LOCALE_WIN32_COPTS,
     }) + _w_no_deprecated,
+    includes = ["libs/locale/src/"],
     deps = [
         ":assert",
         ":config",
@@ -2093,6 +2099,9 @@ boost_library(
 
 boost_library(
     name = "unordered",
+    srcs = glob([
+        "boost/unordered_map/**/*.hpp",
+    ]),
     hdrs = [
         "boost/unordered_map.hpp",
         "boost/unordered_set.hpp",
@@ -2106,6 +2115,7 @@ boost_library(
         ":iterator",
         ":limits",
         ":move",
+        ":mp11",
         ":preprocessor",
         ":smart_ptr",
         ":swap",
