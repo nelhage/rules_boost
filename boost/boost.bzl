@@ -209,13 +209,12 @@ def boost_deps():
         http_archive,
         name = "boost",
         build_file = "@com_github_nelhage_rules_boost//:BUILD.boost",
-        patches = ["@com_github_nelhage_rules_boost//:0001-json-array-erase-relocate.patch"],
         patch_cmds = ["rm -f doc/pdf/BUILD"],
         patch_cmds_win = ["Remove-Item -Force doc/pdf/BUILD"],
-        sha256 = "273f1be93238a068aba4f9735a4a2b003019af067b9c183ed227780b8f36062c",
-        strip_prefix = "boost_1_79_0",
+        sha256 = "4b2136f98bdd1f5857f1c3dea9ac2018effe65286cf251534b6ae20cc45e1847",
+        strip_prefix = "boost_1_80_0",
         urls = [
-            "https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz",
+            "https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.tar.gz",
         ],
     )
 

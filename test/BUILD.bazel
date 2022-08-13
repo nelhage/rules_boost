@@ -221,6 +221,7 @@ cc_test(
     srcs = ["gil_test.cc"],
     deps = [
         "@boost//:gil",
+        "@boost//:functional"
     ],
 )
 
