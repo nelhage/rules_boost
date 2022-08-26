@@ -6,7 +6,7 @@ alias(
     name = "zlib",
     visibility = ["//visibility:public"],
     actual = selects.with_or({
-        ("@platforms//os:android", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): ":zlib_system",
+        ("@platforms//os:android", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): ":zlib_system",
         "//conditions:default": ":zlib_source",
     })
 )
