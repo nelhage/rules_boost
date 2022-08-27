@@ -47,6 +47,8 @@ alias(
     }),
 )
 
+# Note: lzma is bundled with Apple platforms, but sadly, not considered public API because its header is not exposed. lzma is not bundled on Android.
+
 cc_library(
     name = "lzma",
     srcs = [
