@@ -1,10 +1,21 @@
 # Description:
 #   bzip2 is a high-quality data compressor.
 
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
 licenses(["notice"])  # BSD derivative
 
-cc_library(
+alias(
     name = "bz2lib",
+    visibility = ["//visibility:public"],
+    actual = selects.with_or({
+        ("@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): ":bz2lib_system",
+        "//conditions:default": ":bz2lib_source",
+    })
+)
+
+cc_library(
+    name = "bz2lib_source",
     srcs = [
         "blocksort.c",
         "bzlib.c",
@@ -19,5 +30,10 @@ cc_library(
         "bzlib.h",
     ],
     includes = ["."],
-    visibility = ["//visibility:public"],
+)
+
+# For OSs that bundle bz2lib
+cc_library( 
+    name = "bz2lib_system",
+    linkopts = ["-lbz2"],
 )
