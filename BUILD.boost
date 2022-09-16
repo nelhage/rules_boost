@@ -324,6 +324,10 @@ cc_library(
         "-msse4.1",
         "-Iexternal/boost/libs/atomic/src",
     ],
+    linkstatic = select({
+        ":windows_x86_64": True,
+        "//conditions:default": False,
+    }),
     visibility = ["//visibility:private"],
     deps = BOOST_ATOMIC_DEPS,
 )
