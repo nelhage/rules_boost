@@ -171,8 +171,6 @@ def boost_deps():
         ],
     )
 
-    SOURCEFORGE_MIRRORS = ["phoenixnap", "newcontinuum", "cfhcable", "superb-sea2", "cytranet", "iweb", "gigenet", "ayera", "astuteinternet", "pilotfiber", "svwh"]
-
     maybe(
         http_archive,
         name = "org_bzip_bzip2",
@@ -182,14 +180,16 @@ def boost_deps():
         url = "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
     )
 
+    SOURCEFORGE_MIRRORS = ["cfhcable", "superb-sea2", "cytranet", "iweb", "gigenet", "ayera", "astuteinternet", "pilotfiber", "svwh"]
+
     maybe(
         http_archive,
         name = "org_lzma_lzma",
         build_file = "@com_github_nelhage_rules_boost//:BUILD.lzma",
-        sha256 = "71928b357d0a09a12a4b4c5fafca8c31c19b0e7d3b8ebb19622e96f26dbf28cb",
-        strip_prefix = "xz-5.2.3",
+        sha256 = "06327c2ddc81e126a6d9a78b0be5014b976a2c0832f492dcfc4755d7facf6d33",
+        strip_prefix = "xz-5.2.7",
         urls = [
-            "https://%s.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz" % m
+            "https://%s.dl.sourceforge.net/project/lzmautils/xz-5.2.7.tar.gz" % m
             for m in SOURCEFORGE_MIRRORS
         ],
     )
