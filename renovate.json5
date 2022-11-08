@@ -1,0 +1,32 @@
+// This is the configuration file for Renovate, a GitHub App that can automate dependency updates.
+
+// If you're here, you're probably looking to:
+// (1) Make updates for a dependency fully automated. Whitelist it at <TAG0>
+// (2) Customize Renovate behavior further.
+  // For docs, see: https://docs.renovatebot.com/configuration-options/
+  // To debug, it can be helpful to looks at Renovate's runs/logs: https://app.renovatebot.com/dashboard#github/nelhage/rules_boost
+  // This file is .json5, so we can have helpful comments, like this one :) [Normal JSON, Renovate's default, has no comments.]
+// (3) Learn about what's going on here and what Renovate can do. Read on :)
+
+{
+  "packageRules": [{ // If you want a package to update on autopilot and have reasonably high confidence that updates won't break things, whitelist it here avoid having automated PRs to review.
+    "automerge": true, // Just automatically propose and merge in dependency upgrades to the latest.
+    "automergeType": "branch", // No PR unless tests fail; just do it.
+    "matchPackageNames" : [ // Add Bazel name= parameter here. <TAG0>.
+      "bazel_skylib",
+      "com_github_facebook_zstd",
+      "net_zlib_zlib",
+      "openssl",
+    ],
+  }],
+
+  // Defaults--and the tweaks we wish were defaults
+  "extends": ["config:base"], // Gives us the Renovate defaults (Renovate auto-added)
+  "separateMajorMinor": false, // Just always take the latest version.
+  // Remove limits added by config:base defaults.
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 0,
+  // Has Renovate maintain an issue with the status of dependencies--and a manual run button. Super handy but was originally not on by default.
+  "dependencyDashboard": true,
+  "dependencyDashboardHeader": "Collaborators: Check Renovate logs here: https://app.renovatebot.com/dashboard#github/nelhage/rules_boost", // Footer seems to prevent manual run checkbox, so I made this a header.
+}
