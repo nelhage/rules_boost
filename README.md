@@ -1,54 +1,66 @@
-# `rules_boost` -- Bazel build rules for Boost
+# `rules_boost` -- Bazel build rules for [Boost](https://www.boost.org)
 
-To use these rules, add the following to your `WORKSPACE` file:
+Copy this into your Bazel `WORKSPACE` file to add this repo as an external dependency, making sure to update to the [latest commit](https://github.com/nelhage/rules_boost/commits/master) per the instructions below.
 
-```bazel
+```Starlark
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-_RULES_BOOST_COMMIT = "652b21e35e4eeed5579e696da0facbe8dba52b1f"
-
+# Boost
+# Famous C++ library that has given rise to many new additions to the C++ Standard Library
+# Makes @boost available for use: For example, add `@boost//:algorithm` to your deps.
+# For more, see https://github.com/nelhage/rules_boost and https://www.boost.org
 http_archive(
     name = "com_github_nelhage_rules_boost",
-    sha256 = "c1b8b2adc3b4201683cf94dda7eef3fc0f4f4c0ea5caa3ed3feffe07e1fb5b15",
-    strip_prefix = "rules_boost-%s" % _RULES_BOOST_COMMIT,
-    urls = [
-        "https://github.com/nelhage/rules_boost/archive/%s.tar.gz" % _RULES_BOOST_COMMIT,
-    ],
-)
 
+    # Replace the commit hash in both places (below) with the latest, rather than using the stale one here.
+    # Even better, set up Renovate and let it do the work for you (see "Suggestion: Updates" in the README).
+    url = "https://github.com/nelhage/rules_boost/archive/96e9b631f104b43a53c21c87b01ac538ad6f3b48.tar.gz",
+    strip_prefix = "rules_boost-96e9b631f104b43a53c21c87b01ac538ad6f3b48",
+    # When you first run this tool, it'll recommend a sha256 hash to put here with a message like: "DEBUG: Rule 'com_github_nelhage_rules_boost' indicated that a canonical reproducible form can be obtained by modifying arguments sha256 = ..."
+)
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_deps")
 boost_deps()
 ```
 
-You can then use libraries in `deps` through the `@boost` repository, for
-example `@boost//:algorithm`.
+You can now use libraries in `deps` through the `@boost` repository, for example `@boost//:algorithm`.
 
+## Suggestion: Updates
 
-Based in part on rules from https://github.com/mzhaom/trunk.
+Improvements come frequently to the underlying libraries, including security patches, so we'd recommend keeping up-to-date.
 
-## ASIO
+We'd strongly recommend you set up [Renovate](https://github.com/renovatebot/renovate) (or similar) at some point to keep this dependency (and others) up-to-date by default. [We aren't affiliated with Renovate or anything, but we think it's awesome. It watches for new versions and sends you PRs for review or automated testing. It's free and easy to set up. It's been astoundingly useful in our codebase, and we've worked with the wonderful maintainer to make things great for Bazel use. And it's used in official Bazel repositories--and this one!]
 
-### SSL Support
+If not now, maybe come back to this step later, or watch this repo for updates. [Or hey, maybe give us a quick star, while you're thinking about watching.] Like Abseil, we live at head; the latest commit to the main branch is the commit you want. So don't rely on release notifications; use [Renovate](https://github.com/renovatebot/renovate) or poll manually for new commits.
+
+## Configuration of Sub-Libraries
+
+### ASIO
+
+#### SSL Support
 
 These rules implement support for Boost ASIO's SSL support. To use
 ASIO-SSL, you must depend on the `"@boost//:asio_ssl"` target, instead
 of `"@boost//:asio"`. ASIO-SSL depends on OpenSSL; By default,
-`rules_boost` will download and build a recent
+`rules_boost` will download and build the latest
 [BoringSSL](https://boringssl.googlesource.com/boringssl/) commit; To
 use a different OpenSSL implementation, create a remote named
 `openssl` before calling `boost_deps`. This remote must make available
 OpenSSL's libssl at `@openssl//:ssl`.
 
-### io\_uring support
+#### io\_uring support
 
 To enable io\_uring for asio, use `--@boost//:asio_has_io_uring`.
 Optionally, pass`--@boost//:asio_disable_epoll` to use io\_uring
 for all operations.
 
-## Beast
+### Beast
 
 Boost Beast uses `beast::string_view` for things like request/response headers,
 which by default is a type alias of `boost::string_view`. If you're using a
 C++17 compiler that supports `std::string_view` you can use
 `--@boost//:beast_use_std_string_view` to make `beast::string_view` instead be a
 type alias of `std::string_view`.
+
+---
+
+Based in part on rules from https://github.com/mzhaom/trunk.
