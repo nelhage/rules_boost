@@ -1,0 +1,7 @@
+# Use C++17.
+# C++14 is required for many tests and boringssl.
+# Some Boost libraries will soon require C++17.
+# And it's 2022 at the time of writing; C++20 support is widespread.
+build --cxxopt=-std=c++17
+build:windows --cxxopt=/std:c++17
+common --enable_platform_specific_config

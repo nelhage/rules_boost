@@ -152,23 +152,18 @@ def boost_deps():
     maybe(
         http_archive,
         name = "bazel_skylib",
-        sha256 = "74d544d96f4a5bb630d465ca8bbcfe231e3594e5aae57e1edbf17a6eb3ca2506",
-        urls = [
-            "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.3.0/bazel-skylib-1.3.0.tar.gz",
-            "https://github.com/bazelbuild/bazel-skylib/releases/download/1.3.0/bazel-skylib-1.3.0.tar.gz",
-        ],
+        url = "https://github.com/bazelbuild/bazel-skylib/archive/1.3.0.tar.gz",
+        sha256 = "3b620033ca48fcd6f5ef2ac85e0f6ec5639605fa2f627968490e52fc91a9932f",
+        strip_prefix = "bazel-skylib-1.3.0",
     )
 
     maybe(
         http_archive,
         name = "net_zlib_zlib",
         build_file = "@com_github_nelhage_rules_boost//:BUILD.zlib",
-        sha256 = "b3a24de97a8fdbc835b9833169501030b8977031bcb54b3b3ac13740f846ab30",
+        url = "https://github.com/madler/zlib/archive/v1.2.13.tar.gz",
+        sha256 = "1525952a0a567581792613a9723333d7f8cc20b87a81f920fb8bc7e3f2251428",
         strip_prefix = "zlib-1.2.13",
-        urls = [
-            "https://mirror.bazel.build/zlib.net/zlib-1.2.13.tar.gz",
-            "https://zlib.net/zlib-1.2.13.tar.gz",
-        ],
     )
 
     maybe(
@@ -201,11 +196,9 @@ def boost_deps():
         http_archive,
         name = "com_github_facebook_zstd",
         build_file = "@com_github_nelhage_rules_boost//:BUILD.zstd",
-        sha256 = "e28b2f2ed5710ea0d3a1ecac3f6a947a016b972b9dd30242369010e5f53d7002",
+        url = "https://github.com/facebook/zstd/archive/v1.5.1/zstd-1.5.1.tar.gz",
+        sha256 = "dc05773342b28f11658604381afd22cb0a13e8ba17ff2bd7516df377060c18dd",
         strip_prefix = "zstd-1.5.1",
-        urls = [
-            "https://github.com/facebook/zstd/releases/download/v1.5.1/zstd-1.5.1.tar.gz",
-        ],
     )
 
     maybe(
@@ -222,10 +215,11 @@ def boost_deps():
         ],
     )
 
+    # We're pointing at hedronvision's mirror of google/boringssl:master-with-bazel to get Renovate auto-update. Otherwise, Renovate will keep moving us back to master, which doesn't support Bazel. See https://github.com/renovatebot/renovate/issues/18492
     maybe(
         http_archive,
         name = "openssl",
-        sha256 = "6f640262999cd1fb33cf705922e453e835d2d20f3f06fe0d77f6426c19257308",
-        strip_prefix = "boringssl-fc44652a42b396e1645d5e72aba053349992136a",
-        url = "https://github.com/google/boringssl/archive/fc44652a42b396e1645d5e72aba053349992136a.tar.gz",
+        url = "https://github.com/hedronvision/boringssl/archive/71d6b947ba65b64da75425d319b16b43b26feced.tar.gz",
+        sha256 = "d88ce5f69555587294b76d79675ffb6f7ad752b14904acd359c267b94f2b89de",
+        strip_prefix = "boringssl-71d6b947ba65b64da75425d319b16b43b26feced",
     )

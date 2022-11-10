@@ -229,7 +229,6 @@ cc_test(
     name = "geometry_test",
     size = "small",
     srcs = ["geometry_test.cc"],
-    copts = ["-std=c++14"],
     deps = [
         "@boost//:geometry",
     ],
@@ -243,7 +242,6 @@ cc_test(
         "@boost//:histogram",
         "@boost//:format",
     ],
-    copts = ["-std=c++14"],
 )
 
 cc_test(
@@ -412,7 +410,6 @@ cc_test(
     name = "spirit_test",
     size = "small",
     srcs = ["spirit_test.cc"],
-    copts = ["-std=c++14"],
     deps = [
         "@boost//:spirit",
     ],
@@ -545,7 +542,6 @@ cc_test(
     name = "hana_test",
     size = "small",
     srcs = ["hana_test.cc"],
-    copts = ["-std=c++14"],
     deps = [
         "@boost//:hana",
     ],
@@ -555,7 +551,6 @@ cc_test(
     name = "variant2_test",
     size = "small",
     srcs = ["variant2_test.cc"],
-    copts = ["-std=c++14"],
     deps = [
         "@boost//:variant2",
     ],
@@ -575,7 +570,6 @@ cc_test(
     deps = [
         "@boost//:stl_interfaces",
     ],
-    copts = ["-std=c++1y"],
 )
 
 cc_test(
@@ -605,10 +599,6 @@ cc_test(
 cc_test(
     name = "pfr_test",
     srcs = ["pfr_test.cc"],
-    copts = select({
-        "@platforms//os:windows": ["/std:c++17"],
-        "//conditions:default": ["-std=c++17"],
-    }),
     deps = [
         "@boost//:pfr",
     ],
