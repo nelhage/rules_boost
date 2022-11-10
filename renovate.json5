@@ -11,7 +11,6 @@
 {
   "packageRules": [{ // If you want a package to update on autopilot and have reasonably high confidence that updates won't break things, whitelist it here avoid having automated PRs to review.
     "automerge": true, // Just automatically propose and merge in dependency upgrades to the latest.
-    "automergeType": "branch", // No PR unless tests fail; just do it.
     "matchPackageNames" : [ // Add Bazel name= parameter here. <TAG0>.
       "bazel_skylib",
       "com_github_facebook_zstd",
