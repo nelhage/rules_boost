@@ -1693,6 +1693,7 @@ boost_library(
     hdrs = [
         "boost/cregex.hpp",
     ],
+    copts = _w_no_deprecated,
     deps = [
         ":assert",
         ":config",
