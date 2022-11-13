@@ -368,6 +368,7 @@ boost_library(
     name = "array",
     deps = [
         ":assert",
+        ":concept_check",
         ":config",
         ":core",
         ":functional",
@@ -661,6 +662,7 @@ boost_library(
     name = "core",
     srcs = [
         "boost/checked_delete.hpp",
+        "boost/core/noinit_adaptor.hpp",
     ],
     deps = [
         ":config",
@@ -993,6 +995,8 @@ boost_library(
 boost_library(
     name = "heap",
     deps = [
+        ":array",
+        ":intrusive",
         ":parameter",
     ],
 )
@@ -1484,6 +1488,11 @@ boost_library(
 
 boost_library(
     name = "operators",
+    deps = [
+        ":config",
+        ":detail",
+        ":core",
+    ],
 )
 
 boost_library(
@@ -2424,7 +2433,11 @@ boost_library(
         "boost/pending/detail/property.hpp",
         "boost/pending/disjoint_sets.hpp",
         "boost/pending/indirect_cmp.hpp",
+        "boost/pending/is_heap.hpp",
+        "boost/pending/mutable_queue.hpp",
+        "boost/pending/mutable_heap.hpp",
         "boost/pending/property.hpp",
+        "boost/pending/property_serialize.hpp",
         "boost/pending/queue.hpp",
         "boost/pending/relaxed_heap.hpp",
     ],
@@ -2447,6 +2460,9 @@ boost_library(
 
 boost_library(
     name = "lambda",
+    deps = [
+        ":is_placeholder",
+    ]
 )
 
 boost_library(
@@ -2515,5 +2531,38 @@ boost_library(
         ":mp11",
         ":throw_exception",
         ":variant2",
+    ],
+)
+
+boost_library(
+    name = "poly_collection",
+    deps = [
+        ":assert",
+        ":config",
+        ":core",
+        ":iterator",
+        ":mp11",
+        ":type_erasure",
+        ":type_traits",
+    ],
+)
+
+boost_library(
+    name = "type_erasure",
+    deps = [
+        ":thread",
+        ":assert",
+        ":config",
+        ":fusion",
+        ":iterator",
+        ":mp11",
+        ":mpl",
+        ":preprocessor",
+        ":shared_ptr",
+        ":throw_exception",
+        ":typeof",
+        ":type_traits",
+        ":utility",
+        ":vmd",
     ],
 )
