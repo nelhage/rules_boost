@@ -337,6 +337,15 @@ cc_test(
 )
 
 cc_test(
+    name = "poly_collection_test",
+    size = "small",
+    srcs = ["poly_collection_test.cc"],
+    deps = [
+        "@boost//:poly_collection",
+    ],
+)
+
+cc_test(
     name = "process_test",
     size = "small",
     srcs = ["process_test.cc"],
