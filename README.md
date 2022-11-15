@@ -26,7 +26,7 @@ You can now use libraries in `deps` through the `@boost` repository, for example
 
 ## If you're using the Apple or Android-specific rules...
 
-As with all platform-dependent C/C++ in Bazel, you'll need to set up `platform_mappings` until Bazel resolves its outstanding issues.
+As with all platform-dependent C/C++ in Bazel, you'll need to set up [`platform_mappings`](https://bazel.build/concepts/platforms#platform-mappings) until Bazel resolves its outstanding issues.
 
 It's not hard if you know what to to do, but can be tricky to figure out. If you'd like help with this, please let us know over at https://github.com/hedronvision/bazel-make-cc-https-easy/issues/4
 
