@@ -753,6 +753,7 @@ boost_library(
     ],
     deps = [
         ":limits",
+        ":winapi",
     ],
 )
 
