@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: ubuntu:22.10
+      - image: ubuntu:23.04
 
     steps:
       - checkout
