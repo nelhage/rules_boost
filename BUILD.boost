@@ -450,6 +450,9 @@ cc_library(
 
 boost_library(
     name = "assert",
+    deps = [
+        ":current_function",
+    ],
 )
 
 bool_flag(
@@ -484,6 +487,7 @@ boost_library(
         ":mp11",
         ":smart_ptr",
         ":static_assert",
+        ":static_string",
         ":system",
         ":throw_exception",
         ":tribool",
@@ -495,6 +499,7 @@ boost_library(
     name = "bimap",
     deps = [
         ":concept_check",
+        ":functional",
         ":multi_index",
         ":serialization",
     ],
@@ -634,6 +639,7 @@ boost_library(
         ":assert",
         ":config",
         ":core",
+        ":describe",
         ":integer",
         ":limits",
         ":type_traits",
@@ -1950,6 +1956,7 @@ boost_library(
         ":noncopyable",
         ":predef",
         ":utility",
+        ":variant2",
     ],
 )
 
@@ -2565,5 +2572,21 @@ boost_library(
         ":type_traits",
         ":utility",
         ":vmd",
+    ],
+)
+
+boost_library(
+    name = "url",
+    deps = [
+        ":align",
+        ":assert",
+        ":config",
+        ":core",
+        ":mp11",
+        ":optional",
+        ":static_assert",
+        ":system",
+        ":type_traits",
+        ":variant2",
     ],
 )
