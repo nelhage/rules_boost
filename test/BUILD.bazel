@@ -220,8 +220,8 @@ cc_test(
     size = "small",
     srcs = ["gil_test.cc"],
     deps = [
+        "@boost//:functional",
         "@boost//:gil",
-        "@boost//:functional"
     ],
 )
 
@@ -239,8 +239,8 @@ cc_test(
     size = "small",
     srcs = ["histogram_test.cc"],
     deps = [
-        "@boost//:histogram",
         "@boost//:format",
+        "@boost//:histogram",
     ],
 )
 
@@ -258,7 +258,7 @@ cc_test(
     size = "small",
     srcs = ["integer_test.cc"],
     deps = [
-        "@boost//:integer"
+        "@boost//:integer",
     ],
 )
 

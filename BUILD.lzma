@@ -33,7 +33,7 @@ copy_file(
         ("@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): "apple_config",
         "@platforms//os:windows": "@com_github_nelhage_rules_boost//:config.lzma-windows.h",
     }),
-    out = "src/liblzma/api/config.h", # minimize the number of exported include paths
+    out = "src/liblzma/api/config.h",  # minimize the number of exported include paths
 )
 
 # Configuration is the same across iOS, watchOS, and tvOS
@@ -42,7 +42,7 @@ alias(
     actual = select({
         "@platforms//cpu:arm64": "@com_github_nelhage_rules_boost//:config.lzma-ios-arm64.h",
         "@platforms//cpu:armv7": "@com_github_nelhage_rules_boost//:config.lzma-ios-armv7.h",
-        "@platforms//cpu:x86_64": "@com_github_nelhage_rules_boost//:config.lzma-osx-x86_64.h", # Configuration same as macOS
+        "@platforms//cpu:x86_64": "@com_github_nelhage_rules_boost//:config.lzma-osx-x86_64.h",  # Configuration same as macOS
         "@platforms//cpu:x86_32": "@com_github_nelhage_rules_boost//:config.lzma-ios-i386.h",
     }),
 )

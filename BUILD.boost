@@ -1497,8 +1497,8 @@ boost_library(
     name = "operators",
     deps = [
         ":config",
-        ":detail",
         ":core",
+        ":detail",
     ],
 )
 
@@ -2442,8 +2442,8 @@ boost_library(
         "boost/pending/disjoint_sets.hpp",
         "boost/pending/indirect_cmp.hpp",
         "boost/pending/is_heap.hpp",
-        "boost/pending/mutable_queue.hpp",
         "boost/pending/mutable_heap.hpp",
+        "boost/pending/mutable_queue.hpp",
         "boost/pending/property.hpp",
         "boost/pending/property_serialize.hpp",
         "boost/pending/queue.hpp",
@@ -2470,7 +2470,7 @@ boost_library(
     name = "lambda",
     deps = [
         ":is_placeholder",
-    ]
+    ],
 )
 
 boost_library(
@@ -2558,7 +2558,6 @@ boost_library(
 boost_library(
     name = "type_erasure",
     deps = [
-        ":thread",
         ":assert",
         ":config",
         ":fusion",
@@ -2567,9 +2566,10 @@ boost_library(
         ":mpl",
         ":preprocessor",
         ":shared_ptr",
+        ":thread",
         ":throw_exception",
-        ":typeof",
         ":type_traits",
+        ":typeof",
         ":utility",
         ":vmd",
     ],
