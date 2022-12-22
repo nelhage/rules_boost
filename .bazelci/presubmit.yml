@@ -20,3 +20,19 @@ tasks:
     - "//..."
     test_targets:
     - "//..."
+  layering_check:
+    platform: ubuntu2204
+    environment:
+      CC: clang
+      CC_CONFIGURE_DEBUG: 1
+    name: "Layering Check"
+    working_directory: test
+    build_flags:
+      - "--features=layering_check"
+      - "--cxxopt=-std=c++17"
+    build_targets:
+      - "//..."
+      # boringssl is not layering_check clean
+      - "-//:asio_ssl_test"
+      # backtrace.h not found
+      - "-//:stacktrace_test"
