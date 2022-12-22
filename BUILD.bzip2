@@ -7,11 +7,11 @@ licenses(["notice"])  # BSD derivative
 
 alias(
     name = "bz2lib",
-    visibility = ["//visibility:public"],
     actual = selects.with_or({
         ("@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): ":bz2lib_system",
         "//conditions:default": ":bz2lib_source",
-    })
+    }),
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
@@ -33,7 +33,7 @@ cc_library(
 )
 
 # For OSs that bundle bz2lib
-cc_library( 
+cc_library(
     name = "bz2lib_system",
     linkopts = ["-lbz2"],
 )
