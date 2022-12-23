@@ -18,8 +18,7 @@
 set -euxo pipefail
 
 # Get script location
-#script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-script_dir=$(rlocation rules_boost)
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Path where the WORKSPACE file is located
 rules_boost_dir=$script_dir 
