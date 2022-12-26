@@ -43,7 +43,7 @@ cd 'xz-'$xz_version_number
 # config header files depend on the specifc OS
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     ./configure
-    cp config.h $rules_boost_dir'/config.lzma-linux.h'
+    cp config.h "${rules_boost_dir}/config.lzma-linux.h"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     CC="clang -arch arm64 \
     -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
