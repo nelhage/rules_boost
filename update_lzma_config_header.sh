@@ -47,7 +47,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     CC="clang -arch arm64 \
     -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
-    ./configure --host=x86_64-apple-darwin21.2.0
+    ./configure --host=$MACHTYPE
     cp config.h "$rules_boost_dir"/config.lzma-ios-arm64.h"
 
     rm config.h
