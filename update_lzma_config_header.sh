@@ -58,7 +58,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 
     rm config.h
     CC="clang -arch i386 \
-    -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
+    -isysroot $(xcrun --sdk iphonesimulator --show-sdk-path) \
     ./configure --host=x86_64-apple-darwin21.2.0
     cp config.h "$rules_boost_dir"/config.lzma-ios-i386.h"
 else
