@@ -64,6 +64,10 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     -isysroot $(xcrun --sdk iphonesimulator --show-sdk-path) \
     ./configure --host=$MACHTYPE
     cp config.h ${rules_boost_dir}/config.lzma-ios-i386.h"
+elif [[ "$OSTYPE" == "msys"* ]]; then
+     ./configure
+    cp config.h "${rules_boost_dir}/config.windows.h"
 else
     echo "Unsupported OS"
+    echo "$OSTYPE"
 fi
