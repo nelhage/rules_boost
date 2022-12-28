@@ -65,8 +65,8 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     ./configure --host=$MACHTYPE
     cp config.h ${rules_boost_dir}/config.lzma-ios-i386.h"
 elif [[ "$OSTYPE" == "msys"* ]]; then
-     ./configure
-    cp config.h "${rules_boost_dir}/config.windows.h"
+    ./configure
+    cp config.h "${rules_boost_dir}/config.lzma-windows.h"
 else
     echo "Unsupported OS"
     echo "$OSTYPE"
