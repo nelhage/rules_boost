@@ -45,22 +45,25 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     ./configure
     cp config.h "${rules_boost_dir}/config.lzma-linux.h"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
+    CC="clang" ./configure
+    cp config.h "${rules_boost_dir}/config.lzma-osx-${HOSTTYPE}.h"
+
     CC="clang -arch arm64 \
     -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
     ./configure --host=$MACHTYPE
-    cp config.h "$rules_boost_dir"/config.lzma-ios-arm64.h"
+    cp config.h ${rules_boost_dir}/config.lzma-ios-arm64.h"
 
     rm config.h
     CC="clang -arch armv7 \
     -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
     ./configure --host=x86_64-apple-darwin21.2.0
-    cp config.h "$rules_boost_dir"/config.lzma-ios-armv7.h"
+    cp config.h ${rules_boost_dir}/config.lzma-ios-armv7.h"
 
     rm config.h
     CC="clang -arch i386 \
     -isysroot $(xcrun --sdk iphonesimulator --show-sdk-path) \
     ./configure --host=x86_64-apple-darwin21.2.0
-    cp config.h "$rules_boost_dir"/config.lzma-ios-i386.h"
+    cp config.h ${rules_boost_dir}/config.lzma-ios-i386.h"
 else
     echo "Unsupported OS"
 fi
