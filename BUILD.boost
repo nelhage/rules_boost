@@ -1781,6 +1781,18 @@ boost_library(
 )
 
 boost_library(
+    name = "safe_numerics",
+    deps = [
+        ":concept_check",
+        ":config",
+        ":core",
+        ":integer",
+        ":tribool",
+        ":mp11",
+    ]
+)
+
+boost_library(
     name = "scope_exit",
     deps = [
         ":config",
