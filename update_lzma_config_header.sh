@@ -52,19 +52,19 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     cp config.h "${rules_boost_dir}/config.lzma-osx-arm64.h"
 
     CC="clang -arch arm64 \
-    -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
+    -isysroot $(xcrun --sdk iphoneos --show-sdk-path)" \
     ./configure --host=$MACHTYPE
-    cp config.h ${rules_boost_dir}/config.lzma-ios-arm64.h"
+    cp config.h "${rules_boost_dir}/config.lzma-ios-arm64.h"
 
     CC="clang -arch armv7 \
-    -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
+    -isysroot $(xcrun --sdk iphoneos --show-sdk-path)" \
     ./configure --host=$MACHTYPE
-    cp config.h ${rules_boost_dir}/config.lzma-ios-armv7.h"
+    cp config.h "${rules_boost_dir}/config.lzma-ios-armv7.h"
 
     CC="clang -arch i386 \
-    -isysroot $(xcrun --sdk iphonesimulator --show-sdk-path) \
+    -isysroot $(xcrun --sdk iphonesimulator --show-sdk-path)" \
     ./configure --host=$MACHTYPE
-    cp config.h ${rules_boost_dir}/config.lzma-ios-i386.h"
+    cp config.h "${rules_boost_dir}/config.lzma-ios-i386.h"
 elif [[ "$OSTYPE" == "msys"* ]]; then
     ./configure
     cp config.h "${rules_boost_dir}/config.lzma-windows.h"
