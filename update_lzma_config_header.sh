@@ -56,13 +56,11 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     ./configure --host=$MACHTYPE
     cp config.h ${rules_boost_dir}/config.lzma-ios-arm64.h"
 
-    rm config.h
     CC="clang -arch armv7 \
     -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
     ./configure --host=$MACHTYPE
     cp config.h ${rules_boost_dir}/config.lzma-ios-armv7.h"
 
-    rm config.h
     CC="clang -arch i386 \
     -isysroot $(xcrun --sdk iphonesimulator --show-sdk-path) \
     ./configure --host=$MACHTYPE
