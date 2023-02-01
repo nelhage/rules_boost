@@ -45,8 +45,11 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     ./configure
     cp config.h "${rules_boost_dir}/config.lzma-linux.h"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    CC="clang" ./configure
-    cp config.h "${rules_boost_dir}/config.lzma-osx-${HOSTTYPE}.h"
+    CC="clang -arch x86_64" ./configure --host=$MACHTYPE
+    cp config.h "${rules_boost_dir}/config.lzma-osx-x86_64.h"
+
+    CC="clang -arch arm64" ./configure --host=$MACHTYPE
+    cp config.h "${rules_boost_dir}/config.lzma-osx-arm64.h"
 
     CC="clang -arch arm64 \
     -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
