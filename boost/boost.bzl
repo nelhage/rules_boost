@@ -184,10 +184,10 @@ def boost_deps():
         http_archive,
         name = "org_lzma_lzma",
         build_file = "@com_github_nelhage_rules_boost//:BUILD.lzma",
-        sha256 = "06327c2ddc81e126a6d9a78b0be5014b976a2c0832f492dcfc4755d7facf6d33",
-        strip_prefix = "xz-5.2.7",
+        sha256 = "e4b0f81582efa155ccf27bb88275254a429d44968e488fc94b806f2a61cd3e22",
+        strip_prefix = "xz-5.4.1",
         urls = [
-            "https://%s.dl.sourceforge.net/project/lzmautils/xz-5.2.7.tar.gz" % m
+            "https://%s.dl.sourceforge.net/project/lzmautils/xz-5.4.1.tar.gz" % m
             for m in SOURCEFORGE_MIRRORS
         ],
     )
