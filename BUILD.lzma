@@ -55,7 +55,11 @@ cc_library(
         "src/liblzma/api/config.h", # Generated, so missed by glob.
         "src/common/tuklib_cpucores.c",
         "src/common/tuklib_physmem.c",
-    ] + glob(["src/**/*.h", "src/liblzma/**/*.c"], exclude = ["src/liblzma/check/crc*_small.c", "src/liblzma/**/*_tablegen.c"]),
+    ] + select({
+        "@platforms//cpu:x86_32" : glob(["src/liblzma/check/crc*_x86.S"]),
+        "@platforms//cpu:x86_64" : glob(["src/liblzma/check/crc*_x86.S"]),
+        "//conditions:default": glob(["src/liblzma/check/crc*_fast.c"]),
+    }) + glob(["src/**/*.h", "src/liblzma/**/*.c"], exclude = ["src/liblzma/check/crc*_small.c", "src/liblzma/check/crc*_fast.c", "src/liblzma/**/*_tablegen.c"]),
     hdrs = glob(["src/liblzma/api/**/*.h"]),
     copts = select({
         "@platforms//os:windows": [],
