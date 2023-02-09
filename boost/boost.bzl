@@ -152,9 +152,9 @@ def boost_deps():
     maybe(
         http_archive,
         name = "bazel_skylib",
-        url = "https://github.com/bazelbuild/bazel-skylib/archive/1.4.0.tar.gz",
-        sha256 = "4dd05f44200db3b78f72f56ebd8b102d5bcdc17c0299955d4eb20c38c6f07cd7",
-        strip_prefix = "bazel-skylib-1.4.0",
+        url = "https://github.com/bazelbuild/bazel-skylib/archive/1.4.1.tar.gz",
+        sha256 = "060426b186670beede4104095324a72bd7494d8b4e785bf0d84a612978285908",
+        strip_prefix = "bazel-skylib-1.4.1",
     )
 
     maybe(
