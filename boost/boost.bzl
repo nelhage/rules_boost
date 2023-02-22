@@ -175,10 +175,10 @@ def boost_deps():
         urls = [
             "https://mirror.bazel.build/sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
             "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
-        ]
+        ],
     )
 
-    SOURCEFORGE_MIRRORS = ["cfhcable", "superb-sea2", "cytranet", "iweb", "gigenet", "ayera", "astuteinternet", "pilotfiber", "svwh"]
+    SOURCEFORGE_MIRRORS = ["altushost-swe", "cfhcable", "cytranet", "deac-ams", "deac-fra", "deac-riga", "excellmedia", "freefr", "gigenet", "ixpeering", "jaist", "kumisystems", "liquidtelecom", "nav", "nchc", "netcologne", "netix", "newcontinuum", "onboardcloud", "pilotfiber", "razaoinfo", "sinalbr", "sonik", "udomain", "ufpr", "versaweb", "yer"]
 
     maybe(
         http_archive,
