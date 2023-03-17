@@ -160,7 +160,7 @@ def boost_deps():
     maybe(
         http_archive,
         name = "net_zlib_zlib",
-        build_file = "@com_github_nelhage_rules_boost//:BUILD.zlib",
+        build_file = "@com_github_nelhage_rules_boost//:zlib.BUILD",
         url = "https://github.com/madler/zlib/archive/v1.2.13.tar.gz",
         sha256 = "1525952a0a567581792613a9723333d7f8cc20b87a81f920fb8bc7e3f2251428",
         strip_prefix = "zlib-1.2.13",
@@ -169,7 +169,7 @@ def boost_deps():
     maybe(
         http_archive,
         name = "org_bzip_bzip2",
-        build_file = "@com_github_nelhage_rules_boost//:BUILD.bzip2",
+        build_file = "@com_github_nelhage_rules_boost//:bzip2.BUILD",
         sha256 = "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
         strip_prefix = "bzip2-1.0.8",
         urls = [
@@ -183,7 +183,7 @@ def boost_deps():
     maybe(
         http_archive,
         name = "org_lzma_lzma",
-        build_file = "@com_github_nelhage_rules_boost//:BUILD.lzma",
+        build_file = "@com_github_nelhage_rules_boost//:lzma.BUILD",
         sha256 = "e4b0f81582efa155ccf27bb88275254a429d44968e488fc94b806f2a61cd3e22",
         strip_prefix = "xz-5.4.1",
         urls = [
@@ -195,7 +195,7 @@ def boost_deps():
     maybe(
         http_archive,
         name = "com_github_facebook_zstd",
-        build_file = "@com_github_nelhage_rules_boost//:BUILD.zstd",
+        build_file = "@com_github_nelhage_rules_boost//:zstd.BUILD",
         url = "https://github.com/facebook/zstd/archive/v1.5.4/zstd-1.5.4.tar.gz",
         sha256 = "35ad983197f8f8eb0c963877bf8be50490a0b3df54b4edeb8399ba8a8b2f60a4",
         strip_prefix = "zstd-1.5.4",
@@ -204,7 +204,7 @@ def boost_deps():
     maybe(
         http_archive,
         name = "boost",
-        build_file = "@com_github_nelhage_rules_boost//:BUILD.boost",
+        build_file = "@com_github_nelhage_rules_boost//:boost.BUILD",
         patch_cmds = ["rm -f doc/pdf/BUILD"],
         patch_cmds_win = ["Remove-Item -Force doc/pdf/BUILD"],
         sha256 = "205666dea9f6a7cfed87c7a6dfbeb52a2c1b9de55712c9c1a87735d7181452b6",
