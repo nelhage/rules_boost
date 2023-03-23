@@ -219,7 +219,7 @@ def boost_deps():
     maybe(
         http_archive,
         name = "openssl",
-        url = "https://github.com/hedronvision/boringssl/archive/9aa711de429aa22980c884f8a9d8a4044658c225.tar.gz",
-        sha256 = "f9c134330d7de61221f7b11024af9c90c53205753d791d51dd76abf37cad285e",
-        strip_prefix = "boringssl-9aa711de429aa22980c884f8a9d8a4044658c225",
+        url = "https://github.com/hedronvision/boringssl/archive/5e61590f4be23d05284eaa6d2084292065383457.tar.gz",
+        sha256 = "3e5d4d5cdb7cfaece7d24f5901305518fd0fe6d7a3ce47f3d5015ee8b806fdc9",
+        strip_prefix = "boringssl-5e61590f4be23d05284eaa6d2084292065383457",
     )
