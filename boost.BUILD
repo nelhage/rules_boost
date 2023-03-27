@@ -10,6 +10,8 @@ _w_no_deprecated = selects.with_or({
     "//conditions:default": [],
 })
 
+_repo_dir = repository_name().removeprefix("@")
+
 # Hopefully, the need for these OSxCPU config_setting()s will be obviated by a fix to https://github.com/bazelbuild/platforms/issues/36
 
 config_setting(
@@ -328,7 +330,7 @@ cc_library(
     copts = [
         "-msse2",
         "-msse4.1",
-        "-Iexternal/boost/libs/atomic/src",
+        "-Iexternal/%s/libs/atomic/src" % _repo_dir,
     ],
     linkstatic = select({
         ":windows_x86_64": True,
@@ -347,7 +349,7 @@ boost_library(
     hdrs = [
         "boost/memory_order.hpp",
     ],
-    copts = ["-Iexternal/boost/libs/atomic/src"],
+    copts = ["-Iexternal/%s/libs/atomic/src" % _repo_dir],
     exclude_src = ["libs/atomic/src/wait_on_address.cpp"] + BOOST_ATOMIC_SSE_SRCS,
     deps = BOOST_ATOMIC_DEPS + select({
         "@platforms//cpu:x86_64": [":atomic_sse"],
@@ -2520,7 +2522,7 @@ boost_library(
         "libs/log/src/setup/*.cpp",
     ]) + ["boost/locale/utf.hpp"],
     copts = BOOST_LOG_CFLAGS + [
-        "-Iexternal/boost/libs/log/src/",
+        "-Iexternal/%s/libs/log/src/" % _repo_dir,
     ],
     exclude_src = [
         "libs/log/src/dump_avx2.cpp",
