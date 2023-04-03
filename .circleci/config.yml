@@ -5,14 +5,13 @@ jobs:
       - image: ubuntu:23.04
 
     steps:
+      - run: apt-get update && apt-get -y install openssh-client git pkg-config zip g++ zlib1g-dev unzip curl ocl-icd-opencl-dev opencl-headers
+      - run: cd /tmp/ &&
+          curl -LO https://github.com/bazelbuild/bazel/releases/download/6.1.1/bazel-6.1.1-installer-linux-x86_64.sh &&
+          bash /tmp/bazel-6.1.1-installer-linux-x86_64.sh
       - checkout
       - restore_cache:
           keys:
             - bazel-cache
-
-      - run: apt-get update && apt-get -y install pkg-config zip g++ zlib1g-dev unzip curl ocl-icd-opencl-dev opencl-headers
-      - run: cd /tmp/ &&
-          curl -LO https://github.com/bazelbuild/bazel/releases/download/5.2.0/bazel-5.2.0-installer-linux-x86_64.sh &&
-          bash /tmp/bazel-5.2.0-installer-linux-x86_64.sh
       - run: cd test && cat .bazelrc.ci >> .bazelrc
       - run: cd test && bazel test --test_output=errors //...
