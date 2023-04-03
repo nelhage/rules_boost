@@ -9,14 +9,15 @@
 // (3) Learn about what's going on here and what Renovate can do. Read on :)
 
 {
-  "packageRules": [{ // If you want a package to update on autopilot and have reasonably high confidence that updates won't break things, whitelist it here avoid having automated PRs to review.
+  "packageRules": [{ // If you want a package to update on autopilot and have reasonably high confidence that CI-passing updates won't break things, whitelist it here avoid having automated PRs to review.
     "automerge": true, // Just automatically propose and merge in dependency upgrades to the latest.
     "matchPackageNames" : [ // Add Bazel name= parameter here. <TAG0>.
       "bazel_skylib",
       "com_github_facebook_zstd",
       "net_zlib_zlib",
       "openssl",
-      "ubuntu", // circleci
+      "org_lzma_lzma",
+      "ubuntu", // circleci, not Bazel.
     ],
   }],
 
