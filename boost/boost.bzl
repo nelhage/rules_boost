@@ -184,9 +184,9 @@ def boost_deps():
         http_archive,
         name = "org_lzma_lzma",
         build_file = "@com_github_nelhage_rules_boost//:lzma.BUILD",
-        url = "https://github.com/tukaani-project/xz/archive/v5.4.1.tar.gz",
-        sha256 = "65909aecb4a82556b19cead60ea6b10ae93332162ad2406f9639c10ac62d2ad1",
-        strip_prefix = "xz-5.4.1",
+        url = "https://github.com/tukaani-project/xz/archive/v5.4.2.tar.gz",
+        sha256 = "c9d9a9c1b456decd9e331af63eb8d0f23d4c7e0cada309ff12df605afd6f5e13",
+        strip_prefix = "xz-5.4.2",
     )
 
     maybe(
