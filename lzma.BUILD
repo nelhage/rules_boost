@@ -61,6 +61,7 @@ cc_library(
         "@platforms//os:windows": [],
         "//conditions:default": ["-std=c99"],
     }) + [
+        # Replace with local_includes if it's ever added https://github.com/bazelbuild/bazel/issues/16472
         "-I external/org_lzma_lzma/src/common",
         "-I external/org_lzma_lzma/src/liblzma",
         "-I external/org_lzma_lzma/src/liblzma/api",
