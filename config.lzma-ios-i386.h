@@ -52,6 +52,9 @@
 /* Define to 1 if you have the `clock_gettime' function. */
 #define HAVE_CLOCK_GETTIME 1
 
+/* Define to 1 if `CLOCK_MONOTONIC' is declared in <time.h>. */
+#define HAVE_CLOCK_MONOTONIC 1
+
 /* Define to 1 if you have the <CommonCrypto/CommonDigest.h> header file. */
 /* #undef HAVE_COMMONCRYPTO_COMMONDIGEST_H */
 
@@ -61,14 +64,6 @@
 /* Define if the GNU dcgettext() function is already present or preinstalled.
    */
 /* #undef HAVE_DCGETTEXT */
-
-/* Define to 1 if you have the declaration of `CLOCK_MONOTONIC', and to 0 if
-   you don't. */
-#define HAVE_DECL_CLOCK_MONOTONIC 1
-
-/* Define to 1 if you have the declaration of `program_invocation_name', and
-   to 0 if you don't. */
-#define HAVE_DECL_PROGRAM_INVOCATION_NAME 0
 
 /* Define to 1 if any of HAVE_DECODER_foo have been defined. */
 #define HAVE_DECODERS 1
@@ -209,6 +204,9 @@
 /* Define to 1 if you have the `posix_fadvise' function. */
 /* #undef HAVE_POSIX_FADVISE */
 
+/* Define to 1 if `program_invocation_name' is declared in <errno.h>. */
+/* #undef HAVE_PROGRAM_INVOCATION_NAME */
+
 /* Define to 1 if you have the `pthread_condattr_setclock' function. */
 /* #undef HAVE_PTHREAD_CONDATTR_SETCLOCK */
 
@@ -303,8 +301,8 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #define HAVE_UNISTD_H 1
 
-/* Define to 1 if _mm_clmulepi64_si128 is usable. See configure.ac for
-   details. */
+/* Define to 1 if _mm_set_epi64x and _mm_clmulepi64_si128 are usable. See
+   configure.ac for details. */
 #define HAVE_USABLE_CLMUL 1
 
 /* Define to 1 if you have the `utime' function. */
@@ -367,7 +365,7 @@
 #define PACKAGE_NAME "XZ Utils"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "XZ Utils 5.4.0"
+#define PACKAGE_STRING "XZ Utils 5.4.2"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "xz"
@@ -376,7 +374,7 @@
 #define PACKAGE_URL "https://tukaani.org/xz/"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "5.4.0"
+#define PACKAGE_VERSION "5.4.2"
 
 /* Define to necessary symbol if this constant uses a non-standard name on
    your system. */
@@ -412,7 +410,7 @@
 
 /* Define to 1 if the system supports fast unaligned access to 16-bit, 32-bit,
    and 64-bit integers. */
-#define TUKLIB_FAST_UNALIGNED_ACCESS 1
+/* #undef TUKLIB_FAST_UNALIGNED_ACCESS */
 
 /* Define to 1 if the amount of physical memory can be detected with
    _system_configuration.physmem. */
@@ -536,7 +534,7 @@
 
 
 /* Version number of package */
-#define VERSION "5.4.0"
+#define VERSION "5.4.2"
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
