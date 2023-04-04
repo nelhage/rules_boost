@@ -30,11 +30,11 @@ tmpdir=$(mktemp -d)
 trap "rm -rf $tmpdir" EXIT 
 
 # Version number of xz
-xz_version_number="5.4.0"
+xz_version_number="5.4.2"
 
 # Download, and untar xz
 cd "$tmpdir"
-curl -sL 'https://cfhcable.dl.sourceforge.net/project/lzmautils/xz-'$xz_version_number'.tar.gz' --output 'xz-'$xz_version_number'.tar.gz'
+curl -sL 'https://github.com/tukaani-project/xz/releases/download/v'$xz_version_number'/xz-'$xz_version_number'.tar.gz' --output 'xz-'$xz_version_number'.tar.gz'
 tar -xf 'xz-'$xz_version_number'.tar.gz'
 
 # Switch to xz directory
