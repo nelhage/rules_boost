@@ -193,9 +193,9 @@ def boost_deps():
         http_archive,
         name = "com_github_facebook_zstd",
         build_file = "@com_github_nelhage_rules_boost//:zstd.BUILD",
-        url = "https://github.com/facebook/zstd/archive/v1.5.4/zstd-1.5.4.tar.gz",
-        sha256 = "35ad983197f8f8eb0c963877bf8be50490a0b3df54b4edeb8399ba8a8b2f60a4",
-        strip_prefix = "zstd-1.5.4",
+        url = "https://github.com/facebook/zstd/archive/v1.5.5/zstd-1.5.5.tar.gz",
+        sha256 = "98e9c3d949d1b924e28e01eccb7deed865eefebf25c2f21c702e5cd5b63b85e1",
+        strip_prefix = "zstd-1.5.5",
     )
 
     maybe(
