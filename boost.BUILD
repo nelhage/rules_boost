@@ -1766,6 +1766,7 @@ boost_library(
     deps = [
         ":assert",
         ":config",
+        ":core",
         ":cstdint",
         ":detail",
         ":exception",
