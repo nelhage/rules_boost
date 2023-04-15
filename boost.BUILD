@@ -654,11 +654,11 @@ boost_library(
     ],
     copts = _w_no_deprecated,
     deps = [
-        ":assert",
         ":config",
         ":core",
         ":intrusive",
         ":move",
+        ":static_assert",
     ],
 )
 
@@ -1766,6 +1766,7 @@ boost_library(
     deps = [
         ":assert",
         ":config",
+        ":core",
         ":cstdint",
         ":detail",
         ":exception",
@@ -1789,9 +1790,9 @@ boost_library(
         ":config",
         ":core",
         ":integer",
-        ":tribool",
         ":mp11",
-    ]
+        ":tribool",
+    ],
 )
 
 boost_library(

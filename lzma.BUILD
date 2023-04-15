@@ -52,10 +52,19 @@ alias(
 cc_library(
     name = "lzma",
     srcs = [
-        "src/liblzma/api/config.h", # Generated, so missed by glob.
         "src/common/tuklib_cpucores.c",
         "src/common/tuklib_physmem.c",
-    ] + glob(["src/**/*.h", "src/liblzma/**/*.c"], exclude = ["src/liblzma/check/crc*_small.c", "src/liblzma/**/*_tablegen.c"]),
+        "src/liblzma/api/config.h",  # Generated, so missed by glob.
+    ] + glob(
+        [
+            "src/**/*.h",
+            "src/liblzma/**/*.c",
+        ],
+        exclude = [
+            "src/liblzma/check/crc*_small.c",
+            "src/liblzma/**/*_tablegen.c",
+        ],
+    ),
     hdrs = glob(["src/liblzma/api/**/*.h"]),
     copts = select({
         "@platforms//os:windows": [],
