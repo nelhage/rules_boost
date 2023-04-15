@@ -175,7 +175,7 @@ def boost_deps():
         urls = [
             "https://mirror.bazel.build/sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
             "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
-        ]
+        ],
     )
 
     maybe(

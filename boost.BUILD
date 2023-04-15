@@ -1789,9 +1789,9 @@ boost_library(
         ":config",
         ":core",
         ":integer",
-        ":tribool",
         ":mp11",
-    ]
+        ":tribool",
+    ],
 )
 
 boost_library(
