@@ -1,3 +1,7 @@
+# So all errors are reported, saving round trips on code review & CI
+# Optimizes for programmer time at the cost of some CPU
+build --keep_going
+
 # Use C++17.
 # C++14 is required for many tests and boringssl.
 # Some Boost libraries will soon require C++17.
