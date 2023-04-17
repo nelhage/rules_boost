@@ -18,6 +18,12 @@ tasks:
     - "//..."
     test_targets:
     - "//..."
+  macos_arm64:
+    working_directory: test
+    build_targets:
+    - "//..."
+    test_targets:
+    - "//..."
   windows:
     working_directory: test
     environment:
