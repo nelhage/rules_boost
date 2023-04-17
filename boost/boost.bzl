@@ -152,17 +152,16 @@ def boost_deps():
     maybe(
         http_archive,
         name = "bazel_skylib",
-        url = "https://github.com/bazelbuild/bazel-skylib/archive/1.4.1.tar.gz",
-        sha256 = "060426b186670beede4104095324a72bd7494d8b4e785bf0d84a612978285908",
-        strip_prefix = "bazel-skylib-1.4.1",
+        url = "https://github.com/bazelbuild/bazel-skylib/releases/download/1.4.1/bazel-skylib-1.4.1.tar.gz",
+        sha256 = "b8a1527901774180afc798aeb28c4634bdccf19c4d98e7bdd1ce79d1fe9aaad7",
     )
 
     maybe(
         http_archive,
         name = "net_zlib_zlib",
         build_file = "@com_github_nelhage_rules_boost//:zlib.BUILD",
-        url = "https://github.com/madler/zlib/archive/v1.2.13.tar.gz",
-        sha256 = "1525952a0a567581792613a9723333d7f8cc20b87a81f920fb8bc7e3f2251428",
+        url = "https://github.com/madler/zlib/releases/download/v1.2.13/zlib-1.2.13.tar.gz",
+        sha256 = "b3a24de97a8fdbc835b9833169501030b8977031bcb54b3b3ac13740f846ab30",
         strip_prefix = "zlib-1.2.13",
     )
 
@@ -191,8 +190,8 @@ def boost_deps():
         http_archive,
         name = "com_github_facebook_zstd",
         build_file = "@com_github_nelhage_rules_boost//:zstd.BUILD",
-        url = "https://github.com/facebook/zstd/archive/v1.5.5/zstd-1.5.5.tar.gz",
-        sha256 = "98e9c3d949d1b924e28e01eccb7deed865eefebf25c2f21c702e5cd5b63b85e1",
+        url = "https://github.com/facebook/zstd/releases/download/v1.5.5/zstd-1.5.5.tar.gz",
+        sha256 = "9c4396cc829cfae319a6e2615202e82aad41372073482fce286fac78646d3ee4",
         strip_prefix = "zstd-1.5.5",
     )
 
@@ -205,6 +204,7 @@ def boost_deps():
         sha256 = "66a469b6e608a51f8347236f4912e27dc5c60c60d7d53ae9bfe4683316c6f04c",
         strip_prefix = "boost_1_82_0",
         urls = [
+            "https://mirror.bazel.build/boostorg.jfrog.io/artifactory/main/release/1.82.0/source/boost_1_82_0.tar.gz",
             "https://boostorg.jfrog.io/artifactory/main/release/1.82.0/source/boost_1_82_0.tar.gz",
         ],
     )
