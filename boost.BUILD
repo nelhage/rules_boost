@@ -1095,13 +1095,10 @@ boost_library(
     ],
 )
 
-boost_library(
+alias (
     name = "intrusive_ptr",
-    deps = [
-        ":assert",
-        ":detail",
-        ":smart_ptr",
-    ],
+    actual = ":smart_ptr",
+    visibility = ["//visibility:public"],
 )
 
 boost_library(
@@ -2479,6 +2476,7 @@ boost_library(
         ":concept_check",
         ":config",
         ":conversion",
+        ":core",
         ":foreach",
         ":function",
         ":functional",
