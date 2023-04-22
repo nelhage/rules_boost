@@ -2300,10 +2300,10 @@ boost_library(
     exclude_hdr = glob([
         "libs/test/include/boost/test/included/*.hpp",
     ]),
-    exclude_src = glob([
+    exclude_src = [
         "libs/test/src/test_main.cpp",
         "libs/test/src/cpp_main.cpp",
-    ]),
+    ],
     linkstatic = True,
     deps = _BOOST_TEST_DEPS,
 )
@@ -2317,10 +2317,10 @@ boost_so_library(
     exclude_hdr = glob([
         "libs/test/include/boost/test/included/*.hpp",
     ]),
-    exclude_src = glob([
+    exclude_src = [
         "libs/test/src/test_main.cpp",
         "libs/test/src/cpp_main.cpp",
-    ]),
+    ],
     deps = _BOOST_TEST_DEPS,
 )
 
