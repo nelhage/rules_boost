@@ -325,12 +325,13 @@ cc_library(
     name = "atomic_sse",
     srcs = BOOST_ATOMIC_SSE_SRCS + glob([
         "libs/atomic/src/*.hpp",
-        "boost/atomic/detail/*.hpp",
+        "libs/atomic/include/boost/atomic/detail/*.hpp",
     ]),
     copts = [
         "-msse2",
         "-msse4.1",
         "-Iexternal/%s/libs/atomic/src" % _repo_dir,
+        "-Iexternal/%s/libs/atomic/include" % _repo_dir,
     ],
     linkstatic = select({
         ":windows_x86_64": True,
@@ -346,9 +347,6 @@ boost_library(
         ":windows_x86_64": ["libs/atomic/src/wait_on_address.cpp"],
         "//conditions:default": [],
     }),
-    hdrs = [
-        "boost/memory_order.hpp",
-    ],
     copts = ["-Iexternal/%s/libs/atomic/src" % _repo_dir],
     exclude_src = ["libs/atomic/src/wait_on_address.cpp"] + BOOST_ATOMIC_SSE_SRCS,
     deps = BOOST_ATOMIC_DEPS + select({
@@ -412,7 +410,6 @@ config_setting(
 boost_library(
     name = "asio",
     srcs = [
-        "boost/asio/impl/src.hpp",
         "@com_github_nelhage_rules_boost//src:build_asio.cpp",
     ],
     defines = [
@@ -542,8 +539,6 @@ boost_library(
 
 boost_library(
     name = "callable_traits",
-    deps = [
-    ],
 )
 
 boost_library(
@@ -644,14 +639,15 @@ boost_library(
     name = "concept",
 )
 
+BOOST_CONTAINER_INCLUDES_WITH_SRC_EXTENSION = [
+    "libs/container/src/dlmalloc_ext_2_8_6.c",
+    "libs/container/src/dlmalloc_2_8_6.c",
+]
+
 boost_library(
     name = "container",
-    srcs = [
-        "libs/container/src/dlmalloc_ext_2_8_6.c",
-    ],
-    hdrs = [
-        "libs/container/src/dlmalloc_2_8_6.c",
-    ],
+    hdrs = BOOST_CONTAINER_INCLUDES_WITH_SRC_EXTENSION,
+    exclude_src = BOOST_CONTAINER_INCLUDES_WITH_SRC_EXTENSION,
     copts = _w_no_deprecated,
     deps = [
         ":config",
@@ -679,12 +675,9 @@ boost_library(
 boost_library(
     name = "conversion",
     hdrs = [
-        "boost/cast.hpp",
-        "boost/implicit_cast.hpp",
-        "boost/lexical_cast.hpp",
-        "boost/lexical_cast/bad_lexical_cast.hpp",
-        "boost/polymorphic_cast.hpp",
-        "boost/polymorphic_pointer_cast.hpp",
+        "libs/numeric/conversion/include/boost/cast.hpp",
+        "libs/lexical_cast/include/boost/lexical_cast.hpp",
+        "libs/lexical_cast/include/boost/lexical_cast/bad_lexical_cast.hpp",
     ],
     deps = [
         ":assert",
@@ -696,10 +689,6 @@ boost_library(
 
 boost_library(
     name = "core",
-    hdrs = [
-        "boost/checked_delete.hpp",
-        "boost/type.hpp",
-    ],
     deps = [
         ":config",
     ],
@@ -735,10 +724,6 @@ boost_library(
 
 boost_library(
     name = "coroutine2",
-    hdrs = glob([
-        "libs/coroutine2/include/**/*.hpp",
-        "libs/coroutine2/include/**/*.ipp",
-    ]),
     deps = [
         ":assert",
         ":config",
@@ -786,11 +771,6 @@ boost_library(
 
 boost_library(
     name = "detail",
-    hdrs = [
-        "boost/blank.hpp",
-        "boost/blank_fwd.hpp",
-        "boost/cstdlib.hpp",
-    ],
     deps = [
         ":limits",
         ":winapi",
@@ -843,9 +823,6 @@ boost_library(
 
 boost_library(
     name = "exception",
-    hdrs = [
-        "boost/exception_ptr.hpp",
-    ],
     deps = [
         ":assert",
         ":config",
@@ -944,9 +921,6 @@ boost_library(
 
 boost_library(
     name = "function",
-    hdrs = [
-        "boost/function_equal.hpp",
-    ],
     deps = [
         ":bind",
         ":integer",
@@ -1067,9 +1041,6 @@ boost_library(
 
 boost_library(
     name = "integer",
-    hdrs = [
-        "boost/integer_traits.hpp",
-    ],
     deps = [
         ":cstdint",
         ":static_assert",
@@ -1106,15 +1077,6 @@ boost_library(
 
 boost_library(
     name = "iterator",
-    hdrs = [
-        "boost/function_output_iterator.hpp",
-        "boost/generator_iterator.hpp",
-        "boost/indirect_reference.hpp",
-        "boost/iterator_adaptors.hpp",
-        "boost/next_prior.hpp",
-        "boost/pointee.hpp",
-        "boost/shared_container_iterator.hpp",
-    ],
     deps = [
         ":detail",
         ":static_assert",
@@ -1133,13 +1095,10 @@ boost_library(
     ],
 )
 
-boost_library(
+alias (
     name = "intrusive_ptr",
-    deps = [
-        ":assert",
-        ":detail",
-        ":smart_ptr",
-    ],
+    actual = ":smart_ptr",
+    visibility = ["//visibility:public"],
 )
 
 boost_library(
@@ -1306,7 +1265,6 @@ boost_library(
 boost_library(
     name = "math",
     hdrs = [
-        "boost/cstdfloat.hpp",
         # See https://github.com/boostorg/math/blob/boost-1.56.0/doc/overview/roadmap.qbk#L11-L14
         "libs/math/include_private/boost/math/tools/remez.hpp",
         "libs/math/include_private/boost/math/constants/generate.hpp",
@@ -1377,8 +1335,6 @@ boost_library(
 
 boost_library(
     name = "hana",
-    deps = [
-    ],
 )
 
 boost_library(
@@ -1400,10 +1356,6 @@ boost_library(
 
 boost_library(
     name = "multi_index",
-    hdrs = [
-        "boost/multi_index_container.hpp",
-        "boost/multi_index_container_fwd.hpp",
-    ],
     deps = [
         ":foreach",
         ":serialization",
@@ -1447,15 +1399,13 @@ boost_library(
 boost_library(
     name = "none",
     hdrs = [
-        "boost/none_t.hpp",
+        "libs/optional/include/boost/none_t.hpp",
     ],
 )
 
 boost_library(
     name = "numeric_conversion",
-    hdrs = glob([
-        "boost/numeric/conversion/**/*.hpp",
-    ]),
+    boost_name = "numeric/conversion",
     deps = [
         ":config",
         ":detail",
@@ -1470,9 +1420,7 @@ boost_library(
 
 boost_library(
     name = "numeric_ublas",
-    hdrs = glob([
-        "boost/numeric/ublas/**/*.hpp",
-    ]),
+    boost_name = "numeric/ublas",
     deps = [
         ":concept_check",
         ":config",
@@ -1494,11 +1442,7 @@ boost_library(
 
 boost_library(
     name = "numeric_odeint",
-    hdrs = glob([
-        "boost/numeric/odeint/**/*.hpp",
-    ]) + [
-        "boost/numeric/odeint.hpp",
-    ],
+    boost_name = "numeric/odeint",
     linkopts = select({
         "@platforms//os:android": ["-lm"],
         "//conditions:default": [],
@@ -1759,9 +1703,6 @@ boost_library(
 
 boost_library(
     name = "regex",
-    hdrs = [
-        "boost/cregex.hpp",
-    ],
     copts = _w_no_deprecated,
     deps = [
         ":assert",
@@ -1896,15 +1837,6 @@ boost_library(
 
 boost_library(
     name = "smart_ptr",
-    hdrs = [
-        "boost/enable_shared_from_this.hpp",
-        "boost/intrusive_ptr.hpp",
-        "boost/make_shared.hpp",
-        "boost/make_unique.hpp",
-        "boost/pointer_cast.hpp",
-        "boost/pointer_to_other.hpp",
-        "boost/weak_ptr.hpp",
-    ],
     deps = [
         ":align",
         ":core",
@@ -2001,14 +1933,13 @@ boost_library(
 boost_library(
     name = "static_assert",
     hdrs = [
-        "boost/detail/workaround.hpp",
+        "libs/config/include/boost/config/workaround.hpp",
     ],
 )
 
 boost_library(
     name = "static_string",
     deps = [
-        ":assert",
         ":container_hash",
         ":static_assert",
         ":throw_exception",
@@ -2048,7 +1979,6 @@ boost_library(
 
 boost_library(
     name = "throw_exception",
-    hdrs = ["boost/exception/exception.hpp"],
     deps = [
         ":assert",
         ":config",
@@ -2128,10 +2058,6 @@ boost_library(
 
 boost_library(
     name = "tokenizer",
-    hdrs = [
-        "boost/token_functions.hpp",
-        "boost/token_iterator.hpp",
-    ],
     deps = [
         ":assert",
         ":config",
@@ -2144,9 +2070,9 @@ boost_library(
 
 boost_library(
     name = "tribool",
-    hdrs = [
-        "boost/logic/tribool.hpp",
-        "boost/logic/tribool_fwd.hpp",
+    boost_name = "logic",
+    exclude_hdr = [
+        "libs/logic/include/boost/logic/tribool_io.hpp",
     ],
     deps = [
         ":config",
@@ -2184,9 +2110,6 @@ boost_library(
 
 boost_library(
     name = "type_traits",
-    hdrs = [
-        "boost/aligned_storage.hpp",
-    ],
     deps = [
         ":config",
         ":core",
@@ -2216,13 +2139,6 @@ boost_library(
 
 boost_library(
     name = "unordered",
-    srcs = glob([
-        "boost/unordered_map/**/*.hpp",
-    ]),
-    hdrs = [
-        "boost/unordered_map.hpp",
-        "boost/unordered_set.hpp",
-    ],
     deps = [
         ":assert",
         ":config",
@@ -2245,9 +2161,6 @@ boost_library(
 
 boost_library(
     name = "utility",
-    hdrs = [
-        "boost/compressed_pair.hpp",
-    ],
     deps = [
         ":config",
         ":container_hash",
@@ -2336,13 +2249,7 @@ boost_library(
 
 boost_library(
     name = "numeric_interval",
-    hdrs = glob([
-        "boost/numeric/interval/**/*.hpp",
-    ]) + [
-        "boost/numeric/interval.hpp",
-    ],
-    deps = [
-    ],
+    boost_name = "numeric/interval",
 )
 
 _BOOST_TEST_DEPS = [
@@ -2391,7 +2298,7 @@ boost_library(
     name = "test.a",
     boost_name = "test",
     exclude_hdr = glob([
-        "boost/test/included/*.hpp",
+        "libs/test/include/boost/test/included/*.hpp",
     ]),
     exclude_src = glob([
         "libs/test/src/test_main.cpp",
@@ -2408,7 +2315,7 @@ boost_so_library(
     boost_name = "test",
     defines = ["BOOST_TEST_DYN_LINK"],
     exclude_hdr = glob([
-        "boost/test/included/*.hpp",
+        "libs/test/include/boost/test/included/*.hpp",
     ]),
     exclude_src = glob([
         "libs/test/src/test_main.cpp",
@@ -2506,11 +2413,8 @@ BOOST_LOG_SSSE3_DEP = select({
 cc_library(
     name = "log_dump_ssse3",
     srcs = ["libs/log/src/dump_ssse3.cpp"] + hdr_list("log"),
-    hdrs = [],
-    copts = ["-msse4.2"],
-    includes = [],
+    copts = ["-msse4.2", "-Iexternal/%s/libs/log/include" % _repo_dir],
     licenses = ["notice"],
-    linkopts = [],
     local_defines = BOOST_LOG_DEFINES,
     visibility = ["//visibility:public"],
     deps = BOOST_LOG_DEPS,
@@ -2521,7 +2425,7 @@ boost_library(
     srcs = glob([
         "libs/log/src/setup/*.hpp",
         "libs/log/src/setup/*.cpp",
-    ]) + ["boost/locale/utf.hpp"],
+    ]) + ["libs/locale/include/boost/locale/utf.hpp"],
     copts = BOOST_LOG_CFLAGS + [
         "-Iexternal/%s/libs/log/src/" % _repo_dir,
     ],
@@ -2564,20 +2468,6 @@ boost_library(
 
 boost_library(
     name = "graph",
-    hdrs = [
-        "boost/pending/container_traits.hpp",
-        "boost/pending/detail/disjoint_sets.hpp",
-        "boost/pending/detail/property.hpp",
-        "boost/pending/disjoint_sets.hpp",
-        "boost/pending/indirect_cmp.hpp",
-        "boost/pending/is_heap.hpp",
-        "boost/pending/mutable_heap.hpp",
-        "boost/pending/mutable_queue.hpp",
-        "boost/pending/property.hpp",
-        "boost/pending/property_serialize.hpp",
-        "boost/pending/queue.hpp",
-        "boost/pending/relaxed_heap.hpp",
-    ],
     deps = [
         ":algorithm",
         ":any",
@@ -2586,6 +2476,7 @@ boost_library(
         ":concept_check",
         ":config",
         ":conversion",
+        ":core",
         ":foreach",
         ":function",
         ":functional",
@@ -2637,9 +2528,6 @@ boost_library(
 
 boost_library(
     name = "contract",
-    hdrs = [
-        "boost/contract_macro.hpp",
-    ],
     deps = [
         ":any",
         ":assert",

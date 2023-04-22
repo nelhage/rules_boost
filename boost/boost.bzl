@@ -1,22 +1,6 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
-hdrs_patterns = [
-    "boost/%s.h",
-    "boost/%s_fwd.h",
-    "boost/%s.hpp",
-    "boost/%s_fwd.hpp",
-    "boost/%s/**/*.hpp",
-    "boost/%s/**/*.ipp",
-    "boost/%s/**/*.h",
-    "libs/%s/src/*.ipp",
-]
-
-srcs_patterns = [
-    "libs/%s/src/*.cpp",
-    "libs/%s/src/*.hpp",
-]
-
 # Building boost results in many warnings for unused values. Downstream users
 # won't be interested, so just disable the warning.
 default_copts = select({
@@ -31,69 +15,39 @@ default_defines = select({
 
 def srcs_list(library_name, exclude):
     return native.glob(
-        [p % (library_name,) for p in srcs_patterns],
-        exclude = exclude,
+        ["libs/%s/src/*" % library_name],
+        exclude = ["**/*.asm", "**/*.S", "**/*.doc"] + exclude,
         allow_empty = True,
     )
 
 def hdr_list(library_name, exclude = []):
-    return native.glob([p % (library_name,) for p in hdrs_patterns], exclude = exclude, allow_empty = True)
+    return native.glob(["libs/%s/include/boost/**" % library_name], exclude = exclude, allow_empty = True)
 
 def boost_library(
         name,
         boost_name = None,
-        defines = None,
-        local_defines = None,
-        includes = None,
-        hdrs = None,
-        srcs = None,
-        deps = None,
-        copts = None,
-        exclude_src = [],
+        defines = [],
+        includes = [],
+        hdrs = [],
+        srcs = [],
+        copts = [],
         exclude_hdr = [],
-        linkopts = None,
-        linkstatic = None,
-        visibility = ["//visibility:public"]):
+        exclude_src = [],
+        visibility = ["//visibility:public"],
+        **kwargs):
     if boost_name == None:
         boost_name = name
-
-    if defines == None:
-        defines = []
-
-    if local_defines == None:
-        local_defines = []
-
-    if includes == None:
-        includes = []
-
-    if hdrs == None:
-        hdrs = []
-
-    if srcs == None:
-        srcs = []
-
-    if deps == None:
-        deps = []
-
-    if copts == None:
-        copts = []
-
-    if linkopts == None:
-        linkopts = []
 
     return native.cc_library(
         name = name,
         visibility = visibility,
         defines = default_defines + defines,
-        includes = ["."] + includes,
-        local_defines = local_defines,
+        includes = ["libs/%s/include" % boost_name] + includes,
         hdrs = hdr_list(boost_name, exclude_hdr) + hdrs,
         srcs = srcs_list(boost_name, exclude_src) + srcs,
-        deps = deps,
         copts = default_copts + copts,
-        linkopts = linkopts,
-        linkstatic = linkstatic,
         licenses = ["notice"],
+        **kwargs,
     )
 
 # Some boost libraries are not safe to use as dynamic libraries unless a
@@ -107,23 +61,27 @@ def boost_so_library(
         name,
         boost_name = None,
         defines = [],
+        includes = [],
+        hdrs = [],
         srcs = [],
         deps = [],
         copts = [],
+        exclude_hdr = [],
         exclude_src = [],
-        exclude_hdr = []):
+        **kwargs):
     if boost_name == None:
         boost_name = name
 
     native.cc_binary(
         name = "lib_internal_%s" % name,
-        visibility = ["//visibility:private"],
-        srcs = hdr_list(boost_name, exclude_hdr) + srcs_list(boost_name, exclude_src) + srcs,
+        defines = default_defines + defines,
+        includes = ["libs/%s/include" % boost_name] + includes,
+        srcs = hdr_list(boost_name, exclude_hdr) + hdrs + srcs_list(boost_name, exclude_src) + srcs,
         deps = deps,
         copts = default_copts + copts,
-        defines = default_defines + defines,
         linkshared = True,
-        licenses = ["notice"],
+        visibility = ["//visibility:private"],
+        **kwargs,
     )
     native.filegroup(
         name = "%s_dll_interface_file" % name,
@@ -141,11 +99,12 @@ def boost_so_library(
         name = name,
         boost_name = boost_name,
         defines = defines,
+        includes = includes,
+        hdrs = hdrs,
         exclude_hdr = exclude_hdr,
-        exclude_src = native.glob([
-            "libs/%s/**" % boost_name,
-        ]),
+        exclude_src = native.glob(["**"]),
         deps = deps + [":_imported_%s" % name],
+        **kwargs,
     )
 
 def boost_deps():
@@ -201,12 +160,9 @@ def boost_deps():
         build_file = "@com_github_nelhage_rules_boost//:boost.BUILD",
         patch_cmds = ["rm -f doc/pdf/BUILD"],
         patch_cmds_win = ["Remove-Item -Force doc/pdf/BUILD"],
-        sha256 = "66a469b6e608a51f8347236f4912e27dc5c60c60d7d53ae9bfe4683316c6f04c",
-        strip_prefix = "boost_1_82_0",
-        urls = [
-            "https://mirror.bazel.build/boostorg.jfrog.io/artifactory/main/release/1.82.0/source/boost_1_82_0.tar.gz",
-            "https://boostorg.jfrog.io/artifactory/main/release/1.82.0/source/boost_1_82_0.tar.gz",
-        ],
+        url = "https://github.com/boostorg/boost/releases/download/boost-1.82.0/boost-1.82.0.tar.gz",
+        sha256 = "b62bd839ea6c28265af9a1f68393eda37fab3611425d3b28882d8e424535ec9d",
+        strip_prefix = "boost-1.82.0",
     )
 
     # We're pointing at hedronvision's mirror of google/boringssl:master-with-bazel to get Renovate auto-update. Otherwise, Renovate will keep moving us back to master, which doesn't support Bazel. See https://github.com/renovatebot/renovate/issues/18492
