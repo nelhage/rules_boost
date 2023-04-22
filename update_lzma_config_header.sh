@@ -40,7 +40,7 @@ tar -xf 'xz-'$xz_version_number'.tar.gz'
 # Switch to xz directory
 cd 'xz-'$xz_version_number
 
-# config header files depend on the specifc OS
+# config header files depend on the specific OS
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     ./configure
     cp config.h "${rules_boost_dir}/config.lzma-linux.h"
