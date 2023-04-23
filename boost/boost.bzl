@@ -47,7 +47,7 @@ def boost_library(
         srcs = srcs_list(boost_name, exclude_src) + srcs,
         copts = default_copts + copts,
         licenses = ["notice"],
-        **kwargs,
+        **kwargs
     )
 
 # Some boost libraries are not safe to use as dynamic libraries unless a
@@ -81,7 +81,7 @@ def boost_so_library(
         copts = default_copts + copts,
         linkshared = True,
         visibility = ["//visibility:private"],
-        **kwargs,
+        **kwargs
     )
     native.filegroup(
         name = "%s_dll_interface_file" % name,
@@ -104,7 +104,7 @@ def boost_so_library(
         exclude_hdr = exclude_hdr,
         exclude_src = native.glob(["**"]),
         deps = deps + [":_imported_%s" % name],
-        **kwargs,
+        **kwargs
     )
 
 def boost_deps():
