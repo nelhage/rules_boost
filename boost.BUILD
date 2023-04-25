@@ -1264,7 +1264,7 @@ boost_library(
 
 boost_library(
     name = "math",
-    hdrs = [
+    srcs = [
         # See https://github.com/boostorg/math/blob/boost-1.56.0/doc/overview/roadmap.qbk#L11-L14
         "libs/math/include_private/boost/math/tools/remez.hpp",
         "libs/math/include_private/boost/math/constants/generate.hpp",
