@@ -3,7 +3,7 @@
 
 int main()
 {
-    boost::uuids::nil_generator gen;
+    boost::uuids::random_generator gen;
     boost::uuids::uuid u = gen();
     return u.is_nil() ? 0 : 1;
 }   
