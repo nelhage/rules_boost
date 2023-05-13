@@ -15,7 +15,7 @@
       "bazel_skylib",
       "boost",
       "com_github_facebook_zstd",
-      "net_zlib_zlib",
+      "zlib",
       "openssl",
       "org_lzma_lzma",
       "ubuntu", // circleci, not Bazel.
