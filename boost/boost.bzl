@@ -117,7 +117,7 @@ def boost_deps():
 
     maybe(
         http_archive,
-        name = "net_zlib_zlib",
+        name = "zlib",
         build_file = "@com_github_nelhage_rules_boost//:zlib.BUILD",
         url = "https://github.com/madler/zlib/releases/download/v1.2.13/zlib-1.2.13.tar.gz",
         sha256 = "b3a24de97a8fdbc835b9833169501030b8977031bcb54b3b3ac13740f846ab30",
