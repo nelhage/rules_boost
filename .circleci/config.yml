@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: ubuntu:23.04
+      - image: ubuntu:23.10
 
     steps:
       - run: apt-get update && apt-get -y install openssh-client git pkg-config zip g++ zlib1g-dev unzip curl ocl-icd-opencl-dev opencl-headers
