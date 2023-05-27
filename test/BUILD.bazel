@@ -499,9 +499,18 @@ cc_test(
 )
 
 cc_test(
-    name = "uuid_test",
+    name = "uuid_nil_generator_test",
     size = "small",
-    srcs = ["uuid_test.cc"],
+    srcs = ["uuid_nil_generator_test.cc"],
+    deps = [
+        "@boost//:uuid",
+    ],
+)
+
+cc_test(
+    name = "uuid_random_generator_test",
+    size = "small",
+    srcs = ["uuid_random_generator_test.cc"],
     deps = [
         "@boost//:uuid",
     ],
