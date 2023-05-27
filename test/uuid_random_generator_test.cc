@@ -5,5 +5,5 @@ int main()
 {
   boost::uuids::random_generator gen;
   boost::uuids::uuid u = gen();
-  return u.is_nil() ? 0 : 1;
+  return u.size() > 0 ? 0 : 1;
 }   
