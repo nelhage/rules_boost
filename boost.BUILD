@@ -1675,6 +1675,10 @@ boost_library(
 
 boost_library(
     name = "random",
+    linkopts = select({
+        "@platforms//os:windows": ["-defaultlib:bcrypt.lib"],
+        "//conditions:default": [],
+    }),
     deps = [
         ":assert",
         ":config",
