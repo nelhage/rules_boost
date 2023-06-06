@@ -1,7 +1,7 @@
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 load("@bazel_skylib//lib:selects.bzl", "selects")
 load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
-load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "boost_so_library", "hdr_list")
+load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "boost_so_library", "default_copts", "default_defines", "hdr_list")
 
 _repo_dir = repository_name().removeprefix("@")
 
@@ -320,12 +320,13 @@ cc_library(
         "libs/atomic/src/*.hpp",
         "libs/atomic/include/boost/atomic/detail/*.hpp",
     ]),
-    copts = [
+    copts = default_copts + [
         "-msse2",
         "-msse4.1",
         "-Iexternal/%s/libs/atomic/src" % _repo_dir,
         "-Iexternal/%s/libs/atomic/include" % _repo_dir,
     ],
+    defines = default_defines,
     linkstatic = select({
         ":windows_x86_64": True,
         "//conditions:default": False,
@@ -2407,10 +2408,11 @@ BOOST_LOG_SSSE3_DEP = select({
 cc_library(
     name = "log_dump_ssse3",
     srcs = ["libs/log/src/dump_ssse3.cpp"] + hdr_list("log"),
-    copts = [
+    copts = default_copts + [
         "-msse4.2",
         "-Iexternal/%s/libs/log/include" % _repo_dir,
     ],
+    defines = default_defines,
     licenses = ["notice"],
     local_defines = BOOST_LOG_DEFINES,
     visibility = ["//visibility:public"],
