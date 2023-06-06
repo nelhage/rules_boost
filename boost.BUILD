@@ -3,13 +3,6 @@ load("@bazel_skylib//lib:selects.bzl", "selects")
 load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "boost_so_library", "hdr_list")
 
-_w_no_deprecated = selects.with_or({
-    ("@platforms//os:linux", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): [
-        "-Wno-deprecated-declarations",
-    ],
-    "//conditions:default": [],
-})
-
 _repo_dir = repository_name().removeprefix("@")
 
 # Hopefully, the need for these OSxCPU config_setting()s will be obviated by a fix to https://github.com/bazelbuild/platforms/issues/36
@@ -647,7 +640,6 @@ BOOST_CONTAINER_INCLUDES_WITH_SRC_EXTENSION = [
 boost_library(
     name = "container",
     hdrs = BOOST_CONTAINER_INCLUDES_WITH_SRC_EXTENSION,
-    copts = _w_no_deprecated,
     exclude_src = BOOST_CONTAINER_INCLUDES_WITH_SRC_EXTENSION,
     deps = [
         ":config",
@@ -843,7 +835,6 @@ boost_library(
 
 boost_library(
     name = "filesystem",
-    copts = _w_no_deprecated,
     defines = [
         "BOOST_FILESYSTEM_NO_CXX20_ATOMIC_REF",
     ] + select({
@@ -1133,9 +1124,9 @@ boost_library(
         ":type_traits",
         ":utility",
         "@com_github_facebook_zstd//:zstd",
-        "@zlib",
         "@org_bzip_bzip2//:bz2lib",
         "@org_lzma_lzma//:lzma",
+        "@zlib",
     ],
 )
 
@@ -1223,7 +1214,7 @@ boost_library(
         "@platforms//os:android": BOST_LOCALE_STD_COPTS,
         ("@platforms//os:linux", "@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): BOOST_LOCALE_POSIX_COPTS,
         ":windows_x86_64": BOOST_LOCALE_WIN32_COPTS,
-    }) + _w_no_deprecated,
+    }),
     includes = ["libs/locale/src/"],
     deps = [
         ":assert",
@@ -1707,7 +1698,6 @@ boost_library(
 
 boost_library(
     name = "regex",
-    copts = _w_no_deprecated,
     deps = [
         ":assert",
         ":config",

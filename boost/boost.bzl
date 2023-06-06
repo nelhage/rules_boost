@@ -1,11 +1,10 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
-# Building boost results in many warnings for unused values. Downstream users
-# won't be interested, so just disable the warning.
+# Building boost results in many warnings. Downstream users won't be interested, so just disable them.
 default_copts = select({
-    "@platforms//os:windows": [],
-    "//conditions:default": ["-Wno-unused"],
+    "@platforms//os:windows": ["/W0"],
+    "//conditions:default": ["-w"],
 })
 
 default_defines = select({
