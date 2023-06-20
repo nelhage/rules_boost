@@ -7,8 +7,8 @@ jobs:
     steps:
       - run: apt-get update && apt-get -y install openssh-client git pkg-config zip g++ zlib1g-dev unzip curl ocl-icd-opencl-dev opencl-headers
       - run: cd /tmp/ &&
-          curl -LO https://github.com/bazelbuild/bazel/releases/download/6.1.1/bazel-6.1.1-installer-linux-x86_64.sh &&
-          bash /tmp/bazel-6.1.1-installer-linux-x86_64.sh
+          curl -LO https://github.com/bazelbuild/bazel/releases/download/6.2.1/bazel-6.2.1-installer-linux-x86_64.sh &&
+          bash /tmp/bazel-6.2.1-installer-linux-x86_64.sh
       - checkout
       - restore_cache:
           keys:
