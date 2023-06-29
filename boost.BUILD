@@ -1962,6 +1962,7 @@ boost_library(
         ":predef",
         ":utility",
         ":variant2",
+        ":winapi",
     ],
 )
 
