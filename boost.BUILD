@@ -1231,6 +1231,7 @@ boost_library(
         ":thread",
         ":type_traits",
         ":unordered",
+        ":utility",
         ":version",
     ],
 )
@@ -2625,6 +2626,11 @@ boost_library(
 
 boost_library(
     name = "url",
+    srcs = glob([
+        "libs/url/src/detail/**/*.cpp",
+        "libs/url/src/grammar/**/*.cpp",
+        "libs/url/src/rfc/**/*.cpp",
+    ]),
     deps = [
         ":align",
         ":assert",
