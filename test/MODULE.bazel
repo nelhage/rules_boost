@@ -13,5 +13,5 @@ bazel_dep(
 # Override the path to the local rules_boost repository
 local_path_override(
     name = "rules_boost", 
-    path = "../"
+    path = ".."
 )
