@@ -159,7 +159,7 @@ def boost_deps():
         build_file = "@com_github_nelhage_rules_boost//:boost.BUILD",
         patch_cmds = ["rm -f doc/pdf/BUILD"],
         patch_cmds_win = ["Remove-Item -Force doc/pdf/BUILD"],
-        url = "https://github.com/boostorg/boost/releases/download/boost-1.82.0/boost-1.82.0.tar.gz",
+        url = "https://github.com/boostorg/boost/releases/download/1.83.0/boost-1.82.0.tar.gz",
         sha256 = "b62bd839ea6c28265af9a1f68393eda37fab3611425d3b28882d8e424535ec9d",
         strip_prefix = "boost-1.82.0",
     )
