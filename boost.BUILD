@@ -250,7 +250,6 @@ boost_library(
         ":serialization",
         ":type_traits",
         ":utility",
-        ":version",
     ],
 )
 
@@ -438,7 +437,6 @@ boost_library(
         ":static_assert",
         ":system",
         ":throw_exception",
-        ":version",
     ],
 )
 
@@ -505,7 +503,6 @@ boost_library(
         ":tribool",
         ":type_traits",
         ":utility",
-        ":version",
     ],
 )
 
@@ -563,7 +560,6 @@ boost_library(
         ":throw_exception",
         ":type_traits",
         ":utility",
-        ":version",
     ],
 )
 
@@ -624,9 +620,6 @@ boost_library(
 
 boost_library(
     name = "config",
-    deps = [
-        ":version",
-    ],
 )
 
 boost_library(
@@ -1231,7 +1224,6 @@ boost_library(
         ":thread",
         ":type_traits",
         ":unordered",
-        ":version",
     ],
 )
 
@@ -1292,7 +1284,6 @@ boost_library(
         ":type",
         ":type_traits",
         ":utility",
-        ":version",
     ],
 )
 
@@ -1377,7 +1368,6 @@ boost_library(
     deps = [
         ":config",
         ":filesystem",
-        ":version",
     ],
 )
 
@@ -1478,7 +1468,6 @@ boost_library(
         ":type_traits",
         ":typeof",
         ":utility",
-        ":version",
     ],
 )
 
@@ -1571,7 +1560,6 @@ boost_library(
         ":throw_exception",
         ":tokenizer",
         ":type_traits",
-        ":version",
     ],
 )
 
@@ -1715,7 +1703,6 @@ boost_library(
         ":smart_ptr",
         ":throw_exception",
         ":type_traits",
-        ":version",
     ],
 )
 
@@ -2214,10 +2201,6 @@ boost_library(
 )
 
 boost_library(
-    name = "version",
-)
-
-boost_library(
     name = "visit_each",
 )
 
@@ -2276,7 +2259,6 @@ _BOOST_TEST_DEPS = [
     ":type",
     ":type_traits",
     ":utility",
-    ":version",
 ]
 
 # An uncompiled Boost.Test library, to be used through boost/test/included/*.
@@ -2566,7 +2548,6 @@ boost_library(
         ":system",
         ":throw_exception",
         ":utility",
-        ":version",
     ],
 )
 
