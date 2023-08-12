@@ -20,6 +20,10 @@
       "org_lzma_lzma",
       "ubuntu", // circleci, not Bazel.
     ],
+  }, {
+      "description": "Strip boost- prefix from boost release version names so Renovate parses them correctly.",
+      "matchPackageNames": ["boost"],
+      "extractVersion": "^boost-(?<version>.*)$"
   }],
 
   // Defaults--and the tweaks we wish were defaults
