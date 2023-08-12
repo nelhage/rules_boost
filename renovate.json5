@@ -30,5 +30,5 @@
   "prHourlyLimit": 0,
   // Has Renovate maintain an issue with the status of dependencies--and a manual run button. Super handy but was originally not on by default.
   "dependencyDashboard": true,
-  "dependencyDashboardHeader": "Collaborators: Check Renovate logs here: https://app.renovatebot.com/dashboard#github/nelhage/rules_boost", // Footer seems to prevent manual run checkbox, so I made this a header.
+  "dependencyDashboardHeader": "Collaborators: Check Renovate logs here: https://developer.mend.io/github/nelhage/rules_boost", // Footer seems to prevent manual run checkbox, so I made this a header.
 }
