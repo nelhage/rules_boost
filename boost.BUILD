@@ -1012,7 +1012,21 @@ boost_library(
 boost_library(
     name = "icl",
     deps = [
+        ":assert",
         ":concept_check",
+        ":config",
+        ":container",
+        ":core",
+        ":date_time",
+        ":detail",
+        ":iterator",
+        ":move",
+        ":mpl",
+        ":range",
+        ":rational",
+        ":static_assert",
+        ":type_traits",
+        ":utility"
     ],
 )
 
