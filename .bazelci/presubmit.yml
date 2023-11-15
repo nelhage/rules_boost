@@ -26,8 +26,6 @@ tasks:
     - "//..."
   windows:
     working_directory: test
-    environment:
-      BAZEL_VC: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC"
     build_targets:
     - "//..."
     test_targets:
