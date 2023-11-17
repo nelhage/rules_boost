@@ -106,7 +106,8 @@ def boost_so_library(
         **kwargs
     )
 
-def boost_deps():
+def boost_deps(ctx = None):
+    # ctx defaulted to None for compatibility with workspace setup
     maybe(
         http_archive,
         name = "bazel_skylib",
@@ -172,3 +173,10 @@ def boost_deps():
         sha256 = "6c37680fc9a37c59a4f8ece3d675a8300deda76246aa2a13f4d5976a34e5f595",
         strip_prefix = "boringssl-91339236c06b1dcf7d9b43ee8bf5dda54eda4422",
     )
+
+boost_deps_extension = module_extension(
+    implementation = boost_deps,
+
+    # This extension is automatically loaded when using bzlmod (from MODULE.bazel) and will run the same function as WORKSPACE setup did - boost_deps(),
+    # but passes in a module_ctx object for advanced context of the whole project, allowing for complex, project wide modifiying extensions and distinguishing between WORKSPACE and bzlmod setups.
+)

@@ -1,0 +1,16 @@
+module(name = "boost", repo_name = "com_github_nelhage_rules_boost")
+
+bazel_dep(
+    name = "platforms",
+    version = "0.0.7",
+)
+
+boost_libs = use_extension("//:boost/boost.bzl", "boost_deps_extension")
+
+use_repo(boost_libs, "boost")
+use_repo(boost_libs, "bazel_skylib")
+use_repo(boost_libs, "zlib")
+use_repo(boost_libs, "org_bzip_bzip2")
+use_repo(boost_libs, "org_lzma_lzma")
+use_repo(boost_libs, "com_github_facebook_zstd")
+use_repo(boost_libs, "openssl")

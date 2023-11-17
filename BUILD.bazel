@@ -8,3 +8,21 @@ exports_files([
     "config.lzma-ios-i386.h",
     "config.lzma-windows.h",
 ])
+
+alias(
+    name = "algorithm",
+    actual = "@boost//:algorithm",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "filesystem",
+    actual = "@boost//:filesystem",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "log",
+    actual = "@boost//:log",
+    visibility = ["//visibility:public"],
+)
