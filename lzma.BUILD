@@ -64,6 +64,9 @@ cc_library(
             "src/liblzma/**/*_tablegen.c",
         ],
     ),
+    hdrs = [
+        "src/liblzma/api/lzma.h",  # Publicly exported header
+    ],
     copts = select({
         "@platforms//os:windows": [],
         "//conditions:default": ["-std=c99"],
@@ -83,6 +86,7 @@ cc_library(
     local_defines = [
         "HAVE_CONFIG_H",
     ],
+    strip_include_prefix = "src/liblzma/api",  # Allows public header without the path and without COPTS -I or includes = []
     visibility = ["//visibility:public"],
     deps = [
         "lzma_src_common",
@@ -117,9 +121,14 @@ cc_library(
     srcs = [],
     hdrs = [
         "src/liblzma/api/config.h",  # Generated, so missed by glob. In srcs so it's not public like the other headers
-    ] + glob([
-        "src/liblzma/api/**/*.h",
-    ]),
+    ] + glob(
+        [
+            "src/liblzma/api/**/*.h",
+        ],
+        exclude = [
+            "src/liblzma/api/lzma.h",  # The public header, only used in hdrs of main lib (//visibility:public)
+        ],
+    ),
     strip_include_prefix = "src/liblzma/api",
     visibility = ["//visibility:private"],
 )
