@@ -174,6 +174,27 @@ def boost_deps(ctx = None):
         strip_prefix = "boringssl-91339236c06b1dcf7d9b43ee8bf5dda54eda4422",
     )
 
+def create_aliases(target_list, alias_target, name = None):
+    """ Create aliases for a list of targets
+
+    Args:
+      target_list: List of targets to be aliased from the dep the the main module
+      alias_target: Original target to be aliased to
+      name: Not used
+    """
+    for target in target_list:
+        # Extract the name for the alias from the target string
+        name = target.split(":")[-1]
+        if not name:
+            continue  # Skip if the target string is not valid
+
+        # Define the alias
+        native.alias(
+            name = name,
+            actual = alias_target + "//:" + target,
+            visibility = ["//visibility:public"],
+        )
+
 boost_deps_extension = module_extension(
     implementation = boost_deps,
 
