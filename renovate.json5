@@ -22,9 +22,9 @@
       "ubuntu", // circleci, not Bazel.
     ],
   }, {
-      "description": "Strip boost- prefix from boost release version names so Renovate parses them correctly.",
+      "description": "Handle boost- prefix from boost release version names.",
       "matchPackageNames": ["boost"],
-      "extractVersion": "^boost-(?<version>.*)$"
+      "versioning": "regex:^boost-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(\\.(?<prerelease>.+))?$",
   }],
 
   // Defaults--and the tweaks we wish were defaults
