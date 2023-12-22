@@ -1240,6 +1240,10 @@ boost_library(
         ":unordered",
         ":utility",
     ],
+    linkopts = selects.with_or({
+        ("@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): ["-liconv"],
+        ("@platforms//os:android", "@platforms//os:linux", ":windows_x86_64"): [],
+    }),
 )
 
 boost_library(
