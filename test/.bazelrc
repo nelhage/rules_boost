@@ -17,3 +17,7 @@ common --enable_platform_specific_config
     # More details in: https://github.com/bazelbuild/intellij/issues/1169 https://github.com/bazelbuild/bazel/issues/2574
 # This flag makes build not inherit from the environment variables of the caller, solving the issue.
 build --incompatible_strict_action_env
+
+# Exclude Homebrew installs on x86_64 macOS
+# Suggested in https://github.com/bazelbuild/bazel/issues/8053#issuecomment-642880936
+build --sandbox_block_path=/usr/local
