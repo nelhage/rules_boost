@@ -21,4 +21,4 @@ build --incompatible_strict_action_env
 # Prevent tearing of header inclusion between Homebrew installs and //external in x86_64 macOS
 # Suggested in https://github.com/bazelbuild/bazel/issues/8053#issuecomment-642880936
 # More, better discussion in https://github.com/bazelbuild/bazel/issues/10472
-build:macos --sandbox_block_path=/usr/local/include
+build:macos --copt=-I/usr/local/include
