@@ -1167,7 +1167,6 @@ BOOST_LOCALE_COMMON_SOURCES = glob(
     [
         "libs/locale/src/boost/locale/encoding/*.cpp",
         "libs/locale/src/boost/locale/encoding/*.hpp",
-        "libs/locale/src/boost/locale/encoding/*.ipp",
         "libs/locale/src/boost/locale/shared/*.cpp",
         "libs/locale/src/boost/locale/shared/*.hpp",
         "libs/locale/src/boost/locale/std/*.cpp",
