@@ -14,8 +14,8 @@ cc_library(
         "lib/legacy/*.h",
         "lib/legacy/*.c",
     ]) + select({
-        "@platforms//cpu:x86_64": ["lib/decompress/huf_decompress_amd64.S"],
-        ":windows_x86_64": [],
+        ":linux_x86_64": ["lib/decompress/huf_decompress_amd64.S"],
+        ":macos_x86_64": ["lib/decompress/huf_decompress_amd64.S"],
         "//conditions:default": [],
     }),
     hdrs = [
@@ -38,9 +38,17 @@ cc_library(
 # Hopefully, the need for these OSxCPU config_setting()s will be obviated by a fix to https://github.com/bazelbuild/platforms/issues/36
 
 config_setting(
-    name = "windows_x86_64",
+    name = "linux_x86_64",
     constraint_values = [
-        "@platforms//os:windows",
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+config_setting(
+    name = "macos_x86_64",
+    constraint_values = [
+        "@platforms//os:macos",
         "@platforms//cpu:x86_64",
     ],
 )
