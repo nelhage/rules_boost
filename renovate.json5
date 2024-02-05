@@ -28,7 +28,7 @@
   }, {
       "description": "Handle v version prefix.",
       "matchPackageNames": ["zlib"],
-      "versioning": "regex:^v?(?<major>\\d+)(\\.(?<minor>\\d+))?(\\.(?<patch>\\d+))?(\\.(?<prerelease>.+))?$",
+      "extractVersion": "^v(?<version>.*)$",
   }],
 
   // Defaults--and the tweaks we wish were defaults
