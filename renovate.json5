@@ -24,7 +24,11 @@
   }, {
       "description": "Handle boost- prefix from boost release version names.",
       "matchPackageNames": ["boost"],
-      "versioning": "regex:^boost-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(\\.(?<prerelease>.+))?$",
+      "versioning": "regex:^boost-(?<major>\\d+)(\\.(?<minor>\\d+))?(\\.(?<patch>\\d+))?(\\.(?<prerelease>.+))?$",
+  }, {
+      "description": "Handle zlib- prefix from zlib release version names.",
+      "matchPackageNames": ["zlib"],
+      "versioning": "regex:^zlib-(?<major>\\d+)(\\.(?<minor>\\d+))?(\\.(?<patch>\\d+))?(\\.(?<prerelease>.+))?$",
   }],
 
   // Defaults--and the tweaks we wish were defaults
