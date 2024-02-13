@@ -246,6 +246,7 @@ boost_library(
         ":config",
         ":fusion",
         ":mpl",
+        ":numeric_ublas",
         ":parameter",
         ":serialization",
         ":type_traits",
