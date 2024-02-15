@@ -5,6 +5,18 @@ load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_library", "boos
 
 _repo_dir = repository_name().removeprefix("@")
 
+bool_flag(
+    name = "use_linkstatic",
+    build_setting_default = False,
+)
+
+config_setting(
+    name = "linkstatic",
+    flag_values = {
+        ":use_linkstatic": "True",
+    },
+)
+
 # Hopefully, the need for these OSxCPU config_setting()s will be obviated by a fix to https://github.com/bazelbuild/platforms/issues/36
 
 config_setting(
@@ -328,6 +340,7 @@ cc_library(
     defines = default_defines,
     linkstatic = select({
         ":windows_x86_64": True,
+        ":linkstatic": True,
         "//conditions:default": False,
     }),
     visibility = ["//visibility:private"],
