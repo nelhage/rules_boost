@@ -162,9 +162,9 @@ def boost_deps(boost_version = "1.84.0", boost_sha256 = ""):
         build_file = "@com_github_nelhage_rules_boost//:boost.BUILD",
         patch_cmds = ["rm -f doc/pdf/BUILD"],
         patch_cmds_win = ["Remove-Item -Force doc/pdf/BUILD"],
-        url = "https://github.com/boostorg/boost/archive/refs/tags/boost-%s.tar.gz" % boost_version,
+        url = "https://github.com/boostorg/boost/releases/download/boost-%s/boost-%s.tar.gz" % (boost_version, boost_version),
         sha256 = boost_sha256,
-        strip_prefix = "boost-boost-%s" % boost_version,
+        strip_prefix = "boost-%s" % boost_version,
     )
 
     # We're pointing at hedronvision's mirror of google/boringssl:master-with-bazel to get Renovate auto-update. Otherwise, Renovate will keep moving us back to master, which doesn't support Bazel. See https://github.com/renovatebot/renovate/discussions/24854
