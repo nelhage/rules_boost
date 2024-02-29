@@ -79,14 +79,10 @@ cc_library(
         ],
         exclude = [
             "src/liblzma/check/crc*_small.c",
-            "src/liblzma/check/*x86*",
             "src/liblzma/**/*_tablegen.c",
         ],
     ),
-    hdrs = glob(
-            ["src/liblzma/api/**/*.h"],
-        exclude =  ["src/liblzma/check/*x86*"],
-    ),
+    hdrs = glob(["src/liblzma/api/**/*.h"]),
     copts = select({
         "@platforms//os:windows": [],
         "//conditions:default": ["-std=c99"],
