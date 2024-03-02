@@ -8,6 +8,22 @@ load("@bazel_skylib//lib:selects.bzl", "selects")
 # Hopefully, the need for these OSxCPU config_setting()s will be obviated by a fix to https://github.com/bazelbuild/platforms/issues/36
 
 config_setting(
+    name = "linux_x86",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+config_setting(
+    name = "linux_arm64",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:arm64",
+    ],
+)
+
+config_setting(
     name = "osx_arm64",
     constraint_values = [
         "@platforms//os:osx",
@@ -27,7 +43,8 @@ copy_file(
     name = "copy_config",
     src = selects.with_or({
         "@platforms//os:android": "@com_github_nelhage_rules_boost//:config.lzma-android.h",
-        "@platforms//os:linux": "@com_github_nelhage_rules_boost//:config.lzma-linux.h",
+        ":linux_x86": "@com_github_nelhage_rules_boost//:config.lzma-linux.h",
+        ":linux_arm64": "@com_github_nelhage_rules_boost//:config.lzma-linux-aarch64.h",
         ":osx_arm64": "@com_github_nelhage_rules_boost//:config.lzma-osx-arm64.h",
         ":osx_x86_64": "@com_github_nelhage_rules_boost//:config.lzma-osx-x86_64.h",
         ("@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): "apple_config",
