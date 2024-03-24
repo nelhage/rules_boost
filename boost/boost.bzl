@@ -15,7 +15,7 @@ default_defines = select({
 def srcs_list(library_name, exclude):
     return native.glob(
         ["libs/%s/src/*" % library_name],
-        exclude = ["**/*.asm", "**/*.S", "**/*.doc"] + exclude,
+        exclude = ["**/*.asm", "**/*.S", "**/*.doc","**/fabscript"] + exclude,
         allow_empty = True,
     )
 
