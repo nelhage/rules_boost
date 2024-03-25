@@ -997,6 +997,23 @@ boost_library(
 )
 
 boost_library(
+    name = "python",
+    exclude_src = ["**/fabscript"],  
+    deps = [
+        "@python",
+        ":config",
+        ":function",
+        ":align",
+        ":shared_ptr",
+        ":smart_ptr",
+        ":numeric_conversion",
+        ":implicit_cast",
+        ":iterator",
+        ":conversion",
+    ],
+)
+
+boost_library(
     name = "get_pointer",
 )
 
