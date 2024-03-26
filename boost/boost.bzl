@@ -109,52 +109,6 @@ def boost_so_library(
 def boost_deps():
     maybe(
         http_archive,
-        name = "bazel_skylib",
-        url = "https://github.com/bazelbuild/bazel-skylib/releases/download/1.5.0/bazel-skylib-1.5.0.tar.gz",
-        sha256 = "cd55a062e763b9349921f0f5db8c3933288dc8ba4f76dd9416aac68acee3cb94",
-    )
-
-    maybe(
-        http_archive,
-        name = "zlib",
-        build_file = "@com_github_nelhage_rules_boost//:zlib.BUILD",
-        url = "https://github.com/madler/zlib/releases/download/v1.3/zlib-1.3.tar.gz",
-        sha256 = "ff0ba4c292013dbc27530b3a81e1f9a813cd39de01ca5e0f8bf355702efa593e",
-        strip_prefix = "zlib-1.3",
-    )
-
-    maybe(
-        http_archive,
-        name = "org_bzip_bzip2",
-        build_file = "@com_github_nelhage_rules_boost//:bzip2.BUILD",
-        sha256 = "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
-        strip_prefix = "bzip2-1.0.8",
-        urls = [
-            "https://mirror.bazel.build/sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
-            "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
-        ],
-    )
-
-    maybe(
-        http_archive,
-        name = "org_lzma_lzma",
-        build_file = "@com_github_nelhage_rules_boost//:lzma.BUILD",
-        url = "https://github.com/tukaani-project/xz/releases/download/v5.6.1/xz-5.6.1.tar.gz",
-        sha256 = "2398f4a8e53345325f44bdd9f0cc7401bd9025d736c6d43b372f4dea77bf75b8",
-        strip_prefix = "xz-5.6.1",
-    )
-
-    maybe(
-        http_archive,
-        name = "com_github_facebook_zstd",
-        build_file = "@com_github_nelhage_rules_boost//:zstd.BUILD",
-        url = "https://github.com/facebook/zstd/releases/download/v1.5.5/zstd-1.5.5.tar.gz",
-        sha256 = "9c4396cc829cfae319a6e2615202e82aad41372073482fce286fac78646d3ee4",
-        strip_prefix = "zstd-1.5.5",
-    )
-
-    maybe(
-        http_archive,
         name = "boost",
         build_file = "@com_github_nelhage_rules_boost//:boost.BUILD",
         patch_cmds = ["rm -f doc/pdf/BUILD"],
@@ -162,13 +116,4 @@ def boost_deps():
         url = "https://github.com/boostorg/boost/releases/download/boost-1.84.0/boost-1.84.0.tar.gz",
         sha256 = "4d27e9efed0f6f152dc28db6430b9d3dfb40c0345da7342eaa5a987dde57bd95",
         strip_prefix = "boost-1.84.0",
-    )
-
-    # We're pointing at hedronvision's mirror of google/boringssl:master-with-bazel to get Renovate auto-update. Otherwise, Renovate will keep moving us back to master, which doesn't support Bazel. See https://github.com/renovatebot/renovate/discussions/24854
-    maybe(
-        http_archive,
-        name = "openssl",
-        url = "https://github.com/hedronvision/boringssl/archive/47cfe28a00a915b5e1078edfd992d8d5b0e484c5.tar.gz",
-        sha256 = "7477b99e4708dab676e1a36abfa5cbd1bf33e2166ce7f83b5e2dedade9486334",
-        strip_prefix = "boringssl-47cfe28a00a915b5e1078edfd992d8d5b0e484c5",
     )
