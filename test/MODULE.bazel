@@ -1,0 +1,11 @@
+bazel_dep(name = "com_github_nelhage_rules_boost")
+local_path_override(
+    module_name = "com_github_nelhage_rules_boost",
+    path = "..",
+)
+
+non_module_boost_repositories = use_extension("@com_github_nelhage_rules_boost//:boost/repositories.bzl", "non_module_dependencies")
+use_repo(
+    non_module_boost_repositories,
+    "boost",
+)
