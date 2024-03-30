@@ -18,7 +18,6 @@
       "com_github_facebook_zstd",
       "zlib",
       "openssl",
-      "org_lzma_lzma",
       "ubuntu", // circleci, not Bazel.
     ],
   }, {
