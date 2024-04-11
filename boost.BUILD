@@ -1148,7 +1148,7 @@ boost_library(
         ":type",
         ":type_traits",
         ":utility",
-        "@zstd",
+        "@com_github_facebook_zstd//:zstd",
         "@org_bzip_bzip2//:bz2lib",
         "@org_lzma_lzma//:lzma",
         "@zlib",
