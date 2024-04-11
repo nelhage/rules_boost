@@ -1,6 +1,3 @@
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-
 # Building boost results in many warnings. Downstream users won't be interested, so just disable them.
 default_copts = select({
     "@platforms//os:windows": ["/W0"],
@@ -104,74 +101,4 @@ def boost_so_library(
         exclude_src = native.glob(["**"]),
         deps = deps + [":_imported_%s" % name],
         **kwargs
-    )
-
-def boost_deps(boost_version = "1.84.0", boost_sha256 = ""):
-    if boost_version == "1.84.0":
-        boost_sha256 = "4d27e9efed0f6f152dc28db6430b9d3dfb40c0345da7342eaa5a987dde57bd95"
-
-    maybe(
-        http_archive,
-        name = "bazel_skylib",
-        url = "https://github.com/bazelbuild/bazel-skylib/releases/download/1.5.0/bazel-skylib-1.5.0.tar.gz",
-        sha256 = "cd55a062e763b9349921f0f5db8c3933288dc8ba4f76dd9416aac68acee3cb94",
-    )
-
-    maybe(
-        http_archive,
-        name = "zlib",
-        build_file = "@com_github_nelhage_rules_boost//:zlib.BUILD",
-        url = "https://github.com/madler/zlib/releases/download/v1.3/zlib-1.3.tar.gz",
-        sha256 = "ff0ba4c292013dbc27530b3a81e1f9a813cd39de01ca5e0f8bf355702efa593e",
-        strip_prefix = "zlib-1.3",
-    )
-
-    maybe(
-        http_archive,
-        name = "org_bzip_bzip2",
-        build_file = "@com_github_nelhage_rules_boost//:bzip2.BUILD",
-        sha256 = "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
-        strip_prefix = "bzip2-1.0.8",
-        urls = [
-            "https://mirror.bazel.build/sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
-            "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
-        ],
-    )
-
-    maybe(
-        http_archive,
-        name = "org_lzma_lzma",
-        build_file = "@com_github_nelhage_rules_boost//:lzma.BUILD",
-        url = "https://src.fedoraproject.org/lookaside/extras/xz/xz-5.4.6.tar.gz/sha512/b08a61d8d478d3b4675cb1ddacdbbd98dc6941a55bcdd81a28679e54e9367d3a595fa123ac97874a17da571c1b712e2a3e901c2737099a9d268616a1ba3de497/xz-5.4.6.tar.gz",
-        sha256 = "aeba3e03bf8140ddedf62a0a367158340520f6b384f75ca6045ccc6c0d43fd5c",
-        strip_prefix = "xz-5.4.6",
-    )
-
-    maybe(
-        http_archive,
-        name = "com_github_facebook_zstd",
-        build_file = "@com_github_nelhage_rules_boost//:zstd.BUILD",
-        url = "https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz",
-        sha256 = "8c29e06cf42aacc1eafc4077ae2ec6c6fcb96a626157e0593d5e82a34fd403c1",
-        strip_prefix = "zstd-1.5.6",
-    )
-
-    maybe(
-        http_archive,
-        name = "boost",
-        build_file = "@com_github_nelhage_rules_boost//:boost.BUILD",
-        patch_cmds = ["rm -f doc/pdf/BUILD"],
-        patch_cmds_win = ["Remove-Item -Force doc/pdf/BUILD"],
-        url = "https://github.com/boostorg/boost/releases/download/boost-%s/boost-%s.tar.gz" % (boost_version, boost_version),
-        sha256 = boost_sha256,
-        strip_prefix = "boost-%s" % boost_version,
-    )
-
-    # We're pointing at hedronvision's mirror of google/boringssl:master-with-bazel to get Renovate auto-update. Otherwise, Renovate will keep moving us back to master, which doesn't support Bazel. See https://github.com/renovatebot/renovate/discussions/24854
-    maybe(
-        http_archive,
-        name = "openssl",
-        url = "https://github.com/hedronvision/boringssl/archive/6e8e87ec5d5e50655916f3d52be0c8d7ac6b6060.tar.gz",
-        sha256 = "5cc8cafa312307d37adeca8d63a7dfb10a45ec4dca8f89e13b40a4d15d4fe409",
-        strip_prefix = "boringssl-6e8e87ec5d5e50655916f3d52be0c8d7ac6b6060",
     )
