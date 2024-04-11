@@ -1,0 +1,19 @@
+###############################################################################
+# Bazel now uses Bzlmod by default to manage external dependencies.
+# Please consider migrating your external dependencies from WORKSPACE to MODULE.bazel.
+#
+# For more details, please check https://github.com/bazelbuild/bazel/issues/18958
+###############################################################################
+module(name = "com_github_nelhage_rules_boost_test")
+
+bazel_dep(name = "com_github_nelhage_rules_boost")
+local_path_override(module_name = "com_github_nelhage_rules_boost", path = "..")
+
+boost_modules = use_extension("@com_github_nelhage_rules_boost//:extensions.bzl", "boost_modules")
+# "boost_modules.version" can be used to specify a specific version of the boost modules. If omitted, the default version will be used.
+# See //:extensions.bzl for the default version.
+boost_modules.version(
+    version = "1.84.0",
+    sha256 = "4d27e9efed0f6f152dc28db6430b9d3dfb40c0345da7342eaa5a987dde57bd95"
+)
+use_repo(boost_modules, "boost")

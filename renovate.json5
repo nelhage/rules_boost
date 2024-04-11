@@ -15,7 +15,7 @@
     "matchPackageNames" : [ // Add Bazel name= parameter here. <TAG0>.
       "bazel_skylib",
       "boost",
-      "com_github_facebook_zstd",
+      "zstd",
       "zlib",
       "openssl",
       "ubuntu", // circleci, not Bazel.
