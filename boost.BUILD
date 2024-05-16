@@ -246,6 +246,7 @@ boost_library(
         ":config",
         ":fusion",
         ":mpl",
+        ":numeric_ublas",
         ":parameter",
         ":serialization",
         ":type_traits",
@@ -997,6 +998,23 @@ boost_library(
 )
 
 boost_library(
+    name = "python",
+    exclude_src = ["**/fabscript"],  
+    deps = [
+        "@python",
+        ":config",
+        ":function",
+        ":align",
+        ":shared_ptr",
+        ":smart_ptr",
+        ":numeric_conversion",
+        ":implicit_cast",
+        ":iterator",
+        ":conversion",
+    ],
+)
+
+boost_library(
     name = "get_pointer",
 )
 
@@ -1167,7 +1185,6 @@ BOOST_LOCALE_COMMON_SOURCES = glob(
     [
         "libs/locale/src/boost/locale/encoding/*.cpp",
         "libs/locale/src/boost/locale/encoding/*.hpp",
-        "libs/locale/src/boost/locale/encoding/*.ipp",
         "libs/locale/src/boost/locale/shared/*.cpp",
         "libs/locale/src/boost/locale/shared/*.hpp",
         "libs/locale/src/boost/locale/std/*.cpp",
@@ -1240,6 +1257,10 @@ boost_library(
         ":unordered",
         ":utility",
     ],
+    linkopts = selects.with_or({
+        ("@platforms//os:osx", "@platforms//os:ios", "@platforms//os:watchos", "@platforms//os:tvos"): ["-liconv"],
+        ("@platforms//os:android", "@platforms//os:linux", ":windows_x86_64"): [],
+    }),
 )
 
 boost_library(

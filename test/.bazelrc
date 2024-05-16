@@ -9,3 +9,16 @@ build --keep_going
 build --cxxopt=-std=c++17
 build:windows --cxxopt=/std:c++17
 common --enable_platform_specific_config
+
+#  Strict action environment leads to faster builds because of fewer needless cache misses. It should really be the default.
+    # History of why Bazel reverted their change turning it on by default: https://github.com/bazelbuild/bazel/issues/7026. That's likely the issue that will update if this gets fixed by default.
+# Without this flag, switching terminal windows or to an IDE causes a cache miss. Remote caching would probably totally fail, too.
+# Why? Bazel commands (by default) inherit environment variables that change between editors and machines (like PATH, which contains username or TMPDIR). These are then used as cache keys, causing lots of unnecessary misses and rebuilds.
+    # More details in: https://github.com/bazelbuild/intellij/issues/1169 https://github.com/bazelbuild/bazel/issues/2574
+# This flag makes build not inherit from the environment variables of the caller, solving the issue.
+build --incompatible_strict_action_env
+
+# Prevent tearing of header inclusion between Homebrew installs and //external in x86_64 macOS
+# Suggested in https://github.com/bazelbuild/bazel/issues/8053#issuecomment-642880936
+# More, better discussion in https://github.com/bazelbuild/bazel/issues/10472
+build:macos --sandbox_block_path=/usr/local/include
