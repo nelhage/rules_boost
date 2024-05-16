@@ -1151,7 +1151,8 @@ boost_library(
         ":utility",
         "@com_github_facebook_zstd//:zstd",
         "@org_bzip_bzip2//:bz2lib",
-        "@org_lzma_lzma//:lzma",
+        "@xz//:lzma",
+        # "@org_lzma_lzma//:lzma", # TODO is this backwards compatible with workspace?
         "@zlib",
     ],
 )
