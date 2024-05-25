@@ -449,7 +449,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":asio",
-        "@openssl//:ssl",
+        "@boringssl//:ssl",
     ],
 )
 
@@ -999,7 +999,7 @@ boost_library(
 
 boost_library(
     name = "python",
-    exclude_src = ["**/fabscript"],  
+    exclude_src = ["**/fabscript"],
     deps = [
         "@python",
         ":config",
@@ -1149,9 +1149,9 @@ boost_library(
         ":type",
         ":type_traits",
         ":utility",
-        "@com_github_facebook_zstd//:zstd",
-        "@org_bzip_bzip2//:bz2lib",
-        "@org_lzma_lzma//:lzma",
+        "@bzip2//:bz2",
+        "@xz//:lzma",
+        "@zstd",
         "@zlib",
     ],
 )
