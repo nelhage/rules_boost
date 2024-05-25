@@ -8,9 +8,9 @@ Copy this into your Bazel `MODULE.bazel` file to add this repo as an external de
 # Famous C++ library that has given rise to many new additions to the C++ Standard Library
 # Makes @boost available for use: For example, add `@boost//:algorithm` to your deps.
 # For more, see https://github.com/nelhage/rules_boost and https://www.boost.org
-bazel_dep(name = "com_github_nelhage_rules_boost")
+bazel_dep(name = "rules_boost", name = "com_github_nelhage_rules_boost")
 archive_override(
-    module_name = "com_github_nelhage_rules_boost",
+    module_name = "rules_boost",
     urls = "https://github.com/nelhage/rules_boost/archive/refs/heads/master.tar.gz",
     strip_prefix = "rules_boost-master",
     # It is recommended to edit the above URL and the below sha256 to point to a specific version of this repository.

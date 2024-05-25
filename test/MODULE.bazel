@@ -1,6 +1,6 @@
-bazel_dep(name = "com_github_nelhage_rules_boost")
+bazel_dep(name = "rules_boost", repo_name = "com_github_nelhage_rules_boost")
 local_path_override(
-    module_name = "com_github_nelhage_rules_boost",
+    module_name = "rules_boost",
     path = "..",
 )
 
