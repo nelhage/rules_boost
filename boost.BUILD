@@ -1124,6 +1124,7 @@ boost_library(
 
 boost_library(
     name = "iostreams",
+    copts = ["-Wno-private-error"],
     deps = [
         ":assert",
         ":bind",
