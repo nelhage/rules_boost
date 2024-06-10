@@ -1,0 +1,15 @@
+Use a system includes instead of a local includes for zlib, as the 
+Bazel Central Registry version of zlib enforces that only system 
+includes are used.
+
+--- a/libs/iostreams/src/zlib.cpp
++++ b/libs/iostreams/src/zlib.cpp
+@@ -17,7 +17,7 @@
+ #include <boost/throw_exception.hpp>
+ #include <boost/iostreams/detail/config/dyn_link.hpp>
+ #include <boost/iostreams/filter/zlib.hpp> 
+-#include "zlib.h"   // Jean-loup Gailly's and Mark Adler's "zlib.h" header.
++#include <zlib.h>   // Jean-loup Gailly's and Mark Adler's "zlib.h" header.
+                     // To configure Boost to work with zlib, see the 
+                     // installation instructions here:
+                     // http://boost.org/libs/iostreams/doc/index.html?path=7
