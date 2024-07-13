@@ -1107,6 +1107,7 @@ boost_library(
     deps = [
         ":assert",
         ":cstdint",
+        ":move",
         ":noncopyable",
         ":static_assert",
     ],
