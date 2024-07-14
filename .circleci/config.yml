@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: ubuntu:24.10
+      - image: ubuntu:oracular-20240617
 
     steps:
       - run:
