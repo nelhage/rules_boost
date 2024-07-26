@@ -115,7 +115,7 @@ def boost_deps():
         patch_cmds_win = ["Remove-Item -Force doc/pdf/BUILD"],
         patches = ["@com_github_nelhage_rules_boost//:zlib.patch"],
         patch_args = ["-p1"],
-        url = "https://github.com/boostorg/boost/releases/download/boost-1.84.0/boost-1.84.0.tar.gz",
+        url = "https://github.com/boostorg/boost/releases/download/boost-1.85.0/boost-1.84.0.tar.gz",
         sha256 = "4d27e9efed0f6f152dc28db6430b9d3dfb40c0345da7342eaa5a987dde57bd95",
         strip_prefix = "boost-1.84.0",
     )
