@@ -12,6 +12,12 @@ tasks:
     - "//..."
     test_targets:
     - "//..."
+  ubuntu2004_arm64:
+    working_directory: test
+    build_targets:
+    - "//..."
+    test_targets:
+    - "//..."
   macos:
     working_directory: test
     build_targets:
