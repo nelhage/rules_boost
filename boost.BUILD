@@ -1096,6 +1096,7 @@ boost_library(
     name = "iterator",
     deps = [
         ":detail",
+        ":fusion",
         ":static_assert",
         ":type_traits",
         ":utility",
