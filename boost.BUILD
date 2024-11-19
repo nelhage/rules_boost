@@ -432,6 +432,7 @@ boost_library(
         ":bind",
         ":cerrno",
         ":config",
+        ":coroutine",
         ":date_time",
         ":limits",
         ":regex",
