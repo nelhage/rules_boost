@@ -2268,6 +2268,9 @@ boost_library(
 boost_library(
     name = "numeric_interval",
     boost_name = "numeric/interval",
+    deps = [
+        ":limits"
+    ],
 )
 
 _BOOST_TEST_DEPS = [
