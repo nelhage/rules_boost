@@ -1,5 +1,12 @@
 # `rules_boost` -- Bazel build rules for [Boost](https://www.boost.org)
 
+> **_NOTE:_** Most parts of `rules_boost` have been migrated to the [Bazel Central Registry](https://registry.bazel.build/).
+> So instead of using `rules_boost` you can make use of the Bazel Central Registry (BCR). 
+> The Usage of the BCR also comes with the advantage that it supports different Boost versions whereas `rules_boost` always only supports one specific Boost version.
+> If a certain Boost library or version is missing you can make a "module wanted" request in the [BCR issue tracker](https://github.com/bazelbuild/bazel-central-registry/issues).
+> Nevertheless, this repository still serves as a reference for the missing parts that have not been migrated to BCR so far. 
+> The BCR effort would probably not be possible without the contributions of this repository, nevertheless, it is time to move over to BCR. In the case you want to contribute to the Bazel Boost support effort consider invest your time in the BCR approach instead of this repository.
+
 Copy this into your Bazel `MODULE.bazel` file to add this repo as an external dependency, making sure to update to the [latest commit](https://github.com/nelhage/rules_boost/commits/master) per the instructions below.
 
 ```Starlark
