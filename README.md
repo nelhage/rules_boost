@@ -23,7 +23,7 @@ Copy this into your Bazel `MODULE.bazel` file to add this repo as an external de
 bazel_dep(name = "rules_boost", repo_name = "com_github_nelhage_rules_boost")
 archive_override(
     module_name = "rules_boost",
-    urls = "https://github.com/nelhage/rules_boost/archive/refs/heads/master.tar.gz",
+    urls = ["https://github.com/nelhage/rules_boost/archive/refs/heads/master.tar.gz"],
     strip_prefix = "rules_boost-master",
     # It is recommended to edit the above URL and the below sha256 to point to a specific version of this repository.
     # integrity = "sha256-...",
