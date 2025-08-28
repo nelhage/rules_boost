@@ -648,7 +648,7 @@ boost_library(
 
 boost_library(
     name = "container_hash",
-    defines = ["BOOST_NO_CXX98_FUNCTION_BASE"],
+    defines = ["BOOST_NO_CXX98_FUNCTION_BASE="],
     deps = [
         ":assert",
         ":config",
