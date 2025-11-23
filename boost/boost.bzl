@@ -1,5 +1,8 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+load("@rules_cc//cc:cc_import.bzl", "cc_import")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
 
 # Building boost results in many warnings. Downstream users won't be interested, so just disable them.
 default_copts = select({
@@ -37,7 +40,7 @@ def boost_library(
     if boost_name == None:
         boost_name = name
 
-    return native.cc_library(
+    return cc_library(
         name = name,
         visibility = visibility,
         defines = default_defines + defines,
@@ -70,8 +73,7 @@ def boost_so_library(
         **kwargs):
     if boost_name == None:
         boost_name = name
-
-    native.cc_binary(
+    cc_binary(
         name = "lib_internal_%s" % name,
         defines = default_defines + defines,
         includes = ["libs/%s/include" % boost_name] + includes,
@@ -88,7 +90,7 @@ def boost_so_library(
         output_group = "interface_library",
         visibility = ["//visibility:private"],
     )
-    native.cc_import(
+    cc_import(
         name = "_imported_%s" % name,
         shared_library = ":lib_internal_%s" % name,
         interface_library = ":%s_dll_interface_file" % name,

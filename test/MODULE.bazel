@@ -4,6 +4,8 @@ local_path_override(
     path = "..",
 )
 
+bazel_dep(name = "rules_cc", version = "0.0.10")
+
 non_module_boost_repositories = use_extension("@com_github_nelhage_rules_boost//:boost/repositories.bzl", "non_module_dependencies")
 use_repo(
     non_module_boost_repositories,
