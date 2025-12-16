@@ -1,6 +1,6 @@
 module(name = "rules_boost", repo_name = "com_github_nelhage_rules_boost")
 
-bazel_dep(name = "bazel_skylib", version = "1.8.2")
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
 bazel_dep(name = "boringssl", version = "0.20251124.0")
 bazel_dep(name = "bzip2", version = "1.0.8.bcr.3")
 bazel_dep(name = "platforms", version = "1.0.0")
