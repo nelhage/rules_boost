@@ -2269,6 +2269,10 @@ boost_library(
 boost_library(
     name = "numeric_interval",
     boost_name = "numeric/interval",
+    deps = [
+        ":config",
+        ":detail",
+    ],
 )
 
 _BOOST_TEST_DEPS = [
